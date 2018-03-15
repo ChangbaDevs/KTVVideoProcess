@@ -7,23 +7,21 @@
 //
 
 #import "ViewController.h"
+#import "KTVVPVideoCamera.h"
 
 @interface ViewController ()
+
+@property (nonatomic, strong) KTVVPVideoCamera * videoCamera;
 
 @end
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    self.videoCamera = [[KTVVPVideoCamera alloc] init];
+    [self.videoCamera startRunning];
 }
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 @end

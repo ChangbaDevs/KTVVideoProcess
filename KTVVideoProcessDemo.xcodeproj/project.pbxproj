@@ -13,6 +13,7 @@
 		9C99059F205A194800D7CF3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C99059E205A194800D7CF3A /* Assets.xcassets */; };
 		9C9905A2205A194800D7CF3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C9905A0205A194800D7CF3A /* LaunchScreen.storyboard */; };
 		9C9905A5205A194800D7CF3A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905A4205A194800D7CF3A /* main.m */; };
+		9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905B1205A1A2600D7CF3A /* KTVVPVideoCamera.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		9C9905A1205A194800D7CF3A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C9905A3205A194800D7CF3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C9905A4205A194800D7CF3A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9C9905B0205A1A2600D7CF3A /* KTVVPVideoCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPVideoCamera.h; sourceTree = "<group>"; };
+		9C9905B1205A1A2600D7CF3A /* KTVVPVideoCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPVideoCamera.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +45,7 @@
 		9C990589205A194800D7CF3A = {
 			isa = PBXGroup;
 			children = (
+				9C9905AB205A19D200D7CF3A /* KTVVideoProcess */,
 				9C990594205A194800D7CF3A /* KTVVideoProcessDemo */,
 				9C990593205A194800D7CF3A /* Products */,
 			);
@@ -69,6 +73,47 @@
 				9C9905A4205A194800D7CF3A /* main.m */,
 			);
 			path = KTVVideoProcessDemo;
+			sourceTree = "<group>";
+		};
+		9C9905AB205A19D200D7CF3A /* KTVVideoProcess */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905AC205A19D200D7CF3A /* Classes */,
+			);
+			path = KTVVideoProcess;
+			sourceTree = "<group>";
+		};
+		9C9905AC205A19D200D7CF3A /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905AD205A19D200D7CF3A /* Consumer */,
+				9C9905AE205A19D200D7CF3A /* Processor */,
+				9C9905AF205A19D200D7CF3A /* Source */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		9C9905AD205A19D200D7CF3A /* Consumer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Consumer;
+			sourceTree = "<group>";
+		};
+		9C9905AE205A19D200D7CF3A /* Processor */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Processor;
+			sourceTree = "<group>";
+		};
+		9C9905AF205A19D200D7CF3A /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905B0205A1A2600D7CF3A /* KTVVPVideoCamera.h */,
+				9C9905B1205A1A2600D7CF3A /* KTVVPVideoCamera.m */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,6 +187,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */,
 				9C99059A205A194800D7CF3A /* ViewController.m in Sources */,
 				9C9905A5205A194800D7CF3A /* main.m in Sources */,
 				9C990597205A194800D7CF3A /* AppDelegate.m in Sources */,
