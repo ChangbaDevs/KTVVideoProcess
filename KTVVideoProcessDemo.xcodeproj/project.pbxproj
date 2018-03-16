@@ -14,6 +14,18 @@
 		9C9905A2205A194800D7CF3A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C9905A0205A194800D7CF3A /* LaunchScreen.storyboard */; };
 		9C9905A5205A194800D7CF3A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905A4205A194800D7CF3A /* main.m */; };
 		9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905B1205A1A2600D7CF3A /* KTVVPVideoCamera.m */; };
+		9C9905B9205A1DF900D7CF3A /* KTVVPFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905B8205A1DF900D7CF3A /* KTVVPFrame.m */; };
+		9C9905BC205A1E1800D7CF3A /* KTVVPFramePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905BB205A1E1800D7CF3A /* KTVVPFramePool.m */; };
+		9C9905BF205A211A00D7CF3A /* KTVVPFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905BE205A211A00D7CF3A /* KTVVPFrameView.m */; };
+		9C9905C8205A4C5E00D7CF3A /* KTVVPMessageLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905C7205A4C5E00D7CF3A /* KTVVPMessageLoop.m */; };
+		9C9905CB205A4D3300D7CF3A /* KTVVPMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905CA205A4D3300D7CF3A /* KTVVPMessage.m */; };
+		9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905CE205A4D8600D7CF3A /* KTVVPObjectQueue.m */; };
+		9C9905D4205A627F00D7CF3A /* KTVVPGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905D3205A627F00D7CF3A /* KTVVPGLProgram.m */; };
+		9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905D6205A6A5F00D7CF3A /* KTVVPGLModel.m */; };
+		9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905D9205A6B1000D7CF3A /* KTVVPGLPlaneModel.m */; };
+		9C9905DE205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905DD205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m */; };
+		9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC08E50205B6D0300F15D88 /* KTVVPFrameUploader.m */; };
+		9CC08E57205B88F000F15D88 /* KTVVPContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC08E56205B88F000F15D88 /* KTVVPContext.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +41,33 @@
 		9C9905A4205A194800D7CF3A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9C9905B0205A1A2600D7CF3A /* KTVVPVideoCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPVideoCamera.h; sourceTree = "<group>"; };
 		9C9905B1205A1A2600D7CF3A /* KTVVPVideoCamera.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPVideoCamera.m; sourceTree = "<group>"; };
+		9C9905B4205A1C6300D7CF3A /* KTVVPInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPInput.h; sourceTree = "<group>"; };
+		9C9905B5205A1C7000D7CF3A /* KTVVPOutput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPOutput.h; sourceTree = "<group>"; };
+		9C9905B7205A1DF900D7CF3A /* KTVVPFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrame.h; sourceTree = "<group>"; };
+		9C9905B8205A1DF900D7CF3A /* KTVVPFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrame.m; sourceTree = "<group>"; };
+		9C9905BA205A1E1800D7CF3A /* KTVVPFramePool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFramePool.h; sourceTree = "<group>"; };
+		9C9905BB205A1E1800D7CF3A /* KTVVPFramePool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFramePool.m; sourceTree = "<group>"; };
+		9C9905BD205A211A00D7CF3A /* KTVVPFrameView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameView.h; sourceTree = "<group>"; };
+		9C9905BE205A211A00D7CF3A /* KTVVPFrameView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameView.m; sourceTree = "<group>"; };
+		9C9905C6205A4C5E00D7CF3A /* KTVVPMessageLoop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPMessageLoop.h; sourceTree = "<group>"; };
+		9C9905C7205A4C5E00D7CF3A /* KTVVPMessageLoop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPMessageLoop.m; sourceTree = "<group>"; };
+		9C9905C9205A4D3300D7CF3A /* KTVVPMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPMessage.h; sourceTree = "<group>"; };
+		9C9905CA205A4D3300D7CF3A /* KTVVPMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPMessage.m; sourceTree = "<group>"; };
+		9C9905CD205A4D8600D7CF3A /* KTVVPObjectQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPObjectQueue.h; sourceTree = "<group>"; };
+		9C9905CE205A4D8600D7CF3A /* KTVVPObjectQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPObjectQueue.m; sourceTree = "<group>"; };
+		9C9905D0205A54B100D7CF3A /* KTVVPGLDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLDefines.h; sourceTree = "<group>"; };
+		9C9905D2205A627F00D7CF3A /* KTVVPGLProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLProgram.h; sourceTree = "<group>"; };
+		9C9905D3205A627F00D7CF3A /* KTVVPGLProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLProgram.m; sourceTree = "<group>"; };
+		9C9905D5205A6A5F00D7CF3A /* KTVVPGLModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLModel.h; sourceTree = "<group>"; };
+		9C9905D6205A6A5F00D7CF3A /* KTVVPGLModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLModel.m; sourceTree = "<group>"; };
+		9C9905D8205A6B1000D7CF3A /* KTVVPGLPlaneModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLPlaneModel.h; sourceTree = "<group>"; };
+		9C9905D9205A6B1000D7CF3A /* KTVVPGLPlaneModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLPlaneModel.m; sourceTree = "<group>"; };
+		9C9905DC205A6D7C00D7CF3A /* KTVVPGLRGBProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLRGBProgram.h; sourceTree = "<group>"; };
+		9C9905DD205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLRGBProgram.m; sourceTree = "<group>"; };
+		9CC08E4F205B6D0300F15D88 /* KTVVPFrameUploader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameUploader.h; sourceTree = "<group>"; };
+		9CC08E50205B6D0300F15D88 /* KTVVPFrameUploader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameUploader.m; sourceTree = "<group>"; };
+		9CC08E55205B88F000F15D88 /* KTVVPContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPContext.h; sourceTree = "<group>"; };
+		9CC08E56205B88F000F15D88 /* KTVVPContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPContext.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +125,10 @@
 		9C9905AC205A19D200D7CF3A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9C9905D1205A626900D7CF3A /* OpenGL */,
+				9C9905CC205A4D6E00D7CF3A /* Message */,
+				9C9905B6205A1DCD00D7CF3A /* Frame */,
+				9C9905B3205A1C3B00D7CF3A /* Common */,
 				9C9905AD205A19D200D7CF3A /* Consumer */,
 				9C9905AE205A19D200D7CF3A /* Processor */,
 				9C9905AF205A19D200D7CF3A /* Source */,
@@ -96,6 +139,8 @@
 		9C9905AD205A19D200D7CF3A /* Consumer */ = {
 			isa = PBXGroup;
 			children = (
+				9C9905BD205A211A00D7CF3A /* KTVVPFrameView.h */,
+				9C9905BE205A211A00D7CF3A /* KTVVPFrameView.m */,
 			);
 			path = Consumer;
 			sourceTree = "<group>";
@@ -114,6 +159,59 @@
 				9C9905B1205A1A2600D7CF3A /* KTVVPVideoCamera.m */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		9C9905B3205A1C3B00D7CF3A /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905B4205A1C6300D7CF3A /* KTVVPInput.h */,
+				9C9905B5205A1C7000D7CF3A /* KTVVPOutput.h */,
+				9C9905CD205A4D8600D7CF3A /* KTVVPObjectQueue.h */,
+				9C9905CE205A4D8600D7CF3A /* KTVVPObjectQueue.m */,
+				9CC08E55205B88F000F15D88 /* KTVVPContext.h */,
+				9CC08E56205B88F000F15D88 /* KTVVPContext.m */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		9C9905B6205A1DCD00D7CF3A /* Frame */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905B7205A1DF900D7CF3A /* KTVVPFrame.h */,
+				9C9905B8205A1DF900D7CF3A /* KTVVPFrame.m */,
+				9C9905BA205A1E1800D7CF3A /* KTVVPFramePool.h */,
+				9C9905BB205A1E1800D7CF3A /* KTVVPFramePool.m */,
+				9CC08E4F205B6D0300F15D88 /* KTVVPFrameUploader.h */,
+				9CC08E50205B6D0300F15D88 /* KTVVPFrameUploader.m */,
+			);
+			path = Frame;
+			sourceTree = "<group>";
+		};
+		9C9905CC205A4D6E00D7CF3A /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905C9205A4D3300D7CF3A /* KTVVPMessage.h */,
+				9C9905CA205A4D3300D7CF3A /* KTVVPMessage.m */,
+				9C9905C6205A4C5E00D7CF3A /* KTVVPMessageLoop.h */,
+				9C9905C7205A4C5E00D7CF3A /* KTVVPMessageLoop.m */,
+			);
+			path = Message;
+			sourceTree = "<group>";
+		};
+		9C9905D1205A626900D7CF3A /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				9C9905D0205A54B100D7CF3A /* KTVVPGLDefines.h */,
+				9C9905D2205A627F00D7CF3A /* KTVVPGLProgram.h */,
+				9C9905D3205A627F00D7CF3A /* KTVVPGLProgram.m */,
+				9C9905D5205A6A5F00D7CF3A /* KTVVPGLModel.h */,
+				9C9905D6205A6A5F00D7CF3A /* KTVVPGLModel.m */,
+				9C9905D8205A6B1000D7CF3A /* KTVVPGLPlaneModel.h */,
+				9C9905D9205A6B1000D7CF3A /* KTVVPGLPlaneModel.m */,
+				9C9905DC205A6D7C00D7CF3A /* KTVVPGLRGBProgram.h */,
+				9C9905DD205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m */,
+			);
+			path = OpenGL;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,10 +285,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */,
+				9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */,
+				9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */,
+				9C9905DE205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m in Sources */,
 				9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */,
+				9C9905C8205A4C5E00D7CF3A /* KTVVPMessageLoop.m in Sources */,
+				9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */,
 				9C99059A205A194800D7CF3A /* ViewController.m in Sources */,
+				9C9905CB205A4D3300D7CF3A /* KTVVPMessage.m in Sources */,
 				9C9905A5205A194800D7CF3A /* main.m in Sources */,
+				9C9905B9205A1DF900D7CF3A /* KTVVPFrame.m in Sources */,
+				9C9905BF205A211A00D7CF3A /* KTVVPFrameView.m in Sources */,
 				9C990597205A194800D7CF3A /* AppDelegate.m in Sources */,
+				9C9905BC205A1E1800D7CF3A /* KTVVPFramePool.m in Sources */,
+				9CC08E57205B88F000F15D88 /* KTVVPContext.m in Sources */,
+				9C9905D4205A627F00D7CF3A /* KTVVPGLProgram.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
