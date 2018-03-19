@@ -33,26 +33,26 @@
 
 - (void)startRunning
 {
-    self.videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    if (!self.videoDevice)
+    _videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    if (!_videoDevice)
     {
         return;
     }
     
-    self.captureSession = [[AVCaptureSession alloc] init];
-    [self.captureSession beginConfiguration];
+    _captureSession = [[AVCaptureSession alloc] init];
+    [_captureSession beginConfiguration];
     
-    self.videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:self.videoDevice error:nil];
-    [self.captureSession addInput:self.videoInput];
+    _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:self.videoDevice error:nil];
+    [_captureSession addInput:_videoInput];
     
-    self.videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-    [self.videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
-    [self.videoOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];
-    [self.captureSession addOutput:self.videoOutput];
+    _videoOutput = [[AVCaptureVideoDataOutput alloc] init];
+    [_videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
+    [_videoOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];
+    [_captureSession addOutput:_videoOutput];
     
-    self.captureSession.sessionPreset = AVCaptureSessionPreset1920x1080;
-    [self.captureSession commitConfiguration];
-    [self.captureSession startRunning];
+    _captureSession.sessionPreset = AVCaptureSessionPreset1920x1080;
+    [_captureSession commitConfiguration];
+    [_captureSession startRunning];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
@@ -71,22 +71,22 @@
 
 - (void)addInput:(id <KTVVPInput>)input
 {
-    if (!self.outputs)
+    if (!_outputs)
     {
-        self.outputs = [[NSMutableArray alloc] init];
+        _outputs = [[NSMutableArray alloc] init];
     }
-    [self.outputs addObject:input];
+    [_outputs addObject:input];
 }
 
 - (void)removeInput:(id <KTVVPInput>)input
 {
-    [self.outputs removeObject:input];
+    [_outputs removeObject:input];
 }
 
 - (void)outputFrame:(KTVVPFrame *)frame
 {
     [frame lock];
-    for (id <KTVVPInput> obj in self.outputs)
+    for (id <KTVVPInput> obj in _outputs)
     {
         [obj putFrame:frame];
     }

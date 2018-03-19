@@ -16,23 +16,13 @@
 
 @implementation KTVVPFilter
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-                      glContext:(EAGLContext *)glContext;
+- (instancetype)initWithContext:(KTVVPContext *)context;
 {
     if (self = [super init])
     {
         _context = context;
-        _glContext = glContext ? glContext : context.mainGLContext;
     }
     return self;
-}
-
-- (void)setCurrentGLContextIfNeed
-{
-    if ([EAGLContext currentContext] != _glContext)
-    {
-        [EAGLContext setCurrentContext:_glContext];
-    }
 }
 
 

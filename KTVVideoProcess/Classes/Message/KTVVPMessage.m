@@ -19,8 +19,8 @@
 {
     if (self = [super init])
     {
-        self.type = type;
-        self.object = object;
+        _type = type;
+        _object = object;
     }
     return self;
 }

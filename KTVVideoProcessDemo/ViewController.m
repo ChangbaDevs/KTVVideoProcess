@@ -37,6 +37,7 @@
                                                filterClasses:@[[KTVVPFilter class],
                                                                [KTVVPFilter class],
                                                                [KTVVPFilter class]]];
+    [self.processor setupIfNeed];
     [self.processor addInput:self.frameView];
     
     self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];

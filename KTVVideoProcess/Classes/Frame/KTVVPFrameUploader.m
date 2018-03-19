@@ -21,7 +21,7 @@
 {
     if (self = [super init])
     {
-        self.glContext = glContext;
+        _glContext = glContext;
     }
     return self;
 }
@@ -30,7 +30,7 @@
 {
     if (!_glTextureCache)
     {
-        CVReturn error = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, self.glContext, NULL, &_glTextureCache);
+        CVReturn error = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _glContext, NULL, &_glTextureCache);
         if (error)
         {
             NSLog(@"KTVVPFrameUploader failed to create OpenGL texture cache.");

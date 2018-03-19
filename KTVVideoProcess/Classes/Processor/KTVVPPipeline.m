@@ -14,7 +14,6 @@
 
 @property (nonatomic, assign) BOOL didSetup;
 @property (nonatomic, strong) NSArray <KTVVPFilter *> * filters;
-@property (nonatomic, strong) EAGLContext * glContext;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, copy) void(^completionHandler)(KTVVPFrame * result);
 
@@ -82,16 +81,14 @@
 {
     if (message.type == KTVVPMessageTypeOpenGLSetupContext)
     {
-        _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
-                                           sharegroup:self.context.mainGLContext.sharegroup];
-        [EAGLContext setCurrentContext:_glContext];
+        [_context setCurrentGLContextIfNeed];
         
         NSMutableArray * filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
         id <KTVVPOutput> lastOutput = nil;
         for (Class filterClass in _filterClasses)
         {
             __kindof KTVVPFilter * obj = [filterClass alloc];
-            obj = [obj initWithContext:_context glContext:_glContext];
+            obj = [obj initWithContext:_context];
             [lastOutput addInput:obj];
             lastOutput = obj;
             [filters addObject:obj];
@@ -104,10 +101,8 @@
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         if (frame)
         {
-            if ([EAGLContext currentContext] != _glContext)
-            {
-                [EAGLContext setCurrentContext:_glContext];
-            }
+            [_context setCurrentGLContextIfNeed];
+            
             [_filters.firstObject putFrame:frame];
             [frame unlock];
             

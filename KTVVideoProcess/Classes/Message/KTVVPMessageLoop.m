@@ -23,38 +23,38 @@
 {
     if (self = [super init])
     {
-        self.messageQueue = [[KTVVPObjectQueue alloc] init];
-        self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(messageLoopThread) object:nil];
-        self.thread.qualityOfService = NSQualityOfServiceDefault;
-        self.thread.name = @"KTVVPMessageLoop-thread";
+        _messageQueue = [[KTVVPObjectQueue alloc] init];
+        _thread = [[NSThread alloc] initWithTarget:self selector:@selector(messageLoopThread) object:nil];
+        _thread.qualityOfService = NSQualityOfServiceDefault;
+        _thread.name = @"KTVVPMessageLoop-thread";
     }
     return self;
 }
 
 - (void)run
 {
-    [self.thread start];
+    [_thread start];
 }
 
 - (void)stop
 {
-    self.didClosed = YES;
+    _didClosed = YES;
 }
 
 - (void)putMessage:(KTVVPMessage *)message
 {
-    [self.messageQueue putObject:message];
+    [_messageQueue putObject:message];
 }
 
 - (void)messageLoopThread
 {
     while (YES)
     {
-        if (self.didClosed)
+        if (_didClosed)
         {
             break;
         }
-        KTVVPMessage * message = [self.messageQueue getObjectSync];
+        KTVVPMessage * message = [_messageQueue getObjectSync];
         if (!message)
         {
             continue;

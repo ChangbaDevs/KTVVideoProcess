@@ -8,9 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
+#import "KTVVPFrameUploader.h"
 
 @interface KTVVPContext : NSObject
 
 @property (nonatomic, strong, readonly) EAGLContext * mainGLContext;
+
+- (EAGLContext *)currentGLContext;
+- (KTVVPFrameUploader *)currentFrameUploader;
+
+- (void)setCurrentGLContextIfNeed;
 
 @end

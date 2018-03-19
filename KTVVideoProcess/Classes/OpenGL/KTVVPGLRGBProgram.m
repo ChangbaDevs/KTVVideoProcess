@@ -48,13 +48,13 @@ static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
 {
     if (self = [super init])
     {
-        self.program = [[KTVVPGLProgram alloc] initWithVertexShaderCString:vertex_shader_string
+        _program = [[KTVVPGLProgram alloc] initWithVertexShaderCString:vertex_shader_string
                                                      fragmentShaderCString:fragment_shader_string];
-        if (self.program.linkSuccess)
+        if (_program.linkSuccess)
         {
-            _position_location = [self.program attributeLocation:@"position"];
-            _textureCoordinate_location = [self.program attributeLocation:@"textureCoordinate"];
-            _sampler_location = [self.program uniformLocation:@"samplerRGB"];
+            _position_location = [_program attributeLocation:@"position"];
+            _textureCoordinate_location = [_program attributeLocation:@"textureCoordinate"];
+            _sampler_location = [_program uniformLocation:@"samplerRGB"];
         }
     }
     return self;
@@ -64,12 +64,12 @@ static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
 {
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(self.sampler_location, 4);
+    glUniform1i(_sampler_location, 4);
 }
 
 - (void)use
 {
-    [self.program use];
+    [_program use];
 }
 
 @end

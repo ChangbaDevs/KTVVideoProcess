@@ -14,9 +14,6 @@
     GLuint _program;
 }
 
-@property (nonatomic, copy) NSString * vertexShaderString;
-@property (nonatomic, copy) NSString * fragmentShaderString;
-
 @property (nonatomic, assign) BOOL linkSuccess;
 
 @end
@@ -35,8 +32,8 @@
 {
     if (self = [super init])
     {
-        self.vertexShaderString = vertexShaderString;
-        self.fragmentShaderString = fragmentShaderString;
+        _vertexShaderString = vertexShaderString;
+        _fragmentShaderString = fragmentShaderString;
         
         GLuint vertexShader;
         GLuint fragmentShader;
@@ -50,7 +47,7 @@
             glLinkProgram(_program);
             GLint linkSuccess;
             glGetProgramiv(_program, GL_LINK_STATUS, &linkSuccess);
-            self.linkSuccess = linkSuccess == GL_TRUE;
+            _linkSuccess = linkSuccess == GL_TRUE;
         }
         if (vertexShader)
         {

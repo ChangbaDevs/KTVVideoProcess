@@ -17,12 +17,8 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-                      glContext:(EAGLContext *)glContext;
+- (instancetype)initWithContext:(KTVVPContext *)context;
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
-@property (nonatomic, strong, readonly) EAGLContext * glContext;
-
-- (void)setCurrentGLContextIfNeed;
 
 @end

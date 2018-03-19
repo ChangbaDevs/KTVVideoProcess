@@ -22,42 +22,42 @@
 {
     if (self = [super init])
     {
-        self.condition = [[NSCondition alloc] init];
-        self.objects = [NSMutableArray array];
+        _condition = [[NSCondition alloc] init];
+        _objects = [NSMutableArray array];
     }
     return self;
 }
 
 - (void)putObject:(id)object
 {
-    [self.condition lock];
-    [self.objects addObject:object];
-    [self.condition signal];
-    [self.condition unlock];
+    [_condition lock];
+    [_objects addObject:object];
+    [_condition signal];
+    [_condition unlock];
 }
 
 - (id)getObjectSync
 {
-    [self.condition lock];
-    while (self.objects.count <= 0)
+    [_condition lock];
+    while (_objects.count <= 0)
     {
-        [self.condition wait];
-        if (self.didDestoryed)
+        [_condition wait];
+        if (_didDestoryed)
         {
-            [self.condition unlock];
+            [_condition unlock];
             return nil;
         }
     }
-    id object = self.objects.firstObject;
-    [self.objects removeObjectAtIndex:0];
-    [self.condition signal];
-    [self.condition unlock];
+    id object = _objects.firstObject;
+    [_objects removeObjectAtIndex:0];
+    [_condition signal];
+    [_condition unlock];
     return object;
 }
 
 - (void)destory
 {
-    self.didDestoryed = YES;
+    _didDestoryed = YES;
 }
 
 @end

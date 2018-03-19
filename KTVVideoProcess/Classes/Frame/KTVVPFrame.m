@@ -165,7 +165,7 @@
 
 - (void)uploadIfNeed:(KTVVPFrameUploader *)uploader
 {
-    if (self.didUpload)
+    if (_didUpload)
     {
         return;
     }
@@ -182,7 +182,7 @@
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _textureOptions.wrapS);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _textureOptions.wrapT);
             
-            self.didUpload = YES;
+            _didUpload = YES;
         }
             break;
         case KTVVPFrameTypeDrawable:
@@ -225,7 +225,7 @@
             
             CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
             
-            self.didUpload = YES;
+            _didUpload = YES;
         }
             break;
         case KTVVPFrameTypeCVPixelBuffer:
@@ -238,17 +238,17 @@
 
 - (void)lock
 {
-    self.lockingCount++;
+    _lockingCount++;
 }
 
 - (void)unlock
 {
-    self.lockingCount--;
-    if (self.lockingCount <= 0)
+    _lockingCount--;
+    if (_lockingCount <= 0)
     {
-        if ([self.delegate respondsToSelector:@selector(frameDidUnuse:)])
+        if ([_delegate respondsToSelector:@selector(frameDidUnuse:)])
         {
-            [self.delegate frameDidUnuse:self];
+            [_delegate frameDidUnuse:self];
         }
     }
 }

@@ -8,6 +8,13 @@
 
 #import "KTVVPContext.h"
 
+@interface KTVVPContext ()
+
+@property (nonatomic, strong) NSMutableDictionary <NSString *, EAGLContext *> * glContexts;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, KTVVPFrameUploader *> * frameUploaders;
+
+@end
+
 @implementation KTVVPContext
 
 - (instancetype)init
@@ -15,6 +22,8 @@
     if (self = [super init])
     {
         _mainGLContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+        _glContexts = [[NSMutableDictionary alloc] init];
+        _frameUploaders = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -22,6 +31,48 @@
 - (void)dealloc
 {
     _mainGLContext = nil;
+    [_glContexts removeAllObjects];
+    [_frameUploaders removeAllObjects];
+}
+
+- (EAGLContext *)currentGLContext
+{
+    NSString * key = [self keyForCurrentThread];
+    EAGLContext * obj = [_glContexts objectForKey:key];
+    if (!obj)
+    {
+        obj = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
+                                    sharegroup:_mainGLContext.sharegroup];
+        [_glContexts setObject:obj forKey:key];
+    }
+    return obj;
+}
+
+- (KTVVPFrameUploader *)currentFrameUploader
+{
+    NSString * key = [self keyForCurrentThread];
+    KTVVPFrameUploader * obj = [_frameUploaders objectForKey:key];
+    if (!obj)
+    {
+        obj = [[KTVVPFrameUploader alloc] initWithGLContext:[self currentGLContext]];
+        [_frameUploaders setObject:obj forKey:key];
+    }
+    return obj;
+}
+
+- (void)setCurrentGLContextIfNeed
+{
+    EAGLContext * obj = [self currentGLContext];
+    if ([EAGLContext currentContext] != obj)
+    {
+        [EAGLContext setCurrentContext:obj];
+    }
+}
+
+- (NSString *)keyForCurrentThread
+{
+    NSString * key = [NSString stringWithFormat:@"%p", [NSThread currentThread]];
+    return key;
 }
 
 @end
