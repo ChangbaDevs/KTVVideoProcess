@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL didUpload;
 
 @property (nonatomic, assign) CVOpenGLESTextureRef glRGBATexture;
+@property (nonatomic, assign) NSInteger lockingCount;
 
 @end
 
@@ -237,12 +238,19 @@
 
 - (void)lock
 {
-    
+    self.lockingCount++;
 }
 
 - (void)unlock
 {
-    
+    self.lockingCount--;
+    if (self.lockingCount <= 0)
+    {
+        if ([self.delegate respondsToSelector:@selector(frameDidUnuse:)])
+        {
+            [self.delegate frameDidUnuse:self];
+        }
+    }
 }
 
 @end

@@ -98,6 +98,7 @@
     [self.glModel draw];
     [self.glModel bindEmpty];
     [self drawFlush];
+    [frame unlock];
 }
 
 - (void)drawClear

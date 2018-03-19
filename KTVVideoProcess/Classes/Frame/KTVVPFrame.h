@@ -25,6 +25,15 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 };
 
 
+@class KTVVPFrame;
+
+@protocol KTVVPFrameDelegate <NSObject>
+
+- (void)frameDidUnuse:(KTVVPFrame *)frame;
+
+@end
+
+
 @interface KTVVPFrame : NSObject
 
 - (instancetype)initWithTextureRef:(GLuint)texture;
@@ -42,6 +51,8 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 - (instancetype)initWithCVPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 - (instancetype)initWithCVPixelBuffer:(CVPixelBufferRef)pixelBuffer
                         textureOptions:(KTVVPGLTextureOptions)textureOptions;
+
+@property (nonatomic, weak) id <KTVVPFrameDelegate> delegate;
 
 @property (nonatomic, assign, readonly) KTVVPFrameType type;
 @property (nonatomic, assign, readonly) GLuint texture;
