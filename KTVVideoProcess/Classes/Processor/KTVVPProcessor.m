@@ -61,18 +61,21 @@
 {
     [self setupIfNeed];
     
+    [frame lock];
     for (KTVVPPipeline * pipeline in _pipelines)
     {
         if (!pipeline.processing)
         {
-            [pipeline processFrame:frame completionHandler:^(KTVVPFrame * frame) {
+            [pipeline processFrame:frame completionHandler:^(KTVVPFrame * result) {
                 for (id <KTVVPInput> obj in _outputs)
                 {
-                    [obj putFrame:frame];
+                    [obj putFrame:result];
                 }
             }];
+            break;
         }
     }
+    [frame unlock];
 }
 
 

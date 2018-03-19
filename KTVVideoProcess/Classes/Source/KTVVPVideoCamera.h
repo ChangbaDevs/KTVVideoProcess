@@ -12,6 +12,9 @@
 
 @interface KTVVPVideoCamera : NSObject <KTVVPOutput>
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithContext:(KTVVPContext *)context;
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;

@@ -57,12 +57,13 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    NSLog(@"%s", __func__);
     KTVVPFrame * frame = [[KTVVPFrame alloc] initWithCMSmapleBuffer:sampleBuffer];
+    [frame lock];
     for (id <KTVVPInput> obj in self.inputs)
     {
         [obj putFrame:frame];
     }
+    [frame unlock];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection

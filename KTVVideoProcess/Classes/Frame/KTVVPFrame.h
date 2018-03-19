@@ -36,6 +36,9 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 @interface KTVVPFrame : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithTextureRef:(GLuint)texture;
 
 - (instancetype)initWithTextureOptions:(KTVVPGLTextureOptions)textureOptions;

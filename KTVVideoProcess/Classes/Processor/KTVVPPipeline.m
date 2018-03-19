@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSArray <KTVVPFilter *> * filters;
 @property (nonatomic, strong) EAGLContext * glContext;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
-@property (nonatomic, copy) void(^completionHandler)(KTVVPFrame * frame);
+@property (nonatomic, copy) void(^completionHandler)(KTVVPFrame * result);
 
 @end
 
@@ -51,17 +51,22 @@
     [_messageLoop run];
 }
 
-// input
 - (void)processFrame:(KTVVPFrame *)frame completionHandler:(void (^)(KTVVPFrame *))completionHandler
 {
     [self setupIfNeed];
+    
+    if (_processing)
+    {
+        NSAssert(NO, @"KTVVPPipeline can only process one task.");
+        return;
+    }
     _processing = YES;
     _completionHandler = completionHandler;
+    
     [frame lock];
     [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame]];
 }
 
-// result
 - (void)putFrame:(KTVVPFrame *)frame
 {
     if (_completionHandler)
@@ -105,6 +110,7 @@
             }
             [_filters.firstObject putFrame:frame];
             [frame unlock];
+            
             _completionHandler = nil;
             _processing = NO;
         }

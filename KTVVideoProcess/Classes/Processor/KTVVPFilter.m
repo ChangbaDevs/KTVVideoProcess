@@ -32,7 +32,12 @@
 
 - (void)putFrame:(KTVVPFrame *)frame
 {
-    
+    [frame lock];
+    for (id <KTVVPInput> obj in _outputs)
+    {
+        [obj putFrame:frame];
+    }
+    [frame unlock];
 }
 
 

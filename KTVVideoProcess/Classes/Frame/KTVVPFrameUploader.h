@@ -11,6 +11,9 @@
 
 @interface KTVVPFrameUploader : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithGLContext:(EAGLContext *)glContext;
 
 @property (nonatomic, strong, readonly) EAGLContext * glContext;

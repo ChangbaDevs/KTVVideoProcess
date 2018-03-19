@@ -13,6 +13,9 @@
 
 @interface KTVVPProcessor : NSObject <KTVVPInput, KTVVPOutput>
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithContext:(KTVVPContext *)context
                   filterClasses:(NSArray <Class> *)filterClasses;
 

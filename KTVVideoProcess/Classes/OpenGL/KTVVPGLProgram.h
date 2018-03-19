@@ -11,6 +11,9 @@
 
 @interface KTVVPGLProgram : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithVertexShaderCString:(const char *)vertexShaderCString
                       fragmentShaderCString:(const char *)fragmentShaderCString;
 - (instancetype)initWithVertexShaderString:(NSString *)vertexShaderString

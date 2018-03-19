@@ -12,6 +12,9 @@
 
 @interface KTVVPPipeline : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 - (instancetype)initWithContext:(KTVVPContext *)context
                   filterClasses:(NSArray <Class> *)filterClasses;
 
@@ -19,7 +22,7 @@
 @property (nonatomic, strong, readonly) NSArray <Class> * filterClasses;
 
 @property (nonatomic, assign, readonly) BOOL processing;
-- (void)processFrame:(KTVVPFrame *)frame completionHandler:(void(^)(KTVVPFrame * frame))completionHandler;
+- (void)processFrame:(KTVVPFrame *)frame completionHandler:(void(^)(KTVVPFrame * result))completionHandler;
 
 - (void)setupIfNeed;
 

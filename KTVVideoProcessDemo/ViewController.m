@@ -9,11 +9,14 @@
 #import "ViewController.h"
 #import "KTVVPVideoCamera.h"
 #import "KTVVPFrameView.h"
+#import "KTVVPProcessor.h"
+#import "KTVVPFilter.h"
 
 @interface ViewController ()
 
 @property (nonatomic, strong) KTVVPContext * context;
 @property (nonatomic, strong) KTVVPVideoCamera * videoCamera;
+@property (nonatomic, strong) KTVVPProcessor * processor;
 @property (nonatomic, strong) KTVVPFrameView * frameView;
 
 @end
@@ -30,8 +33,12 @@
     self.frameView.frame = CGRectMake(0, 20, 360, 640);
     [self.view addSubview:self.frameView];
     
+    self.processor = [[KTVVPProcessor alloc] initWithContext:self.context
+                                               filterClasses:@[[KTVVPFilter class]]];
+    [self.processor addInput:self.frameView];
+    
     self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];
-    [self.videoCamera addInput:self.frameView];
+    [self.videoCamera addInput:self.processor];
     [self.videoCamera startRunning];
 }
 
