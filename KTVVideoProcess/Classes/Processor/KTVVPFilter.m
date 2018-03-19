@@ -27,6 +27,14 @@
     return self;
 }
 
+- (void)setCurrentGLContextIfNeed
+{
+    if ([EAGLContext currentContext] != _glContext)
+    {
+        [EAGLContext setCurrentContext:_glContext];
+    }
+}
+
 
 #pragma mark - KTVVPInput
 

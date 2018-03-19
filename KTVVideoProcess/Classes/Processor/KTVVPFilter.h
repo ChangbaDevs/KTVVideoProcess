@@ -23,4 +23,6 @@
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 @property (nonatomic, strong, readonly) EAGLContext * glContext;
 
+- (void)setCurrentGLContextIfNeed;
+
 @end
