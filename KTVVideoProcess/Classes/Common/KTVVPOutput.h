@@ -15,4 +15,6 @@
 - (void)addInput:(id <KTVVPInput>)input;
 - (void)removeInput:(id <KTVVPInput>)input;
 
+- (void)outputFrame:(KTVVPFrame *)frame;
+
 @end

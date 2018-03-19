@@ -16,7 +16,7 @@
 @property (nonatomic, strong) AVCaptureDeviceInput * videoInput;
 @property (nonatomic, strong) AVCaptureVideoDataOutput * videoOutput;
 
-@property (nonatomic, strong) NSMutableArray <id <KTVVPInput>> * inputs;
+@property (nonatomic, strong) NSMutableArray <id <KTVVPInput>> * outputs;
 
 @end
 
@@ -58,12 +58,7 @@
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     KTVVPFrame * frame = [[KTVVPFrame alloc] initWithCMSmapleBuffer:sampleBuffer];
-    [frame lock];
-    for (id <KTVVPInput> obj in self.inputs)
-    {
-        [obj putFrame:frame];
-    }
-    [frame unlock];
+    [self outputFrame:frame];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
@@ -76,22 +71,26 @@
 
 - (void)addInput:(id <KTVVPInput>)input
 {
-    if (input)
+    if (!self.outputs)
     {
-        if (!self.inputs)
-        {
-            self.inputs = [[NSMutableArray alloc] init];
-        }
-        [self.inputs addObject:input];
+        self.outputs = [[NSMutableArray alloc] init];
     }
+    [self.outputs addObject:input];
 }
 
 - (void)removeInput:(id <KTVVPInput>)input
 {
-    if (input)
+    [self.outputs removeObject:input];
+}
+
+- (void)outputFrame:(KTVVPFrame *)frame
+{
+    [frame lock];
+    for (id <KTVVPInput> obj in self.outputs)
     {
-        [self.inputs removeObject:input];
+        [obj putFrame:frame];
     }
+    [frame unlock];
 }
 
 @end

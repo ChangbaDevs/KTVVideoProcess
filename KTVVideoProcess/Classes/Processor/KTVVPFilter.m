@@ -40,12 +40,7 @@
 
 - (void)putFrame:(KTVVPFrame *)frame
 {
-    [frame lock];
-    for (id <KTVVPInput> obj in _outputs)
-    {
-        [obj putFrame:frame];
-    }
-    [frame unlock];
+    [self outputFrame:frame];
 }
 
 
@@ -63,6 +58,16 @@
 - (void)removeInput:(id <KTVVPInput>)input
 {
     [_outputs removeObject:input];
+}
+
+- (void)outputFrame:(KTVVPFrame *)frame
+{
+    [frame lock];
+    for (id <KTVVPInput> obj in _outputs)
+    {
+        [obj putFrame:frame];
+    }
+    [frame unlock];
 }
 
 @end

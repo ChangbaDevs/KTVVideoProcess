@@ -66,11 +66,10 @@
     {
         if (!pipeline.processing)
         {
+            __weak typeof(self) weakSelf = self;
             [pipeline processFrame:frame completionHandler:^(KTVVPFrame * result) {
-                for (id <KTVVPInput> obj in _outputs)
-                {
-                    [obj putFrame:result];
-                }
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                [strongSelf outputFrame:result];
             }];
             break;
         }
@@ -93,6 +92,16 @@
 - (void)removeInput:(id <KTVVPInput>)input
 {
     [_outputs removeObject:input];
+}
+
+- (void)outputFrame:(KTVVPFrame *)frame
+{
+    [frame lock];
+    for (id <KTVVPInput> obj in _outputs)
+    {
+        [obj putFrame:frame];
+    }
+    [frame unlock];
 }
 
 
