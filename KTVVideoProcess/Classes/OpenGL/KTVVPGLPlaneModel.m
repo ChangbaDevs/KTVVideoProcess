@@ -24,10 +24,10 @@
 {
     static GLfloat vertices_data[] =
     {
-        -1,  1, 0.0,
-        1,  1, 0.0,
-        1, -1, 0.0,
         -1, -1, 0.0,
+        1, -1, 0.0,
+        1, 1, 0.0,
+        -1, 1, 0.0,
     };
     return vertices_data;
 }
@@ -35,10 +35,10 @@
 {
     static GLfloat textureCoordinates_data[] =
     {
-        0.0, 1.0,
         0.0, 0.0,
         1.0, 0.0,
         1.0, 1.0,
+        0.0, 1.0,
     };
     return textureCoordinates_data;
 }

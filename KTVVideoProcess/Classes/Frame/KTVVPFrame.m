@@ -10,9 +10,13 @@
 
 @interface KTVVPFrame ()
 
-@property (nonatomic, assign) BOOL didUpload;
+{
+    GLuint _glFramebuffer;
+    CVPixelBufferRef _glCVPixelBuffer;
+    CVOpenGLESTextureRef _glCVOpenGLESTexture;
+}
 
-@property (nonatomic, assign) CVOpenGLESTextureRef glRGBATexture;
+@property (nonatomic, assign) BOOL didUpload;
 @property (nonatomic, assign) NSInteger lockingCount;
 
 @end
@@ -134,7 +138,22 @@
             break;
         case KTVVPFrameTypeDrawable:
         {
+            if (_glFramebuffer)
+            {
+                glDeleteFramebuffers(1, &_glFramebuffer);
+                _glFramebuffer = 0;
+            }
+            if (_glCVPixelBuffer)
+            {
+                CFRelease(_glCVPixelBuffer);
+                _glCVPixelBuffer = NULL;
+            }
             
+            if (_glCVOpenGLESTexture)
+            {
+                CFRelease(_glCVOpenGLESTexture);
+                _glCVOpenGLESTexture = NULL;
+            }
         }
             break;
         case KTVVPFrameTypeCMSampleBuffer:
@@ -144,10 +163,10 @@
                 CFRelease(_sampleBuffer);
                 _sampleBuffer = NULL;
             }
-            if (_glRGBATexture)
+            if (_glCVOpenGLESTexture)
             {
-                CFRelease(_glRGBATexture);
-                _glRGBATexture = NULL;
+                CFRelease(_glCVOpenGLESTexture);
+                _glCVOpenGLESTexture = NULL;
             }
         }
             break;
@@ -187,7 +206,44 @@
             break;
         case KTVVPFrameTypeDrawable:
         {
+            glGenFramebuffers(1, &_glFramebuffer);
+            glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
             
+            NSDictionary * attributes = @{(id)kCVPixelBufferIOSurfacePropertiesKey : @{}};
+            CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                                  _framebufferSize.width,
+                                                  _framebufferSize.height,
+                                                  kCVPixelFormatType_32BGRA,
+                                                  (__bridge CFDictionaryRef)attributes,
+                                                  &_glCVPixelBuffer);
+            if (result)
+            {
+                NSAssert(NO, @"Error at CVPixelBufferCreate %d", result);
+            }
+            result = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
+                                                                  uploader.glTextureCache,
+                                                                  _glCVPixelBuffer,
+                                                                  NULL,
+                                                                  GL_TEXTURE_2D,
+                                                                  _textureOptions.internalFormat,
+                                                                  _framebufferSize.width,
+                                                                  _framebufferSize.height,
+                                                                  _textureOptions.format,
+                                                                  _textureOptions.type,
+                                                                  0,
+                                                                  &_glCVOpenGLESTexture);
+            if (result)
+            {
+                NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", result);
+            }
+            _texture = CVOpenGLESTextureGetName(_glCVOpenGLESTexture);
+            glBindTexture(CVOpenGLESTextureGetTarget(_glCVOpenGLESTexture), _texture);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, _textureOptions.wrapS);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, _textureOptions.wrapT);
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+            _didUpload = YES;
         }
             break;
         case KTVVPFrameTypeCMSampleBuffer:
@@ -210,13 +266,13 @@
                                                                  GL_BGRA,
                                                                  GL_UNSIGNED_BYTE,
                                                                  0,
-                                                                 &_glRGBATexture);
+                                                                 &_glCVOpenGLESTexture);
             if (error)
             {
                 NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", error);
             }
             
-            _texture = CVOpenGLESTextureGetName(_glRGBATexture);
+            _texture = CVOpenGLESTextureGetName(_glCVOpenGLESTexture);
             glBindTexture(GL_TEXTURE_2D, _texture);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, _textureOptions.minFilter);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, _textureOptions.magFilter);
@@ -234,6 +290,12 @@
         }
             break;
     }
+}
+
+- (void)bindFramebuffer
+{
+    glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
+    glViewport(0, 0, _framebufferSize.width, _framebufferSize.height);
 }
 
 - (void)lock

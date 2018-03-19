@@ -11,6 +11,7 @@
 #import "KTVVPFrameView.h"
 #import "KTVVPProcessor.h"
 #import "KTVVPFilter.h"
+#import "KTVVPPassThroughFilter.h"
 
 @interface ViewController ()
 
@@ -30,13 +31,11 @@
     self.context = [[KTVVPContext alloc] init];
     
     self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
-    self.frameView.frame = CGRectMake(0, 20, 360, 640);
+    self.frameView.frame = self.view.bounds;
     [self.view addSubview:self.frameView];
     
     self.processor = [[KTVVPProcessor alloc] initWithContext:self.context
-                                               filterClasses:@[[KTVVPFilter class],
-                                                               [KTVVPFilter class],
-                                                               [KTVVPFilter class]]];
+                                               filterClasses:@[[KTVVPPassThroughFilter class]]];
     [self.processor setupIfNeed];
     [self.processor addInput:self.frameView];
     

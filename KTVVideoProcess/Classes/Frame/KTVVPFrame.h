@@ -67,6 +67,8 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 - (void)uploadIfNeed:(KTVVPFrameUploader *)uploader;
 - (BOOL)didUpload;
 
+- (void)bindFramebuffer;
+
 - (void)lock;
 - (void)unlock;
 
