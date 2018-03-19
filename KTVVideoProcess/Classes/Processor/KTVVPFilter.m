@@ -22,7 +22,7 @@
     if (self = [super init])
     {
         _context = context;
-        _glContext = glContext;
+        _glContext = glContext ? glContext : context.mainGLContext;
     }
     return self;
 }
