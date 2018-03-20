@@ -36,11 +36,10 @@
     [self.context setCurrentGLContextIfNeed];
     [frame lock];
     KTVVPFramePool * framePool = [self.context currentFramePool];
-    KTVVPGLSize size = {1280, 720};
-    NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
+    NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", frame.size.width, frame.size.height]];
     KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
         KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
-        result.size = size;
+        result.size = frame.size;
         return result;
     }];
     [result uploadIfNeed:[self.context currentFrameUploader]];
