@@ -11,6 +11,7 @@
 @interface KTVVPContext ()
 
 @property (nonatomic, strong) NSMutableDictionary <NSString *, EAGLContext *> * glContexts;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, KTVVPFramePool *> * framePools;
 @property (nonatomic, strong) NSMutableDictionary <NSString *, KTVVPFrameUploader *> * frameUploaders;
 
 @end
@@ -23,6 +24,7 @@
     {
         _mainGLContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
         _glContexts = [[NSMutableDictionary alloc] init];
+        _framePools = [[NSMutableDictionary alloc] init];
         _frameUploaders = [[NSMutableDictionary alloc] init];
     }
     return self;
@@ -38,6 +40,23 @@
 - (EAGLContext *)currentGLContext
 {
     NSString * key = [self keyForCurrentThread];
+    return [self glContextForKey:key];
+}
+
+- (KTVVPFramePool *)currentFramePool
+{
+    NSString * key = [self keyForCurrentThread];
+    return [self framePoolForKey:key];
+}
+
+- (KTVVPFrameUploader *)currentFrameUploader
+{
+    NSString * key = [self keyForCurrentThread];
+    return [self frameUploaderForKey:key];
+}
+
+- (EAGLContext *)glContextForKey:(NSString *)key
+{
     EAGLContext * obj = [_glContexts objectForKey:key];
     if (!obj)
     {
@@ -48,9 +67,19 @@
     return obj;
 }
 
-- (KTVVPFrameUploader *)currentFrameUploader
+- (KTVVPFramePool *)framePoolForKey:(NSString *)key
 {
-    NSString * key = [self keyForCurrentThread];
+    KTVVPFramePool * obj = [_framePools objectForKey:key];
+    if (!obj)
+    {
+        obj = [[KTVVPFramePool alloc] init];
+        [_framePools setObject:obj forKey:key];
+    }
+    return obj;
+}
+
+- (KTVVPFrameUploader *)frameUploaderForKey:(NSString *)key
+{
     KTVVPFrameUploader * obj = [_frameUploaders objectForKey:key];
     if (!obj)
     {

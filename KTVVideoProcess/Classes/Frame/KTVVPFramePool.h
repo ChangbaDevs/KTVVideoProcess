@@ -11,4 +11,7 @@
 
 @interface KTVVPFramePool : NSObject
 
+- (__kindof KTVVPFrame *)frameWithKey:(NSString *)key
+                              factory:(__kindof KTVVPFrame *(^)(void))factory;
+
 @end

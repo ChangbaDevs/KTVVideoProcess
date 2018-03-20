@@ -17,17 +17,16 @@
 
 typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 {
-    KTVVPFrameTypeTextureRef,
+    KTVVPFrameTypeIdle,
     KTVVPFrameTypeTextureOnly,
     KTVVPFrameTypeDrawable,
     KTVVPFrameTypeCMSampleBuffer,
-    KTVVPFrameTypeCVPixelBuffer,
 };
 
 
 @class KTVVPFrame;
 
-@protocol KTVVPFrameDelegate <NSObject>
+@protocol KTVVPFrameLockingDelegate <NSObject>
 
 - (void)frameDidUnuse:(KTVVPFrame *)frame;
 
@@ -36,38 +35,27 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 @interface KTVVPFrame : NSObject
 
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
+- (KTVVPFrameType)type;
 
-- (instancetype)initWithTextureRef:(GLuint)texture;
-
-- (instancetype)initWithTextureOptions:(KTVVPGLTextureOptions)textureOptions;
-
-- (instancetype)initWithFramebufferSize:(KTVVPGLSize)framebufferSize;
-- (instancetype)initWithFramebufferSize:(KTVVPGLSize)framebufferSize
-                         textureOptions:(KTVVPGLTextureOptions)textureOptions;
-
-- (instancetype)initWithCMSmapleBuffer:(CMSampleBufferRef)sampleBuffer;
-- (instancetype)initWithCMSmapleBuffer:(CMSampleBufferRef)sampleBuffer
-                        textureOptions:(KTVVPGLTextureOptions)textureOptions;
-
-- (instancetype)initWithCVPixelBuffer:(CVPixelBufferRef)pixelBuffer;
-- (instancetype)initWithCVPixelBuffer:(CVPixelBufferRef)pixelBuffer
-                        textureOptions:(KTVVPGLTextureOptions)textureOptions;
-
-@property (nonatomic, weak) id <KTVVPFrameDelegate> delegate;
-
-@property (nonatomic, assign, readonly) KTVVPFrameType type;
-@property (nonatomic, assign, readonly) GLuint texture;
-@property (nonatomic, assign, readonly) KTVVPGLTextureOptions textureOptions;
-@property (nonatomic, assign, readonly) KTVVPGLSize framebufferSize;
-@property (nonatomic, assign, readonly) CMSampleBufferRef sampleBuffer;
-@property (nonatomic, assign, readonly) CVPixelBufferRef pixelBuffer;
+@property (nonatomic, assign) GLuint texture;
+@property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
+@property (nonatomic, assign) KTVVPGLSize size;
+@property (nonatomic, assign) BOOL didUpload;
 
 - (void)uploadIfNeed:(KTVVPFrameUploader *)uploader;
-- (BOOL)didUpload;
+- (void)clear;
 
-- (void)bindFramebuffer;
+
+#pragma mark - Reuse Key
+
+@property (nonatomic, copy) NSString * key;
++ (NSString *)key;
++ (NSString *)keyWithAppendString:(NSString *)string;
+
+
+#pragma mark - Locking
+
+@property (nonatomic, weak) id <KTVVPFrameLockingDelegate> lockingDelegate;
 
 - (void)lock;
 - (void)unlock;

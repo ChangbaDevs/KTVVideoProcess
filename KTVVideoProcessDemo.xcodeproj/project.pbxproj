@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C3E5C772060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */; };
+		9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */; };
+		9C3E5C7D2060D56700F30377 /* KTVVPFrameTextureOnly.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C7C2060D56700F30377 /* KTVVPFrameTextureOnly.m */; };
 		9C611928205F57A50040B277 /* KTVVPProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C611927205F57A50040B277 /* KTVVPProcessor.m */; };
 		9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192A205F58760040B277 /* KTVVPFilter.m */; };
 		9C61192F205F5AA60040B277 /* KTVVPPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192E205F5AA60040B277 /* KTVVPPipeline.m */; };
@@ -33,6 +36,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9C3E5C752060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameCMSmapleBuffer.h; sourceTree = "<group>"; };
+		9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameCMSmapleBuffer.m; sourceTree = "<group>"; };
+		9C3E5C782060C9A200F30377 /* KTVVPFrameDrawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameDrawable.h; sourceTree = "<group>"; };
+		9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameDrawable.m; sourceTree = "<group>"; };
+		9C3E5C7B2060D56700F30377 /* KTVVPFrameTextureOnly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameTextureOnly.h; sourceTree = "<group>"; };
+		9C3E5C7C2060D56700F30377 /* KTVVPFrameTextureOnly.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameTextureOnly.m; sourceTree = "<group>"; };
 		9C611926205F57A50040B277 /* KTVVPProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPProcessor.h; sourceTree = "<group>"; };
 		9C611927205F57A50040B277 /* KTVVPProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPProcessor.m; sourceTree = "<group>"; };
 		9C611929205F58760040B277 /* KTVVPFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFilter.h; sourceTree = "<group>"; };
@@ -203,6 +212,12 @@
 				9C9905BB205A1E1800D7CF3A /* KTVVPFramePool.m */,
 				9CC08E4F205B6D0300F15D88 /* KTVVPFrameUploader.h */,
 				9CC08E50205B6D0300F15D88 /* KTVVPFrameUploader.m */,
+				9C3E5C752060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.h */,
+				9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */,
+				9C3E5C782060C9A200F30377 /* KTVVPFrameDrawable.h */,
+				9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */,
+				9C3E5C7B2060D56700F30377 /* KTVVPFrameTextureOnly.h */,
+				9C3E5C7C2060D56700F30377 /* KTVVPFrameTextureOnly.m */,
 			);
 			path = Frame;
 			sourceTree = "<group>";
@@ -306,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C611932205F8E120040B277 /* KTVVPPassThroughFilter.m in Sources */,
+				9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */,
 				9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */,
 				9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */,
 				9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */,
@@ -316,6 +332,7 @@
 				9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */,
 				9C99059A205A194800D7CF3A /* ViewController.m in Sources */,
 				9C611928205F57A50040B277 /* KTVVPProcessor.m in Sources */,
+				9C3E5C7D2060D56700F30377 /* KTVVPFrameTextureOnly.m in Sources */,
 				9C9905CB205A4D3300D7CF3A /* KTVVPMessage.m in Sources */,
 				9C9905A5205A194800D7CF3A /* main.m in Sources */,
 				9C9905B9205A1DF900D7CF3A /* KTVVPFrame.m in Sources */,
@@ -325,6 +342,7 @@
 				9C9905BC205A1E1800D7CF3A /* KTVVPFramePool.m in Sources */,
 				9CC08E57205B88F000F15D88 /* KTVVPContext.m in Sources */,
 				9C9905D4205A627F00D7CF3A /* KTVVPGLProgram.m in Sources */,
+				9C3E5C772060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

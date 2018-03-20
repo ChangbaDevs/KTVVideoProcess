@@ -8,6 +8,8 @@
 
 #import "KTVVPVideoCamera.h"
 #import <AVFoundation/AVFoundation.h>
+#import "KTVVPFramePool.h"
+#import "KTVVPFrameCMSmapleBuffer.h"
 
 @interface KTVVPVideoCamera () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
@@ -57,8 +59,14 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    KTVVPFrame * frame = [[KTVVPFrame alloc] initWithCMSmapleBuffer:sampleBuffer];
+    KTVVPFramePool * framePool = [_context framePoolForKey:[NSString stringWithFormat:@"%p", self]];
+    KTVVPFrameCMSmapleBuffer * frame = [framePool frameWithKey:[KTVVPFrameCMSmapleBuffer key] factory:^__kindof KTVVPFrame *{
+        KTVVPFrameCMSmapleBuffer * result = [[KTVVPFrameCMSmapleBuffer alloc] init];
+        return result;
+    }];
+    frame.sampleBuffer = sampleBuffer;
     [self outputFrame:frame];
+    [frame unlock];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
@@ -85,12 +93,10 @@
 
 - (void)outputFrame:(KTVVPFrame *)frame
 {
-    [frame lock];
     for (id <KTVVPInput> obj in _outputs)
     {
         [obj putFrame:frame];
     }
-    [frame unlock];
 }
 
 @end

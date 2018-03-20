@@ -9,6 +9,7 @@
 #import "KTVVPPassThroughFilter.h"
 #import "KTVVPGLRGBProgram.h"
 #import "KTVVPGLPlaneModel.h"
+#import "KTVVPFrameDrawable.h"
 
 @interface KTVVPPassThroughFilter ()
 
@@ -34,8 +35,14 @@
 {
     [self.context setCurrentGLContextIfNeed];
     [frame lock];
+    KTVVPFramePool * framePool = [self.context currentFramePool];
     KTVVPGLSize size = {1280, 720};
-    KTVVPFrame * result = [[KTVVPFrame alloc] initWithFramebufferSize:size];
+    NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
+    KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
+        KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
+        result.size = size;
+        return result;
+    }];
     [result uploadIfNeed:[self.context currentFrameUploader]];
     [result bindFramebuffer];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -49,6 +56,7 @@
     [_glModel bindEmpty];
     [frame unlock];
     [super putFrame:result];
+    [result unlock];
 }
 
 @end
