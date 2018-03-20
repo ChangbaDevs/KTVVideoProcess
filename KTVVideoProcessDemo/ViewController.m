@@ -12,6 +12,7 @@
 #import "KTVVPProcessor.h"
 #import "KTVVPFilter.h"
 #import "KTVVPPassThroughFilter.h"
+#import "KTVVPFilterToneCurve.h"
 
 @interface ViewController ()
 
@@ -35,7 +36,7 @@
     [self.view addSubview:self.frameView];
     
     self.processor = [[KTVVPProcessor alloc] initWithContext:self.context
-                                               filterClasses:@[[KTVVPPassThroughFilter class]]];
+                                               filterClasses:@[[KTVVPFilterToneCurve class]]];
     [self.processor setupIfNeed];
     [self.processor addInput:self.frameView];
     

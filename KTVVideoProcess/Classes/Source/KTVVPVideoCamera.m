@@ -52,7 +52,7 @@
     [_videoOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];
     [_captureSession addOutput:_videoOutput];
     
-    _captureSession.sessionPreset = AVCaptureSessionPreset1920x1080;
+    _captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
     [_captureSession commitConfiguration];
     [_captureSession startRunning];
 }
