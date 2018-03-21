@@ -50,6 +50,13 @@
     return KTVVPFrameTypeIdle;
 }
 
+- (void)fillWithFrame:(KTVVPFrame *)frame
+{
+    _size = frame.size;
+    _rotationMode = frame.rotationMode;
+    _flipMode = frame.flipMode;
+}
+
 - (void)uploadIfNeed:(KTVVPFrameUploader *)uploader {}
 - (void)clear {}
 

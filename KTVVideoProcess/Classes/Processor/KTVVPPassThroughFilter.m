@@ -39,9 +39,9 @@
     NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", frame.size.width, frame.size.height]];
     KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
         KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
-        result.size = frame.size;
         return result;
     }];
+    [result fillWithFrame:frame];
     [result uploadIfNeed:[self.context currentFrameUploader]];
     [result bindFramebuffer];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

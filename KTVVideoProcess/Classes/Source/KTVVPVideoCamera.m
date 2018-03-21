@@ -72,6 +72,7 @@
         return result;
     }];
     frame.sampleBuffer = sampleBuffer;
+    frame.rotationMode = KTVVPFrameRotationMode90;
     [self outputFrame:frame];
     [frame unlock];
 }

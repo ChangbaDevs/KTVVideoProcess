@@ -6,6 +6,7 @@
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <GLKit/GLKit.h>
@@ -21,6 +22,21 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
     KTVVPFrameTypeTextureOnly,
     KTVVPFrameTypeDrawable,
     KTVVPFrameTypeCMSampleBuffer,
+};
+
+typedef NS_ENUM(NSUInteger, KTVVPFrameRotationMode)
+{
+    KTVVPFrameRotationModeNone,
+    KTVVPFrameRotationMode90,
+    KTVVPFrameRotationMode180,
+    KTVVPFrameRotationMode270,
+};
+
+typedef NS_ENUM(NSUInteger, KTVVPFrameFlipMode)
+{
+    KTVVPFrameFlipModeNone,
+    KTVVPFrameFlipModeHorizonal,
+    KTVVPFrameFlipModeVertical,
 };
 
 
@@ -40,8 +56,11 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 @property (nonatomic, assign) GLuint texture;
 @property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
 @property (nonatomic, assign) KTVVPGLSize size;
+@property (nonatomic, assign) KTVVPFrameRotationMode rotationMode;
+@property (nonatomic, assign) KTVVPFrameFlipMode flipMode;
 @property (nonatomic, assign) BOOL didUpload;
 
+- (void)fillWithFrame:(KTVVPFrame *)frame;
 - (void)uploadIfNeed:(KTVVPFrameUploader *)uploader;
 - (void)clear;
 
