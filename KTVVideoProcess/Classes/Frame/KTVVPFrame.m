@@ -54,6 +54,12 @@
 - (void)clear {}
 
 
+#pragma mark - Data
+
+- (void *)byteBuffer {return nil;}
+- (NSUInteger)bytesPerRow {return 0;}
+
+
 #pragma mark - Reuse Key
 
 + (NSString *)key
@@ -84,6 +90,16 @@
             [_lockingDelegate frameDidUnuse:self];
         }
     }
+}
+
+- (void)lockForReading
+{
+    [self lock];
+}
+
+- (void)unlockForReading
+{
+    [self unlock];
 }
 
 @end

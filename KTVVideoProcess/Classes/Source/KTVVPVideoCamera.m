@@ -35,7 +35,14 @@
 
 - (void)startRunning
 {
-    _videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for (AVCaptureDevice * device in devices)
+    {
+        if ([device position] == AVCaptureDevicePositionFront)
+        {
+            _videoDevice = device;
+        }
+    }
     if (!_videoDevice)
     {
         return;

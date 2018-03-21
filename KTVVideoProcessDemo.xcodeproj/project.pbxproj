@@ -17,6 +17,12 @@
 		9C3E5C8F2060EE1400F30377 /* rixi.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8A2060EE1400F30377 /* rixi.acv */; };
 		9C3E5C902060EE1400F30377 /* videoEffectCool.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8B2060EE1400F30377 /* videoEffectCool.acv */; };
 		9C3E5C912060EE1400F30377 /* youya.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8C2060EE1400F30377 /* youya.acv */; };
+		9C3E5C942060F2BA00F30377 /* KTVVPSenseTimeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */; };
+		9C3E5CA12060F4DE00F30377 /* action.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C972060F4DE00F30377 /* action.model */; };
+		9C3E5CA22060F4DE00F30377 /* libst_mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3E5C982060F4DE00F30377 /* libst_mobile.a */; };
+		9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C992060F4DE00F30377 /* SENSEME.lic */; };
+		9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */; };
+		9C3E5CA72060F53700F30377 /* SenseTimeActiveCodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */; };
 		9C611928205F57A50040B277 /* KTVVPProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C611927205F57A50040B277 /* KTVVPProcessor.m */; };
 		9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192A205F58760040B277 /* KTVVPFilter.m */; };
 		9C61192F205F5AA60040B277 /* KTVVPPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192E205F5AA60040B277 /* KTVVPPipeline.m */; };
@@ -58,6 +64,19 @@
 		9C3E5C8A2060EE1400F30377 /* rixi.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = rixi.acv; sourceTree = "<group>"; };
 		9C3E5C8B2060EE1400F30377 /* videoEffectCool.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoEffectCool.acv; sourceTree = "<group>"; };
 		9C3E5C8C2060EE1400F30377 /* youya.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = youya.acv; sourceTree = "<group>"; };
+		9C3E5C922060F2BA00F30377 /* KTVVPSenseTimeFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPSenseTimeFilter.h; sourceTree = "<group>"; };
+		9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPSenseTimeFilter.m; sourceTree = "<group>"; };
+		9C3E5C972060F4DE00F30377 /* action.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = action.model; sourceTree = "<group>"; };
+		9C3E5C982060F4DE00F30377 /* libst_mobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libst_mobile.a; sourceTree = "<group>"; };
+		9C3E5C992060F4DE00F30377 /* SENSEME.lic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SENSEME.lic; sourceTree = "<group>"; };
+		9C3E5C9A2060F4DE00F30377 /* st_mobile_beautify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_beautify.h; sourceTree = "<group>"; };
+		9C3E5C9B2060F4DE00F30377 /* st_mobile_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_common.h; sourceTree = "<group>"; };
+		9C3E5C9C2060F4DE00F30377 /* st_mobile_human_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_human_action.h; sourceTree = "<group>"; };
+		9C3E5C9D2060F4DE00F30377 /* st_mobile_license.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_license.h; sourceTree = "<group>"; };
+		9C3E5C9F2060F4DE00F30377 /* STFaceResultConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFaceResultConverter.h; sourceTree = "<group>"; };
+		9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = STFaceResultConverter.mm; sourceTree = "<group>"; };
+		9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenseTimeActiveCodeManager.m; sourceTree = "<group>"; };
+		9C3E5CA62060F53700F30377 /* SenseTimeActiveCodeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenseTimeActiveCodeManager.h; sourceTree = "<group>"; };
 		9C611926205F57A50040B277 /* KTVVPProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPProcessor.h; sourceTree = "<group>"; };
 		9C611927205F57A50040B277 /* KTVVPProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPProcessor.m; sourceTree = "<group>"; };
 		9C611929205F58760040B277 /* KTVVPFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFilter.h; sourceTree = "<group>"; };
@@ -112,24 +131,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C3E5CA22060F4DE00F30377 /* libst_mobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9C3E5C802060E6CD00F30377 /* Filters */ = {
-			isa = PBXGroup;
-			children = (
-				9C3E5C872060EE1400F30377 /* ACV */,
-				9C3E5C812060E6ED00F30377 /* KTVVPFilterToneCurve.h */,
-				9C3E5C822060E6ED00F30377 /* KTVVPFilterToneCurve.m */,
-				9C3E5C842060E99800F30377 /* KTVVPGLToneCurveProgram.h */,
-				9C3E5C852060E99800F30377 /* KTVVPGLToneCurveProgram.m */,
-			);
-			path = Filters;
-			sourceTree = "<group>";
-		};
 		9C3E5C872060EE1400F30377 /* ACV */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +148,55 @@
 				9C3E5C8C2060EE1400F30377 /* youya.acv */,
 			);
 			path = ACV;
+			sourceTree = "<group>";
+		};
+		9C3E5C952060F4DE00F30377 /* face.mobilealignment */ = {
+			isa = PBXGroup;
+			children = (
+				9C3E5C962060F4DE00F30377 /* SDKs */,
+				9C3E5C9E2060F4DE00F30377 /* Tools */,
+			);
+			path = face.mobilealignment;
+			sourceTree = "<group>";
+		};
+		9C3E5C962060F4DE00F30377 /* SDKs */ = {
+			isa = PBXGroup;
+			children = (
+				9C3E5C972060F4DE00F30377 /* action.model */,
+				9C3E5C982060F4DE00F30377 /* libst_mobile.a */,
+				9C3E5C992060F4DE00F30377 /* SENSEME.lic */,
+				9C3E5C9A2060F4DE00F30377 /* st_mobile_beautify.h */,
+				9C3E5C9B2060F4DE00F30377 /* st_mobile_common.h */,
+				9C3E5C9C2060F4DE00F30377 /* st_mobile_human_action.h */,
+				9C3E5C9D2060F4DE00F30377 /* st_mobile_license.h */,
+			);
+			path = SDKs;
+			sourceTree = "<group>";
+		};
+		9C3E5C9E2060F4DE00F30377 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				9C3E5CA62060F53700F30377 /* SenseTimeActiveCodeManager.h */,
+				9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */,
+				9C3E5C9F2060F4DE00F30377 /* STFaceResultConverter.h */,
+				9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		9C3E5CF92061F5E100F30377 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				9C3E5C952060F4DE00F30377 /* face.mobilealignment */,
+				9C3E5C872060EE1400F30377 /* ACV */,
+				9C3E5C812060E6ED00F30377 /* KTVVPFilterToneCurve.h */,
+				9C3E5C822060E6ED00F30377 /* KTVVPFilterToneCurve.m */,
+				9C3E5C842060E99800F30377 /* KTVVPGLToneCurveProgram.h */,
+				9C3E5C852060E99800F30377 /* KTVVPGLToneCurveProgram.m */,
+				9C3E5C922060F2BA00F30377 /* KTVVPSenseTimeFilter.h */,
+				9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		9C990589205A194800D7CF3A = {
@@ -162,7 +219,6 @@
 		9C990594205A194800D7CF3A /* KTVVideoProcessDemo */ = {
 			isa = PBXGroup;
 			children = (
-				9C3E5C802060E6CD00F30377 /* Filters */,
 				9C990595205A194800D7CF3A /* AppDelegate.h */,
 				9C990596205A194800D7CF3A /* AppDelegate.m */,
 				9C990598205A194800D7CF3A /* ViewController.h */,
@@ -179,6 +235,7 @@
 		9C9905AB205A19D200D7CF3A /* KTVVideoProcess */ = {
 			isa = PBXGroup;
 			children = (
+				9C3E5CF92061F5E100F30377 /* Extension */,
 				9C9905AC205A19D200D7CF3A /* Classes */,
 			);
 			path = KTVVideoProcess;
@@ -354,6 +411,8 @@
 				9C3E5C902060EE1400F30377 /* videoEffectCool.acv in Resources */,
 				9C3E5C8E2060EE1400F30377 /* lakeWaterFilter.acv in Resources */,
 				9C3E5C8D2060EE1400F30377 /* blueCrystalFilter.acv in Resources */,
+				9C3E5CA12060F4DE00F30377 /* action.model in Resources */,
+				9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */,
 				9C99059F205A194800D7CF3A /* Assets.xcassets in Resources */,
 				9C99059D205A194800D7CF3A /* Main.storyboard in Resources */,
 			);
@@ -369,8 +428,10 @@
 				9C3E5C862060E99800F30377 /* KTVVPGLToneCurveProgram.m in Sources */,
 				9C611932205F8E120040B277 /* KTVVPPassThroughFilter.m in Sources */,
 				9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */,
+				9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */,
 				9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */,
 				9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */,
+				9C3E5CA72060F53700F30377 /* SenseTimeActiveCodeManager.m in Sources */,
 				9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */,
 				9C3E5C832060E6ED00F30377 /* KTVVPFilterToneCurve.m in Sources */,
 				9C9905DE205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m in Sources */,
@@ -389,6 +450,7 @@
 				9C61192F205F5AA60040B277 /* KTVVPPipeline.m in Sources */,
 				9C9905BC205A1E1800D7CF3A /* KTVVPFramePool.m in Sources */,
 				9CC08E57205B88F000F15D88 /* KTVVPContext.m in Sources */,
+				9C3E5C942060F2BA00F30377 /* KTVVPSenseTimeFilter.m in Sources */,
 				9C9905D4205A627F00D7CF3A /* KTVVPGLProgram.m in Sources */,
 				9C3E5C772060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m in Sources */,
 			);
@@ -525,10 +587,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 79WDBYQ4TC;
+				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc..KTVVideoProcessDemo;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/KTVVideoProcessDemo/Filters/face.mobilealignment/SDKs",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.changba.ktv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -539,10 +607,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 79WDBYQ4TC;
+				DEVELOPMENT_TEAM = 2EN49MUBLA;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.libobjc..KTVVideoProcessDemo;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/KTVVideoProcessDemo/Filters/face.mobilealignment/SDKs",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.changba.ktv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

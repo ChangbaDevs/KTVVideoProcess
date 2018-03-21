@@ -46,6 +46,12 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 - (void)clear;
 
 
+#pragma mark - Data
+
+- (void *)byteBuffer;
+- (NSUInteger)bytesPerRow;
+
+
 #pragma mark - Reuse Key
 
 @property (nonatomic, copy) NSString * key;
@@ -59,5 +65,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 - (void)lock;
 - (void)unlock;
+- (void)lockForReading;
+- (void)unlockForReading;
 
 @end
