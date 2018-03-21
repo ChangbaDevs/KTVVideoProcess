@@ -76,11 +76,8 @@
     }
 }
 
-- (void)putFrame:(KTVVPFrame *)frame
-{
-    [frame lock];
-    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame]];
-}
+
+#pragma mark - OpenGL
 
 - (void)drawFrame:(KTVVPFrame *)frame
 {
@@ -158,6 +155,15 @@
         glDeleteRenderbuffers(1, &_glRenderbuffer);
         _glRenderbuffer = 0;
     }
+}
+
+
+#pragma mark - KTVVPInput
+
+- (void)putFrame:(KTVVPFrame *)frame
+{
+    [frame lock];
+    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame]];
 }
 
 

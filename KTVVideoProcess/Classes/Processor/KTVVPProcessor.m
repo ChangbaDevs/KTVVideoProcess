@@ -27,7 +27,7 @@
         _context = context;
         _filterClasses = filterClasses;
         _needFlushBeforOutput = YES;
-        _maxConcurrentPipelineCount = 3;
+        _maxConcurrentPipelineCount = 1;
     }
     return self;
 }

@@ -23,6 +23,7 @@
 		9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C992060F4DE00F30377 /* SENSEME.lic */; };
 		9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */; };
 		9C3E5CA72060F53700F30377 /* SenseTimeActiveCodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */; };
+		9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */; };
 		9C611928205F57A50040B277 /* KTVVPProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C611927205F57A50040B277 /* KTVVPProcessor.m */; };
 		9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192A205F58760040B277 /* KTVVPFilter.m */; };
 		9C61192F205F5AA60040B277 /* KTVVPPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192E205F5AA60040B277 /* KTVVPPipeline.m */; };
@@ -78,6 +79,8 @@
 		9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenseTimeActiveCodeManager.m; sourceTree = "<group>"; };
 		9C3E5CA62060F53700F30377 /* SenseTimeActiveCodeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenseTimeActiveCodeManager.h; sourceTree = "<group>"; };
 		9C3E5CFA206208F800F30377 /* KTVVPDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPDefines.h; sourceTree = "<group>"; };
+		9C3E5CFB2062129200F30377 /* KTVVPFrameWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameWriter.h; sourceTree = "<group>"; };
+		9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameWriter.m; sourceTree = "<group>"; };
 		9C611926205F57A50040B277 /* KTVVPProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPProcessor.h; sourceTree = "<group>"; };
 		9C611927205F57A50040B277 /* KTVVPProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPProcessor.m; sourceTree = "<group>"; };
 		9C611929205F58760040B277 /* KTVVPFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFilter.h; sourceTree = "<group>"; };
@@ -261,6 +264,8 @@
 			children = (
 				9C9905BD205A211A00D7CF3A /* KTVVPFrameView.h */,
 				9C9905BE205A211A00D7CF3A /* KTVVPFrameView.m */,
+				9C3E5CFB2062129200F30377 /* KTVVPFrameWriter.h */,
+				9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */,
 			);
 			path = Consumer;
 			sourceTree = "<group>";
@@ -432,6 +437,7 @@
 				9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */,
 				9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */,
 				9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */,
+				9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */,
 				9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */,
 				9C3E5CA72060F53700F30377 /* SenseTimeActiveCodeManager.m in Sources */,
 				9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */,
@@ -592,7 +598,7 @@
 				DEVELOPMENT_TEAM = 2EN49MUBLA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -612,7 +618,7 @@
 				DEVELOPMENT_TEAM = 2EN49MUBLA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

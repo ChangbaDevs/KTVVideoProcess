@@ -52,6 +52,7 @@
 
 - (void)fillWithFrame:(KTVVPFrame *)frame
 {
+    _time = frame.time;
     _size = frame.size;
     _rotationMode = frame.rotationMode;
     _flipMode = frame.flipMode;

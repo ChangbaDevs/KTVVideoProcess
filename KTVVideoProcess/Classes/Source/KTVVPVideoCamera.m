@@ -72,6 +72,7 @@
         return result;
     }];
     frame.sampleBuffer = sampleBuffer;
+    frame.time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     frame.rotationMode = KTVVPRotationMode90;
     [self outputFrame:frame];
     [frame unlock];
