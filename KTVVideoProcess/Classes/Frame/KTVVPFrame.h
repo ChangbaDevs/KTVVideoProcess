@@ -48,8 +48,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 #pragma mark - Data
 
-- (void *)byteBuffer;
-- (NSUInteger)bytesPerRow;
+- (CVPixelBufferRef)corePixelBuffer;
 
 
 #pragma mark - Reuse Key
@@ -65,7 +64,5 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 - (void)lock;
 - (void)unlock;
-- (void)lockForReading;
-- (void)unlockForReading;
 
 @end

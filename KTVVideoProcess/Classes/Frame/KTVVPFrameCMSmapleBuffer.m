@@ -14,8 +14,6 @@
     CVOpenGLESTextureRef _cvOpenGLESTexture;
 }
 
-@property (nonatomic, assign) NSInteger readLockingCount;
-
 @end
 
 @implementation KTVVPFrameCMSmapleBuffer
@@ -86,38 +84,9 @@
     }
 }
 
-- (void *)byteBuffer
+- (CVPixelBufferRef)corePixelBuffer
 {
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
-    return CVPixelBufferGetBaseAddress(pixelBuffer);
-}
-
-- (NSUInteger)bytesPerRow
-{
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
-    return CVPixelBufferGetBytesPerRow(pixelBuffer);
-}
-
-- (void)lockForReading
-{
-    [super lockForReading];
-    if (_readLockingCount == 0)
-    {
-        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
-        CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    }
-    _readLockingCount++;
-}
-
-- (void)unlockForReading
-{
-    [super unlockForReading];
-    _readLockingCount--;
-    if (_readLockingCount == 0)
-    {
-        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    }
+    return CMSampleBufferGetImageBuffer(_sampleBuffer);
 }
 
 - (void)clear

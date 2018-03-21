@@ -108,4 +108,9 @@
     glViewport(0, 0, self.size.width, self.size.height);
 }
 
+- (CVPixelBufferRef)corePixelBuffer
+{
+    return _cvPixelBuffer;
+}
+
 @end

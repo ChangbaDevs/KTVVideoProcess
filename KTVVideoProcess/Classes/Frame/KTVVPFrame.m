@@ -56,6 +56,7 @@
 
 #pragma mark - Data
 
+- (CVPixelBufferRef)corePixelBuffer {return nil;}
 - (void *)byteBuffer {return nil;}
 - (NSUInteger)bytesPerRow {return 0;}
 
@@ -90,16 +91,6 @@
             [_lockingDelegate frameDidUnuse:self];
         }
     }
-}
-
-- (void)lockForReading
-{
-    [self lock];
-}
-
-- (void)unlockForReading
-{
-    [self unlock];
 }
 
 @end
