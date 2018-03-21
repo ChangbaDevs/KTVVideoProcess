@@ -77,6 +77,7 @@
 		9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = STFaceResultConverter.mm; sourceTree = "<group>"; };
 		9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenseTimeActiveCodeManager.m; sourceTree = "<group>"; };
 		9C3E5CA62060F53700F30377 /* SenseTimeActiveCodeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenseTimeActiveCodeManager.h; sourceTree = "<group>"; };
+		9C3E5CFA206208F800F30377 /* KTVVPDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPDefines.h; sourceTree = "<group>"; };
 		9C611926205F57A50040B277 /* KTVVPProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPProcessor.h; sourceTree = "<group>"; };
 		9C611927205F57A50040B277 /* KTVVPProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPProcessor.m; sourceTree = "<group>"; };
 		9C611929205F58760040B277 /* KTVVPFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFilter.h; sourceTree = "<group>"; };
@@ -291,6 +292,7 @@
 		9C9905B3205A1C3B00D7CF3A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				9C3E5CFA206208F800F30377 /* KTVVPDefines.h */,
 				9C9905B4205A1C6300D7CF3A /* KTVVPInput.h */,
 				9C9905B5205A1C7000D7CF3A /* KTVVPOutput.h */,
 				9C9905CD205A4D8600D7CF3A /* KTVVPObjectQueue.h */,

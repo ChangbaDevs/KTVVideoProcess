@@ -8,6 +8,7 @@
 
 #import "KTVVPFrameView.h"
 #import "KTVVPMessageLoop.h"
+#import "KTVVPDefines.h"
 #import "KTVVPGLDefines.h"
 #import "KTVVPGLRGBProgram.h"
 #import "KTVVPGLPlaneModel.h"
@@ -87,6 +88,9 @@
     [_glProgram use];
     [frame uploadIfNeed:[_context currentFrameUploader]];
     [_glProgram bindTexture:frame.texture];
+    _glModel.rotationMode = frame.rotationMode;
+    _glModel.flipMode = frame.flipMode;
+    [_glModel reloadDataIfNeed];
     [_glModel bindPosition_location:_glProgram.position_location
              textureCoordinate_location:_glProgram.textureCoordinate_location];
     [_glModel draw];

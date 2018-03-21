@@ -31,31 +31,47 @@
 {
     if (self = [super init])
     {
-        _indexes_buffer_data = [self indexes_data];
-        _vertices_buffer_data = [self vertices_data];
-        _textureCoordinates_buffer_data = [self textureCoordinates_data];
-        
-        _indexes_count = [self indexes_count];
-        _vertices_count = [self vertices_count];
-        
-        glGenBuffers(1, &_indexes_buffer_id);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexes_buffer_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indexes_count * sizeof(GLushort), _indexes_buffer_data, GL_STATIC_DRAW);
-        
-        glGenBuffers(1, &_vertices_buffer_id);
-        glBindBuffer(GL_ARRAY_BUFFER, _vertices_buffer_id);
-        glBufferData(GL_ARRAY_BUFFER, _vertices_count * 3 * sizeof(GLfloat), _vertices_buffer_data, GL_STATIC_DRAW);
-        
-        glGenBuffers(1, &_textureCoordinates_buffer_id);
-        glBindBuffer(GL_ARRAY_BUFFER, _textureCoordinates_buffer_id);
-        glBufferData(GL_ARRAY_BUFFER, _vertices_count * 2 * sizeof(GLfloat), _textureCoordinates_buffer_data, GL_DYNAMIC_DRAW);
-        
-        [self bindEmpty];
+        [self setupDdata];
     }
     return self;
 }
 
 - (void)dealloc
+{
+    [self destoryData];
+}
+
+- (void)reloadData
+{
+    [self destoryData];
+    [self setupDdata];
+}
+
+- (void)setupDdata
+{
+    _indexes_buffer_data = [self indexes_data];
+    _vertices_buffer_data = [self vertices_data];
+    _textureCoordinates_buffer_data = [self textureCoordinates_data];
+    
+    _indexes_count = [self indexes_count];
+    _vertices_count = [self vertices_count];
+    
+    glGenBuffers(1, &_indexes_buffer_id);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexes_buffer_id);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indexes_count * sizeof(GLushort), _indexes_buffer_data, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &_vertices_buffer_id);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertices_buffer_id);
+    glBufferData(GL_ARRAY_BUFFER, _vertices_count * 3 * sizeof(GLfloat), _vertices_buffer_data, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &_textureCoordinates_buffer_id);
+    glBindBuffer(GL_ARRAY_BUFFER, _textureCoordinates_buffer_id);
+    glBufferData(GL_ARRAY_BUFFER, _vertices_count * 2 * sizeof(GLfloat), _textureCoordinates_buffer_data, GL_DYNAMIC_DRAW);
+    
+    [self bindEmpty];
+}
+
+- (void)destoryData
 {
     if (_indexes_buffer_id)
     {

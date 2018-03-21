@@ -11,6 +11,8 @@
 
 @interface KTVVPGLModel : NSObject
 
+- (void)reloadData;
+
 - (void)bindPosition_location:(GLint)position_location textureCoordinate_location:(GLint)textureCoordinate_location;
 - (void)bindEmpty;
 - (void)draw;

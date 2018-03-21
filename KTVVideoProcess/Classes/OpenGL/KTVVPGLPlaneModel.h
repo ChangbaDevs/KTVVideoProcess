@@ -7,7 +7,13 @@
 //
 
 #import "KTVVPGLModel.h"
+#import "KTVVPDefines.h"
 
 @interface KTVVPGLPlaneModel : KTVVPGLModel
+
+@property (nonatomic, assign) KTVVPRotationMode rotationMode;
+@property (nonatomic, assign) KTVVPFlipMode flipMode;
+
+- (void)reloadDataIfNeed;
 
 @end
