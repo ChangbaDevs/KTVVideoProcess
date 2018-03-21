@@ -37,7 +37,7 @@
     [self.view addSubview:self.frameView];
     
     self.processor = [[KTVVPProcessor alloc] initWithContext:self.context
-                                               filterClasses:@[[KTVVPSenseTimeFilter class], [KTVVPFilterToneCurve class]]];
+                                               filterClasses:@[[KTVVPFilterToneCurve class]]];
     [self.processor setupIfNeed];
     [self.processor addInput:self.frameView];
     

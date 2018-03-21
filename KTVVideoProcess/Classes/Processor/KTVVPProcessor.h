@@ -22,6 +22,7 @@
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 @property (nonatomic, strong, readonly) NSArray <Class> * filterClasses;
 
+@property (nonatomic, assign) BOOL needFlushBeforOutput;                // default is YES.
 @property (nonatomic, assign) NSInteger maxConcurrentPipelineCount;     // default is 3.
 
 - (void)setupIfNeed;

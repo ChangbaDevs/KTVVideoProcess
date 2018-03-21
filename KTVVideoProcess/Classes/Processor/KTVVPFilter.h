@@ -21,4 +21,6 @@
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 
+@property (nonatomic, assign) BOOL needFlushBeforOutput;        // default is NO.
+
 @end

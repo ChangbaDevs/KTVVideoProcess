@@ -52,6 +52,10 @@
 
 - (void)outputFrame:(KTVVPFrame *)frame
 {
+    if (_needFlushBeforOutput)
+    {
+        glFlush();
+    }
     [frame lock];
     for (id <KTVVPInput> obj in _outputs)
     {

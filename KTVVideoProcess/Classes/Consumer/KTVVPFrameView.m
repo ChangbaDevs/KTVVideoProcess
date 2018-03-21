@@ -77,7 +77,6 @@
 
 - (void)putFrame:(KTVVPFrame *)frame
 {
-    glFlush();
     [frame lock];
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame]];
 }
