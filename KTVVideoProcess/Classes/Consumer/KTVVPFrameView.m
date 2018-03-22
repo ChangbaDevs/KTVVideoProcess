@@ -28,6 +28,7 @@
 @property (nonatomic, strong) KTVVPGLRGBProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
+@property (nonatomic, assign) CMTime previousFrameTime;
 
 @end
 
@@ -93,7 +94,6 @@
     [_glModel draw];
     [_glModel bindEmpty];
     [self drawFlush];
-    [frame unlock];
 }
 
 - (void)drawClear
@@ -182,7 +182,20 @@
     }
     else if (message.type == KTVVPMessageTypeOpenGLDrawing)
     {
-        [self drawFrame:(KTVVPFrame *)message.object];
+        KTVVPFrame * frame = (KTVVPFrame *)message.object;
+        if (CMTIME_IS_VALID(frame.time)
+            && CMTIME_IS_VALID(_previousFrameTime))
+        {
+            if (CMTimeCompare(frame.time, _previousFrameTime) < 0)
+            {
+                NSLog(@"KTVVPFrameView Frame time is less than previous time.");
+                [frame unlock];
+                return;
+            }
+        }
+        _previousFrameTime = frame.time;
+        [self drawFrame:frame];
+        [frame unlock];
     }
     else if (message.type == KTVVPMessageTypeOpenGLClear)
     {

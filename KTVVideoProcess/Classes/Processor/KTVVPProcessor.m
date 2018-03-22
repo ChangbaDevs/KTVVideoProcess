@@ -63,6 +63,7 @@
     [self setupIfNeed];
     
     [frame lock];
+    BOOL processing = NO;
     for (KTVVPPipeline * pipeline in _pipelines)
     {
         if (!pipeline.processing)
@@ -72,8 +73,13 @@
                 __strong typeof(weakSelf) strongSelf = weakSelf;
                 [strongSelf outputFrame:result];
             }];
+            processing = YES;
             break;
         }
+    }
+    if (!processing)
+    {
+        NSLog(@"Frame did drop...");
     }
     [frame unlock];
 }

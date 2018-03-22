@@ -77,63 +77,61 @@
 
 - (void)finishRecordingWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    if (!_running)
+    if ([self stopIfNeed])
     {
-        NSAssert(NO, @"");
+        dispatch_async(_runningQueue, ^{
+            [_assetWriterVideoInput markAsFinished];
+            [_assetWriter finishWritingWithCompletionHandler:^{
+                if (completionHandler)
+                {
+                    completionHandler(YES);
+                }
+            }];
+        });
+    }
+    else
+    {
         if (completionHandler)
         {
             completionHandler(NO);
         }
-        return;
     }
-    _running = NO;
-    if (_assetWriter.status != AVAssetWriterStatusWriting)
-    {
-        NSAssert(NO, @"");
-        if (completionHandler)
-        {
-            completionHandler(NO);
-        }
-        return;
-    }
-    dispatch_async(_runningQueue, ^{
-        [_assetWriterVideoInput markAsFinished];
-        [_assetWriter finishWritingWithCompletionHandler:^{
-            if (completionHandler)
-            {
-                completionHandler(YES);
-            }
-        }];
-    });
 }
 
 - (void)cancelRecordingWithCompletionHandler:(void (^)(BOOL))completionHandler
 {
-    if (!_running)
+    if ([self stopIfNeed])
+    {
+        dispatch_async(_runningQueue, ^{
+            [_assetWriterVideoInput markAsFinished];
+            [_assetWriter cancelWriting];
+            if (completionHandler)
+            {
+                completionHandler(YES);
+            }
+        });
+    }
+    else
     {
         if (completionHandler)
         {
             completionHandler(NO);
         }
-        return;
+    }
+}
+
+- (BOOL)stopIfNeed
+{
+    if (!_running)
+    {
+        return NO;
     }
     _running = NO;
     if (_assetWriter.status != AVAssetWriterStatusWriting)
     {
-        if (completionHandler)
-        {
-            completionHandler(NO);
-        }
-        return;
+        return NO;
     }
-    dispatch_async(_runningQueue, ^{
-        [_assetWriterVideoInput markAsFinished];
-        [_assetWriter cancelWriting];
-        if (completionHandler)
-        {
-            completionHandler(YES);
-        }
-    });
+    return YES;
 }
 
 
@@ -158,11 +156,22 @@
         if (_assetWriter.status == AVAssetWriterStatusWriting
             && _assetWriterVideoInput.readyForMoreMediaData)
         {
+            if (CMTIME_IS_VALID(frame.time)
+                && CMTIME_IS_VALID(_videoPreviousFrameTime))
+            {
+                if (CMTimeCompare(frame.time, _videoPreviousFrameTime) < 0)
+                {
+                    NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
+                    [frame unlock];
+                    return;
+                }
+            }
             if (CMTIME_IS_INVALID(_videoStartTime))
             {
                 [_assetWriter startSessionAtSourceTime:frame.time];
                 _videoStartTime = frame.time;
             }
+            _videoPreviousFrameTime = frame.time;
             CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
             CVPixelBufferLockBaseAddress(pixelBuffer, 0);
             [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:frame.time];
