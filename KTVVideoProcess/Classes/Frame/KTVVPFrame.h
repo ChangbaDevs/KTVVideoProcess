@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 @property (nonatomic, assign) BOOL didUpload;
 
 - (void)fillWithFrame:(KTVVPFrame *)frame;
-- (void)uploadIfNeed:(KTVVPFrameUploader *)uploader;
+- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader;
 - (void)clear;
 
 

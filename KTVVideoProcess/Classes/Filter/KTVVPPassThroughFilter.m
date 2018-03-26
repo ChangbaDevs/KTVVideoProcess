@@ -42,12 +42,12 @@
         return result;
     }];
     [result fillWithFrame:frame];
-    [result uploadIfNeed:[self.context frameUploaderForCurrentThread]];
+    [result uploadIfNeeded:[self.context frameUploaderForCurrentThread]];
     [result bindFramebuffer];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     [_glProgram use];
-    [frame uploadIfNeed:[self.context frameUploaderForCurrentThread]];
+    [frame uploadIfNeeded:[self.context frameUploaderForCurrentThread]];
     [_glProgram bindTexture:frame.texture];
     [_glModel bindPosition_location:_glProgram.position_location
          textureCoordinate_location:_glProgram.textureCoordinate_location];

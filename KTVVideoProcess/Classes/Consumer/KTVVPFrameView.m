@@ -93,7 +93,7 @@
 {
     [self drawPrepare];
     [_glProgram use];
-    [frame uploadIfNeed:[_context frameUploaderForCurrentThread]];
+    [frame uploadIfNeeded:[_context frameUploaderForCurrentThread]];
     [_glProgram bindTexture:frame.texture];
     _glModel.rotationMode = frame.rotationMode;
     _glModel.flipMode = frame.flipMode;

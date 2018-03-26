@@ -55,7 +55,7 @@
     return KTVVPFrameTypeDrawable;
 }
 
-- (void)uploadIfNeed:(KTVVPFrameUploader *)uploader
+- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
 {
     if (self.didUpload)
     {

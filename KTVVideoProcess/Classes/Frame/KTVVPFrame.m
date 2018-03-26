@@ -58,7 +58,7 @@
     _flipMode = frame.flipMode;
 }
 
-- (void)uploadIfNeed:(KTVVPFrameUploader *)uploader {}
+- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader {}
 - (void)clear {}
 
 
