@@ -47,8 +47,9 @@
     }
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
+//    self.frameWriter.asyncDelayInterval = 0.06;
     [self.frameWriter startRecording];
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        self.frameWriter.paused = YES;
 //        NSLog(@"Writer did paused.");
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -56,16 +57,16 @@
 //            NSLog(@"Writer did restart.");
 //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //                NSLog(@"Writer will call finish.");
-//                [self.frameWriter finishRecordingWithCompletionHandler:^(BOOL success) {
-//                    NSLog(@"Writer Success, %d", success);
-//                }];
+                [self.frameWriter finishRecordingWithCompletionHandler:^(BOOL success) {
+                    NSLog(@"Writer Success, %d", success);
+                }];
 //            });
 //        });
-//    });
+    });
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
-                                                   filterClasses:@[[KTVVPSenseTimeFilter class],
-                                                                   [KTVVPFilterToneCurve class]]];
+                                                   filterClasses:@[[KTVVPFilterToneCurve class],
+                                                                   [KTVVPSenseTimeFilter class]]];
     [self.pipeline addOutput:self.frameView];
     [self.pipeline addOutput:self.frameWriter];
     [self.pipeline setupIfNeeded];

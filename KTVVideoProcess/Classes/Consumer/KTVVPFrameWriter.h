@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-#import "KTVVPGLDefines.h"
 #import "KTVVPContext.h"
 #import "KTVVPFrameInput.h"
+#import "KTVVPGLDefines.h"
 
 @interface KTVVPFrameWriter : NSObject <KTVVPFrameInput>
 
@@ -33,6 +33,7 @@
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
 
 @property (nonatomic, assign) BOOL paused;
+@property (nonatomic, assign) NSTimeInterval asyncDelayInterval;       // default is 0.
 
 - (BOOL)startRecording;
 - (void)finishRecordingWithCompletionHandler:(void (^)(BOOL success))completionHandler;
