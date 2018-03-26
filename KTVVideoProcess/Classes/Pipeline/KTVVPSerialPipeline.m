@@ -60,7 +60,7 @@
 {
     if (message.type == KTVVPMessageTypeOpenGLSetupContext)
     {
-        [self.context setCurrentGLContextIfNeed];
+        [self.context setGLContextForCurrentThreadIfNeeded];
         
         NSMutableArray * filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
         __kindof KTVVPFilter * lastFilter = nil;
@@ -80,7 +80,7 @@
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         if (frame)
         {
-            [self.context setCurrentGLContextIfNeed];
+            [self.context setGLContextForCurrentThreadIfNeeded];
             
             [_filters.firstObject inputFrame:frame fromSource:self];
             [frame unlock];

@@ -37,22 +37,19 @@
     [_frameUploaders removeAllObjects];
 }
 
-- (EAGLContext *)currentGLContext
+- (void)setGLContextForCurrentThreadIfNeeded
+{
+    EAGLContext * obj = [self glContextForCurrentThread];
+    if ([EAGLContext currentContext] != obj)
+    {
+        [EAGLContext setCurrentContext:obj];
+    }
+}
+
+- (EAGLContext *)glContextForCurrentThread
 {
     NSString * key = [self keyForCurrentThread];
     return [self glContextForKey:key];
-}
-
-- (KTVVPFramePool *)currentFramePool
-{
-    NSString * key = [self keyForCurrentThread];
-    return [self framePoolForKey:key];
-}
-
-- (KTVVPFrameUploader *)currentFrameUploader
-{
-    NSString * key = [self keyForCurrentThread];
-    return [self frameUploaderForKey:key];
 }
 
 - (EAGLContext *)glContextForKey:(NSString *)key
@@ -67,6 +64,12 @@
     return obj;
 }
 
+- (KTVVPFramePool *)framePoolCurrentThread
+{
+    NSString * key = [self keyForCurrentThread];
+    return [self framePoolForKey:key];
+}
+
 - (KTVVPFramePool *)framePoolForKey:(NSString *)key
 {
     KTVVPFramePool * obj = [_framePools objectForKey:key];
@@ -78,24 +81,21 @@
     return obj;
 }
 
+- (KTVVPFrameUploader *)frameUploaderForCurrentThread
+{
+    NSString * key = [self keyForCurrentThread];
+    return [self frameUploaderForKey:key];
+}
+
 - (KTVVPFrameUploader *)frameUploaderForKey:(NSString *)key
 {
     KTVVPFrameUploader * obj = [_frameUploaders objectForKey:key];
     if (!obj)
     {
-        obj = [[KTVVPFrameUploader alloc] initWithGLContext:[self currentGLContext]];
+        obj = [[KTVVPFrameUploader alloc] initWithGLContext:[self glContextForCurrentThread]];
         [_frameUploaders setObject:obj forKey:key];
     }
     return obj;
-}
-
-- (void)setCurrentGLContextIfNeed
-{
-    EAGLContext * obj = [self currentGLContext];
-    if ([EAGLContext currentContext] != obj)
-    {
-        [EAGLContext setCurrentContext:obj];
-    }
 }
 
 - (NSString *)keyForCurrentThread

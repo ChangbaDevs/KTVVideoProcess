@@ -93,7 +93,7 @@
 {
     [self drawPrepare];
     [_glProgram use];
-    [frame uploadIfNeed:[_context currentFrameUploader]];
+    [frame uploadIfNeed:[_context frameUploaderForCurrentThread]];
     [_glProgram bindTexture:frame.texture];
     _glModel.rotationMode = frame.rotationMode;
     _glModel.flipMode = frame.flipMode;
@@ -113,7 +113,7 @@
 
 - (void)drawPrepare
 {
-    [_context setCurrentGLContextIfNeed];
+    [_context setGLContextForCurrentThreadIfNeeded];
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
     glViewport(0, 0, (GLint)_displaySize.width * self.glScale, (GLint)_displaySize.height * self.glScale);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -123,7 +123,7 @@
 - (void)drawFlush
 {
     glBindRenderbuffer(GL_RENDERBUFFER, _glRenderbuffer);
-    [[_context currentGLContext] presentRenderbuffer:GL_RENDERBUFFER];
+    [[_context glContextForCurrentThread] presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 
@@ -131,7 +131,7 @@
 
 - (void)setupOpenGL
 {
-    [_context setCurrentGLContextIfNeed];
+    [_context setGLContextForCurrentThreadIfNeeded];
     _glModel = [[KTVVPGLPlaneModel alloc] init];
     _glProgram = [[KTVVPGLRGBProgram alloc] init];
 }
@@ -142,18 +142,18 @@
     {
         return;
     }
-    [_context setCurrentGLContextIfNeed];
+    [_context setGLContextForCurrentThreadIfNeeded];
     glGenFramebuffers(1, &_glFramebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
     glGenRenderbuffers(1, &_glRenderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, _glRenderbuffer);
-    [[_context currentGLContext] renderbufferStorage:GL_RENDERBUFFER fromDrawable:_glLayer];
+    [[_context glContextForCurrentThread] renderbufferStorage:GL_RENDERBUFFER fromDrawable:_glLayer];
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _glRenderbuffer);
 }
 
 - (void)destroyFramebuffer
 {
-    [_context setCurrentGLContextIfNeed];
+    [_context setGLContextForCurrentThreadIfNeeded];
     if (_glFramebuffer)
     {
         glDeleteFramebuffers(1, &_glFramebuffer);

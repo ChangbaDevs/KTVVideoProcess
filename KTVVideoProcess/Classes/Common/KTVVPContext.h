@@ -15,14 +15,14 @@
 
 @property (nonatomic, strong, readonly) EAGLContext * mainGLContext;
 
-- (EAGLContext *)currentGLContext;
-- (KTVVPFramePool *)currentFramePool;
-- (KTVVPFrameUploader *)currentFrameUploader;
-
+- (void)setGLContextForCurrentThreadIfNeeded;
+- (EAGLContext *)glContextForCurrentThread;
 - (EAGLContext *)glContextForKey:(NSString *)key;
-- (KTVVPFramePool *)framePoolForKey:(NSString *)key;
-- (KTVVPFrameUploader *)frameUploaderForKey:(NSString *)key;
 
-- (void)setCurrentGLContextIfNeed;
+- (KTVVPFramePool *)framePoolCurrentThread;
+- (KTVVPFramePool *)framePoolForKey:(NSString *)key;
+
+- (KTVVPFrameUploader *)frameUploaderForCurrentThread;
+- (KTVVPFrameUploader *)frameUploaderForKey:(NSString *)key;
 
 @end

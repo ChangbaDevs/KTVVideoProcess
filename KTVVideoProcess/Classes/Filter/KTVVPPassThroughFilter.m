@@ -24,7 +24,7 @@
 {
     if (self = [super initWithContext:context])
     {
-        [self.context setCurrentGLContextIfNeed];
+        [self.context setGLContextForCurrentThreadIfNeeded];
         _glModel = [[KTVVPGLPlaneModel alloc] init];
         _glProgram = [[KTVVPGLRGBProgram alloc] init];
     }
@@ -33,21 +33,21 @@
 
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
-    [self.context setCurrentGLContextIfNeed];
+    [self.context setGLContextForCurrentThreadIfNeeded];
     [frame lock];
-    KTVVPFramePool * framePool = [self.context currentFramePool];
+    KTVVPFramePool * framePool = [self.context framePoolCurrentThread];
     NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", frame.size.width, frame.size.height]];
     KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
         KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
         return result;
     }];
     [result fillWithFrame:frame];
-    [result uploadIfNeed:[self.context currentFrameUploader]];
+    [result uploadIfNeed:[self.context frameUploaderForCurrentThread]];
     [result bindFramebuffer];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     [_glProgram use];
-    [frame uploadIfNeed:[self.context currentFrameUploader]];
+    [frame uploadIfNeed:[self.context frameUploaderForCurrentThread]];
     [_glProgram bindTexture:frame.texture];
     [_glModel bindPosition_location:_glProgram.position_location
          textureCoordinate_location:_glProgram.textureCoordinate_location];
