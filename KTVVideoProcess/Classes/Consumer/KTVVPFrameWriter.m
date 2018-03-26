@@ -135,9 +135,9 @@
 }
 
 
-#pragma mark - KTVVPInput
+#pragma mark - KTVVPFrameInput
 
-- (void)putFrame:(KTVVPFrame *)frame
+- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     if (!_running)
     {

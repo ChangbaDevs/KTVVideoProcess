@@ -8,9 +8,10 @@
 
 #import "ViewController.h"
 #import "KTVVPVideoCamera.h"
+#import "KTVVPSerialPipeline.h"
+#import "KTVVPConcurrentPipeline.h"
 #import "KTVVPFrameView.h"
 #import "KTVVPFrameWriter.h"
-#import "KTVVPProcessor.h"
 #import "KTVVPFilter.h"
 #import "KTVVPPassThroughFilter.h"
 #import "KTVVPFilterToneCurve.h"
@@ -20,7 +21,7 @@
 
 @property (nonatomic, strong) KTVVPContext * context;
 @property (nonatomic, strong) KTVVPVideoCamera * videoCamera;
-@property (nonatomic, strong) KTVVPProcessor * processor;
+@property (nonatomic, strong) KTVVPSerialPipeline * pipeline;
 @property (nonatomic, strong) KTVVPFrameView * frameView;
 @property (nonatomic, strong) KTVVPFrameWriter * frameWriter;
 
@@ -62,15 +63,16 @@
 //        });
 //    });
     
-    self.processor = [[KTVVPProcessor alloc] initWithContext:self.context
-                                               filterClasses:@[[KTVVPSenseTimeFilter class], [KTVVPFilterToneCurve class]]];
-    [self.processor setupIfNeed];
-    [self.processor addInput:self.frameView];
-    [self.processor addInput:self.frameWriter];
+    self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
+                                                   filterClasses:@[[KTVVPSenseTimeFilter class],
+                                                                   [KTVVPFilterToneCurve class]]];
+    [self.pipeline addOutput:self.frameView];
+    [self.pipeline addOutput:self.frameWriter];
+    [self.pipeline setupIfNeeded];
     
     self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];
-    [self.videoCamera addInput:self.processor];
-    [self.videoCamera startRunning];
+    self.videoCamera.pipeline = self.pipeline;
+    [self.videoCamera start];
 }
 
 @end

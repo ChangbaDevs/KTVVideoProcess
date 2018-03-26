@@ -18,22 +18,11 @@
 @property (nonatomic, strong) AVCaptureDeviceInput * videoInput;
 @property (nonatomic, strong) AVCaptureVideoDataOutput * videoOutput;
 
-@property (nonatomic, strong) NSMutableArray <id <KTVVPInput>> * outputs;
-
 @end
 
 @implementation KTVVPVideoCamera
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-{
-    if (self = [super init])
-    {
-        _context = context;
-    }
-    return self;
-}
-
-- (void)startRunning
+- (void)start
 {
     NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     for (AVCaptureDevice * device in devices)
@@ -66,46 +55,24 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    KTVVPFramePool * framePool = [_context framePoolForKey:[NSString stringWithFormat:@"%p", self]];
-    KTVVPFrameCMSmapleBuffer * frame = [framePool frameWithKey:[KTVVPFrameCMSmapleBuffer key] factory:^__kindof KTVVPFrame *{
-        KTVVPFrameCMSmapleBuffer * result = [[KTVVPFrameCMSmapleBuffer alloc] init];
-        return result;
-    }];
-    frame.sampleBuffer = sampleBuffer;
-    frame.time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-    frame.rotationMode = KTVVPRotationMode90;
-    [self outputFrame:frame];
-    [frame unlock];
+    if (self.pipeline)
+    {
+        KTVVPFramePool * framePool = [self.context framePoolForKey:[NSString stringWithFormat:@"%p", self]];
+        KTVVPFrameCMSmapleBuffer * frame = [framePool frameWithKey:[KTVVPFrameCMSmapleBuffer key] factory:^__kindof KTVVPFrame *{
+            KTVVPFrameCMSmapleBuffer * result = [[KTVVPFrameCMSmapleBuffer alloc] init];
+            return result;
+        }];
+        frame.sampleBuffer = sampleBuffer;
+        frame.time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+        frame.rotationMode = KTVVPRotationMode90;
+        [self.pipeline inputFrame:frame fromSource:self];
+        [frame unlock];
+    }
 }
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     NSLog(@"%s", __func__);
-}
-
-
-#pragma mark - KTVVPOutput
-
-- (void)addInput:(id <KTVVPInput>)input
-{
-    if (!_outputs)
-    {
-        _outputs = [[NSMutableArray alloc] init];
-    }
-    [_outputs addObject:input];
-}
-
-- (void)removeInput:(id <KTVVPInput>)input
-{
-    [_outputs removeObject:input];
-}
-
-- (void)outputFrame:(KTVVPFrame *)frame
-{
-    for (id <KTVVPInput> obj in _outputs)
-    {
-        [obj putFrame:frame];
-    }
 }
 
 @end

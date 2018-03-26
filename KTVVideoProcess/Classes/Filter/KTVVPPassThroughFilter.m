@@ -31,7 +31,7 @@
     return self;
 }
 
-- (void)putFrame:(KTVVPFrame *)frame
+- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     [self.context setCurrentGLContextIfNeed];
     [frame lock];
@@ -54,7 +54,7 @@
     [_glModel draw];
     [_glModel bindEmpty];
     [frame unlock];
-    [super putFrame:result];
+    [self outputFrame:result];
     [result unlock];
 }
 

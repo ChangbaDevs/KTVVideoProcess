@@ -6,19 +6,8 @@
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "KTVVPOutput.h"
-#import "KTVVPContext.h"
+#import "KTVVPSource.h"
 
-@interface KTVVPVideoCamera : NSObject <KTVVPOutput>
-
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
-
-- (instancetype)initWithContext:(KTVVPContext *)context;
-
-@property (nonatomic, strong, readonly) KTVVPContext * context;
-
-- (void)startRunning;
+@interface KTVVPVideoCamera : KTVVPSource
 
 @end

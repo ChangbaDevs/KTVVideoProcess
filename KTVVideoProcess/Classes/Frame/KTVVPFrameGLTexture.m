@@ -1,14 +1,14 @@
 //
-//  KTVVPFrameTextureOnly.m
+//  KTVVPFrameGLTexture.m
 //  KTVVideoProcessDemo
 //
 //  Created by Single on 2018/3/20.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import "KTVVPFrameTextureOnly.h"
+#import "KTVVPFrameGLTexture.h"
 
-@implementation KTVVPFrameTextureOnly
+@implementation KTVVPFrameGLTexture
 
 - (void)dealloc
 {

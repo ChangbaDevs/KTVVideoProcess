@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import "KTVVPGLDefines.h"
-#import "KTVVPInput.h"
 #import "KTVVPContext.h"
+#import "KTVVPFrameInput.h"
 
-@interface KTVVPFrameWriter : NSObject <KTVVPInput>
+@interface KTVVPFrameWriter : NSObject <KTVVPFrameInput>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

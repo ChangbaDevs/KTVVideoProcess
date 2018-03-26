@@ -1,5 +1,5 @@
 //
-//  KTVVPFrameTextureOnly.h
+//  KTVVPFrameGLTexture.h
 //  KTVVideoProcessDemo
 //
 //  Created by Single on 2018/3/20.
@@ -8,6 +8,6 @@
 
 #import "KTVVPFrame.h"
 
-@interface KTVVPFrameTextureOnly : KTVVPFrame
+@interface KTVVPFrameGLTexture : KTVVPFrame
 
 @end

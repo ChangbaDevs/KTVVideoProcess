@@ -1,18 +1,16 @@
 //
-//  KTVVPFilter.h
+//  KTVVPSource.h
 //  KTVVideoProcessDemo
 //
-//  Created by Single on 2018/3/19.
+//  Created by Single on 2018/3/23.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
-#import "KTVVPInput.h"
-#import "KTVVPOutput.h"
 #import "KTVVPContext.h"
+#import "KTVVPPipeline.h"
 
-@interface KTVVPFilter : NSObject <KTVVPInput, KTVVPOutput>
+@interface KTVVPSource : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
@@ -21,6 +19,11 @@
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 
-@property (nonatomic, assign) BOOL needFlushBeforOutput;        // default is NO.
+@property (nonatomic, strong) KTVVPPipeline * pipeline;
+
+- (void)start;
+- (void)pause;
+- (void)resume;
+- (void)stop;
 
 @end
