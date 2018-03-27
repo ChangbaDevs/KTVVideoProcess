@@ -80,7 +80,7 @@
         int width = (int)CVPixelBufferGetWidth(pixelBuffer);
         int height = (int)CVPixelBufferGetHeight(pixelBuffer);
         KTVVPGLSize size = {width, height};
-        self.size = size;
+        self.naturalSize = size;
     }
 }
 
@@ -103,7 +103,7 @@
         _cvOpenGLESTexture = NULL;
     }
     KTVVPGLSize size = {0, 0};
-    self.size = size;
+    self.naturalSize = size;
     self.didUpload = NO;
 }
 

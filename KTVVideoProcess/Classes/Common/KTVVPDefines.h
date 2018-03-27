@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFlipMode)
     KTVVPFlipModeNone,
     KTVVPFlipModeHorizonal,
     KTVVPFlipModeVertical,
+    KTVVPFlipModeHorizonalAndVertical,
 };
 
 

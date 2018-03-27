@@ -24,7 +24,7 @@
 {
     if (self = [super init])
     {
-        self.size = size;
+        self.naturalSize = size;
     }
     return self;
 }
@@ -67,8 +67,8 @@
     
     NSDictionary * attributes = @{(id)kCVPixelBufferIOSurfacePropertiesKey : @{}};
     CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                          self.size.width,
-                                          self.size.height,
+                                          self.naturalSize.width,
+                                          self.naturalSize.height,
                                           kCVPixelFormatType_32BGRA,
                                           (__bridge CFDictionaryRef)attributes,
                                           &_cvPixelBuffer);
@@ -82,8 +82,8 @@
                                                           NULL,
                                                           GL_TEXTURE_2D,
                                                           self.textureOptions.internalFormat,
-                                                          self.size.width,
-                                                          self.size.height,
+                                                          self.naturalSize.width,
+                                                          self.naturalSize.height,
                                                           self.textureOptions.format,
                                                           self.textureOptions.type,
                                                           0,
@@ -105,7 +105,7 @@
 - (void)bindFramebuffer
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
-    glViewport(0, 0, self.size.width, self.size.height);
+    glViewport(0, 0, self.naturalSize.width, self.naturalSize.height);
 }
 
 - (CVPixelBufferRef)corePixelBuffer

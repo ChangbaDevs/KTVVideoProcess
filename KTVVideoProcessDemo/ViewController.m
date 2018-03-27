@@ -47,7 +47,6 @@
     }
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
-//    self.frameWriter.videoTransform = CGAffineTransformMakeRotation(M_PI_2);
 //    self.frameWriter.asyncDelayInterval = 0.06;
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context

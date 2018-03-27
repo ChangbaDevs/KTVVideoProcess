@@ -162,6 +162,8 @@
                     return textureCoordinates_data_r0_fh;
                 case KTVVPFlipModeVertical:
                     return textureCoordinates_data_r0_fv;
+                case KTVVPFlipModeHorizonalAndVertical:
+                    return textureCoordinates_data_r180_fn;
             }
         }
         case KTVVPRotationMode90:
@@ -174,6 +176,8 @@
                     return textureCoordinates_data_r90_fh;
                 case KTVVPFlipModeVertical:
                     return textureCoordinates_data_r90_fv;
+                case KTVVPFlipModeHorizonalAndVertical:
+                    return textureCoordinates_data_r270_fn;
             }
         }
         case KTVVPRotationMode180:
@@ -186,6 +190,8 @@
                     return textureCoordinates_data_r180_fh;
                 case KTVVPFlipModeVertical:
                     return textureCoordinates_data_r180_fv;
+                case KTVVPFlipModeHorizonalAndVertical:
+                    return textureCoordinates_data_r0_fn;
             }
         }
         case KTVVPRotationMode270:
@@ -198,6 +204,8 @@
                     return textureCoordinates_data_r270_fh;
                 case KTVVPFlipModeVertical:
                     return textureCoordinates_data_r270_fv;
+                case KTVVPFlipModeHorizonalAndVertical:
+                    return textureCoordinates_data_r90_fn;
             }
         }
     }

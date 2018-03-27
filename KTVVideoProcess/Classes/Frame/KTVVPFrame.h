@@ -41,10 +41,11 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 @property (nonatomic, assign) CMTime time;
 @property (nonatomic, assign) GLuint texture;
 @property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
-@property (nonatomic, assign) KTVVPGLSize size;
+@property (nonatomic, assign) KTVVPGLSize naturalSize;
+@property (nonatomic, assign, readonly) KTVVPGLSize transformSize;
 @property (nonatomic, assign) KTVVPRotationMode rotationMode;
-@property (nonatomic, assign) KTVVPFlipMode flipMode;
-@property (nonatomic, assign, readonly) KTVVPGLSize finalSize;
+@property (nonatomic, assign) KTVVPFlipMode naturalFlipMode;
+@property (nonatomic, assign, readonly) KTVVPFlipMode textureFlipMode;
 @property (nonatomic, assign) BOOL didUpload;
 
 - (void)fillWithFrame:(KTVVPFrame *)frame;
