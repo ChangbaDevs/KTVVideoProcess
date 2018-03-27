@@ -293,9 +293,9 @@
 			children = (
 				9C3470EF206515BC00A66180 /* KTVVPPipeline.h */,
 				9C622C2420688E0D00E7C630 /* KTVVPPipeline.m */,
+				9C622C2A206894FF00E7C630 /* KTVVPPipelinePrivate.h */,
 				9C3470F02065174F00A66180 /* KTVVPSerialPipeline.h */,
 				9C3470F12065174F00A66180 /* KTVVPSerialPipeline.m */,
-				9C622C2A206894FF00E7C630 /* KTVVPPipelinePrivate.h */,
 				9C622C2F2068C8BE00E7C630 /* KTVVPConcurrentPipeline.h */,
 				9C622C302068C8BE00E7C630 /* KTVVPConcurrentPipeline.m */,
 			);
