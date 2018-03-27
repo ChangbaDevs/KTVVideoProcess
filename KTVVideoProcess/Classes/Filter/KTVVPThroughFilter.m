@@ -50,10 +50,10 @@
     
     [frame lock];
     KTVVPFramePool * framePool = [self.context framePoolCurrentThread];
-    KTVVPGLSize size = frame.naturalSize;
+    KTVVPGLSize size = frame.size;
     if (_handleTransform)
     {
-        size = frame.transformSize;
+        size = frame.finalSize;
     }
     NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
     KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
@@ -64,7 +64,7 @@
     {
         [result fillWithoutTransformWithFrame:frame];
         _glModel.rotationMode = frame.rotationMode;
-        _glModel.flipMode = frame.naturalFlipMode;
+        _glModel.flipMode = frame.flipMode;
     }
     else
     {

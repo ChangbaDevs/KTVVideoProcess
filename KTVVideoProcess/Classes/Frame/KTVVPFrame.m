@@ -49,7 +49,7 @@
     return KTVVPFrameTypeIdle;
 }
 
-- (KTVVPGLSize)transformSize
+- (KTVVPGLSize)finalSize
 {
     BOOL exchangeXY = NO;
     if (_rotationMode == KTVVPRotationMode90
@@ -59,15 +59,28 @@
     }
     if (exchangeXY)
     {
-        KTVVPGLSize size = {_naturalSize.height, _naturalSize.width};
+        KTVVPGLSize size = {_size.height, _size.width};
         return size;
     }
-    return _naturalSize;
+    return _size;
+}
+
+- (KTVVPRotationMode)completionRotationMode
+{
+    if (_rotationMode == KTVVPRotationMode90)
+    {
+        return KTVVPRotationMode270;
+    }
+    if (_rotationMode == KTVVPRotationMode270)
+    {
+        return KTVVPRotationMode90;
+    }
+    return _rotationMode;
 }
 
 - (KTVVPFlipMode)textureFlipMode
 {
-    switch (_naturalFlipMode)
+    switch (_flipMode)
     {
         case KTVVPFlipModeNone:
             return KTVVPFlipModeVertical;
@@ -84,17 +97,17 @@
 - (void)fillWithFrame:(KTVVPFrame *)frame
 {
     _time = frame.time;
-    _naturalSize = frame.naturalSize;
+    _size = frame.size;
     _rotationMode = frame.rotationMode;
-    _naturalFlipMode = frame.naturalFlipMode;
+    _flipMode = frame.flipMode;
 }
 
 - (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame
 {
     _time = frame.time;
-    _naturalSize = frame.transformSize;
+    _size = frame.finalSize;
     _rotationMode = KTVVPRotationModeNone;
-    _naturalFlipMode = KTVVPFlipModeNone;
+    _flipMode = KTVVPFlipModeNone;
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader {}
@@ -103,7 +116,7 @@
 {
     _time = kCMTimeInvalid;
     _rotationMode = KTVVPRotationModeNone;
-    _naturalFlipMode = KTVVPFlipModeNone;
+    _flipMode = KTVVPFlipModeNone;
 }
 
 

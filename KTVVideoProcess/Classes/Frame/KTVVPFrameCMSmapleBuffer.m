@@ -81,7 +81,7 @@
         int height = (int)CVPixelBufferGetHeight(pixelBuffer);
         KTVVPGLSize size = {width, height};
         self.time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-        self.naturalSize = size;
+        self.size = size;
     }
 }
 
@@ -104,7 +104,7 @@
         _cvOpenGLESTexture = NULL;
     }
     KTVVPGLSize size = {0, 0};
-    self.naturalSize = size;
+    self.size = size;
     self.didUpload = NO;
 }
 

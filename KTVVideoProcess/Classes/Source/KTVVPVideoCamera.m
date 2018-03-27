@@ -68,7 +68,7 @@
         }];
         frame.sampleBuffer = sampleBuffer;
         frame.rotationMode = KTVVPRotationMode270;
-        frame.naturalFlipMode = KTVVPFlipModeHorizonal;
+        frame.flipMode = KTVVPFlipModeHorizonal;
         [self.pipeline inputFrame:frame fromSource:self];
         [frame unlock];
     }
