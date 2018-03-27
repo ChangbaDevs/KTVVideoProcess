@@ -14,7 +14,7 @@
 #import "KTVVPFrameWriter.h"
 #import "KTVVPFilter.h"
 #import "KTVVPThroughFilter.h"
-#import "KTVVPFilterToneCurve.h"
+#import "KTVVPToneCurveFilter.h"
 #import "KTVVPSenseTimeFilter.h"
 
 @interface ViewController ()
@@ -50,7 +50,7 @@
 //    self.frameWriter.asyncDelayInterval = 0.06;
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
-                                                   filterClasses:@[[KTVVPFilterToneCurve class],
+                                                   filterClasses:@[[KTVVPToneCurveFilter class],
                                                                    [KTVVPSenseTimeFilter class],
                                                                    [KTVVPThroughFilter class]]];
     [self.pipeline addOutput:self.frameView];
