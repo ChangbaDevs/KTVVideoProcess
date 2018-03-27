@@ -34,8 +34,7 @@
     if (self = [super init])
     {
         _textureOptions = [KTVVPFrame defaultTextureOptions];
-        KTVVPGLSize size = {0, 0};
-        _naturalSize = size;
+        [self clear];
     }
     return self;
 }
@@ -99,7 +98,13 @@
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader {}
-- (void)clear {}
+
+- (void)clear
+{
+    _time = kCMTimeInvalid;
+    _rotationMode = KTVVPRotationModeNone;
+    _naturalFlipMode = KTVVPFlipModeNone;
+}
 
 
 #pragma mark - Data

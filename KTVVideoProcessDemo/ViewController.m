@@ -51,6 +51,7 @@
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                    filterClasses:@[[KTVVPFilterToneCurve class],
+                                                                   [KTVVPSenseTimeFilter class],
                                                                    [KTVVPThroughFilter class]]];
     [self.pipeline addOutput:self.frameView];
     [self.pipeline addOutput:self.frameWriter];

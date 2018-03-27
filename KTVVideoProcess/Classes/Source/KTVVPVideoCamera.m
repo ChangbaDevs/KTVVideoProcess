@@ -67,7 +67,6 @@
             return result;
         }];
         frame.sampleBuffer = sampleBuffer;
-        frame.time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         frame.rotationMode = KTVVPRotationMode270;
         frame.naturalFlipMode = KTVVPFlipModeHorizonal;
         [self.pipeline inputFrame:frame fromSource:self];
