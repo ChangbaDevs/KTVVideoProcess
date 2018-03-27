@@ -37,7 +37,7 @@
     
     self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
     self.frameView.frame = self.view.bounds;
-    [self.view addSubview:self.frameView];
+    [self.view insertSubview:self.frameView atIndex:0];
     
     KTVVPGLSize videoSize = {1280, 720};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
@@ -47,22 +47,8 @@
     }
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
+    self.frameWriter.videoTransform = CGAffineTransformMakeRotation(M_PI_2);
 //    self.frameWriter.asyncDelayInterval = 0.06;
-    [self.frameWriter startRecording];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(20 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        self.frameWriter.paused = YES;
-//        NSLog(@"Writer did paused.");
-//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            self.frameWriter.paused = NO;
-//            NSLog(@"Writer did restart.");
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                NSLog(@"Writer will call finish.");
-                [self.frameWriter finishRecordingWithCompletionHandler:^(BOOL success) {
-                    NSLog(@"Writer Success, %d", success);
-                }];
-//            });
-//        });
-    });
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                    filterClasses:@[[KTVVPFilterToneCurve class],
@@ -74,6 +60,55 @@
     self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];
     self.videoCamera.pipeline = self.pipeline;
     [self.videoCamera start];
+}
+
+- (IBAction)captureStartAction:(UIButton *)sender
+{
+    [self.videoCamera start];
+}
+
+- (IBAction)capturePauseAction:(UIButton *)sender
+{
+    self.videoCamera.paused = YES;
+}
+
+- (IBAction)captureResumeAction:(UIButton *)sender
+{
+    self.videoCamera.paused = NO;
+}
+
+- (IBAction)captureStopAction:(UIButton *)sender
+{
+    [self.videoCamera stop];
+}
+
+- (IBAction)recordStartAction:(UIButton *)sender
+{
+    [self.frameWriter startRecording];
+}
+
+- (IBAction)recordPauseAction:(UIButton *)sender
+{
+    self.frameWriter.paused = YES;
+}
+
+- (IBAction)recordResumeAction:(UIButton *)sender
+{
+    self.frameWriter.paused = NO;
+}
+
+- (IBAction)recordFinishAction:(UIButton *)sender
+{
+    [self.frameWriter finishRecordingWithCompletionHandler:^(BOOL success) {
+        NSLog(@"Record Finished...");
+    }];
+}
+
+- (IBAction)recordCancelAction:(UIButton *)sender
+{
+    [self.frameWriter cancelRecordingWithCompletionHandler:^(BOOL success) {
+        NSLog(@"Record Canceled...");
+    }];
 }
 
 @end

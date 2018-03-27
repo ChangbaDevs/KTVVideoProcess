@@ -55,6 +55,10 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    if (self.paused)
+    {
+        return;
+    }
     if (self.pipeline)
     {
         KTVVPFramePool * framePool = [self.context framePoolForKey:[NSString stringWithFormat:@"%p", self]];

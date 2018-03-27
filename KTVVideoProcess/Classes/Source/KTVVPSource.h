@@ -19,11 +19,17 @@
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 
-@property (nonatomic, strong) KTVVPPipeline * pipeline;
+
+#pragma mark - Control
+
+@property (nonatomic, assign) BOOL paused;
 
 - (void)start;
-- (void)pause;
-- (void)resume;
 - (void)stop;
+
+
+#pragma mark - Output
+
+@property (nonatomic, strong) KTVVPPipeline * pipeline;
 
 @end

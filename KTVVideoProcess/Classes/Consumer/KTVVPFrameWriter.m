@@ -80,6 +80,7 @@
     
     _assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:_videoOutputSettings];
     _assetWriterVideoInput.expectsMediaDataInRealTime = NO;
+    _assetWriterVideoInput.transform = _videoTransform;
     _assetWriterInputPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_assetWriterVideoInput sourcePixelBufferAttributes:_videoSourcePixelBufferAttributes];
     [_assetWriter addInput:_assetWriterVideoInput];
     BOOL success = [_assetWriter startWriting];

@@ -29,11 +29,16 @@
 @property (nonatomic, assign, readonly) KTVVPGLSize videoSize;
 @property (nonatomic, assign, readonly) CMTime videoStartTime;
 @property (nonatomic, assign, readonly) CMTime videoPreviousFrameTime;
+@property (nonatomic, assign) CGAffineTransform videoTransform;
 @property (nonatomic, copy) NSDictionary * videoOutputSettings;
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
 
-@property (nonatomic, assign) BOOL paused;
 @property (nonatomic, assign) NSTimeInterval asyncDelayInterval;       // default is 0.
+
+
+#pragma mark - Control
+
+@property (nonatomic, assign) BOOL paused;
 
 - (BOOL)startRecording;
 - (void)finishRecordingWithCompletionHandler:(void (^)(BOOL success))completionHandler;
