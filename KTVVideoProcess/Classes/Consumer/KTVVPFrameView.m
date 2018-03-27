@@ -97,7 +97,7 @@
     [_glProgram bindTexture:frame.texture];
     _glModel.rotationMode = frame.rotationMode;
     _glModel.flipMode = frame.flipMode;
-    [_glModel reloadDataIfNeed];
+    [_glModel reloadDataIfNeeded];
     [_glModel bindPosition_location:_glProgram.position_location
              textureCoordinate_location:_glProgram.textureCoordinate_location];
     [_glModel draw];

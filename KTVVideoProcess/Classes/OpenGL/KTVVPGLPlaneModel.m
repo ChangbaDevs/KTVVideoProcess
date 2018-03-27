@@ -16,7 +16,7 @@
 
 @implementation KTVVPGLPlaneModel
 
-- (void)reloadDataIfNeed
+- (void)reloadDataIfNeeded
 {
     if (_needReloadData)
     {

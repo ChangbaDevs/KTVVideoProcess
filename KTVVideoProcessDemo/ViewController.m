@@ -13,7 +13,7 @@
 #import "KTVVPFrameView.h"
 #import "KTVVPFrameWriter.h"
 #import "KTVVPFilter.h"
-#import "KTVVPPassThroughFilter.h"
+#import "KTVVPThroughFilter.h"
 #import "KTVVPFilterToneCurve.h"
 #import "KTVVPSenseTimeFilter.h"
 
@@ -39,7 +39,7 @@
     self.frameView.frame = self.view.bounds;
     [self.view insertSubview:self.frameView atIndex:0];
     
-    KTVVPGLSize videoSize = {1280, 720};
+    KTVVPGLSize videoSize = {720, 1280};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
     {
@@ -47,12 +47,12 @@
     }
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
-    self.frameWriter.videoTransform = CGAffineTransformMakeRotation(M_PI_2);
+//    self.frameWriter.videoTransform = CGAffineTransformMakeRotation(M_PI_2);
 //    self.frameWriter.asyncDelayInterval = 0.06;
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                    filterClasses:@[[KTVVPFilterToneCurve class],
-                                                                   [KTVVPSenseTimeFilter class]]];
+                                                                   [KTVVPThroughFilter class]]];
     [self.pipeline addOutput:self.frameView];
     [self.pipeline addOutput:self.frameWriter];
     [self.pipeline setupIfNeeded];

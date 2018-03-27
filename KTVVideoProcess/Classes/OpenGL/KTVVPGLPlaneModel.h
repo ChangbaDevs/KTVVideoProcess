@@ -14,6 +14,6 @@
 @property (nonatomic, assign) KTVVPRotationMode rotationMode;
 @property (nonatomic, assign) KTVVPFlipMode flipMode;
 
-- (void)reloadDataIfNeed;
+- (void)reloadDataIfNeeded;
 
 @end

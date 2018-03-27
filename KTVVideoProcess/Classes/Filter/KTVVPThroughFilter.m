@@ -1,47 +1,78 @@
 //
-//  KTVVPPassThroughFilter.m
+//  KTVVPThroughFilter.m
 //  KTVVideoProcessDemo
 //
 //  Created by Single on 2018/3/19.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import "KTVVPPassThroughFilter.h"
+#import "KTVVPThroughFilter.h"
 #import "KTVVPGLRGBProgram.h"
 #import "KTVVPGLPlaneModel.h"
 #import "KTVVPFrameDrawable.h"
 
-@interface KTVVPPassThroughFilter ()
+@interface KTVVPThroughFilter ()
 
 @property (nonatomic, strong) KTVVPGLRGBProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
 
 @end
 
-@implementation KTVVPPassThroughFilter
+@implementation KTVVPThroughFilter
 
 - (instancetype)initWithContext:(KTVVPContext *)context
 {
     if (self = [super initWithContext:context])
     {
-        [self.context setGLContextForCurrentThreadIfNeeded];
-        _glModel = [[KTVVPGLPlaneModel alloc] init];
-        _glProgram = [[KTVVPGLRGBProgram alloc] init];
+        _directPass = NO;
+        _handleTransform = YES;
     }
     return self;
 }
 
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
+    if (_directPass)
+    {
+        [super inputFrame:frame fromSource:source];
+        return;
+    }
+    
     [self.context setGLContextForCurrentThreadIfNeeded];
+    if (!_glModel)
+    {
+        _glModel = [[KTVVPGLPlaneModel alloc] init];
+    }
+    if (!_glProgram)
+    {
+        _glProgram = [[KTVVPGLRGBProgram alloc] init];
+    }
+    
     [frame lock];
     KTVVPFramePool * framePool = [self.context framePoolCurrentThread];
-    NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", frame.size.width, frame.size.height]];
+    KTVVPGLSize size = frame.size;
+    if (_handleTransform)
+    {
+        size = frame.finalSize;
+    }
+    NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
     KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
         KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
         return result;
     }];
-    [result fillWithFrame:frame];
+    if (_handleTransform)
+    {
+        [result fillWithoutTransformWithFrame:frame];
+        _glModel.rotationMode = frame.rotationMode;
+        _glModel.flipMode = frame.flipMode;
+    }
+    else
+    {
+        [result fillWithFrame:frame];
+        _glModel.rotationMode = KTVVPRotationModeNone;
+        _glModel.flipMode = KTVVPFlipModeNone;
+    }
+    [_glModel reloadDataIfNeeded];
     [result uploadIfNeeded:[self.context frameUploaderForCurrentThread]];
     [result bindFramebuffer];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

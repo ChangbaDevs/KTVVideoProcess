@@ -50,12 +50,36 @@
     return KTVVPFrameTypeIdle;
 }
 
+- (KTVVPGLSize)finalSize
+{
+    BOOL exchangeXY = NO;
+    if (_rotationMode == KTVVPRotationMode90
+        || _rotationMode == KTVVPRotationMode270)
+    {
+        exchangeXY = YES;
+    }
+    if (exchangeXY)
+    {
+        KTVVPGLSize size = {_size.height, _size.width};
+        return size;
+    }
+    return _size;
+}
+
 - (void)fillWithFrame:(KTVVPFrame *)frame
 {
     _time = frame.time;
     _size = frame.size;
     _rotationMode = frame.rotationMode;
     _flipMode = frame.flipMode;
+}
+
+- (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame
+{
+    _time = frame.time;
+    _size = frame.finalSize;
+    _rotationMode = KTVVPRotationModeNone;
+    _flipMode = KTVVPFlipModeNone;
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader {}
