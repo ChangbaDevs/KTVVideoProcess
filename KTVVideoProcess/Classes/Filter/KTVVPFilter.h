@@ -19,6 +19,11 @@
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 
+@property (nonatomic, assign) BOOL enable;      // default is YES.
+
+
+#pragma mark - Output
+
 @property (nonatomic, strong) id <KTVVPFrameInput> output;
 
 - (void)outputFrame:(KTVVPFrame *)frame;

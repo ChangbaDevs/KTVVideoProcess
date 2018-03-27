@@ -32,6 +32,11 @@
 
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
+    if (!self.enable)
+    {
+        [super inputFrame:frame fromSource:source];
+        return;
+    }
     if (_directPass)
     {
         [super inputFrame:frame fromSource:source];

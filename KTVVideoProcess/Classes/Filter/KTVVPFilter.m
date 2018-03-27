@@ -19,6 +19,7 @@
     if (self = [super init])
     {
         _context = context;
+        _enable = YES;
     }
     return self;
 }
