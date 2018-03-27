@@ -48,7 +48,13 @@
 
 - (void)dealloc
 {
-    [self cancelRecordingWithCompletionHandler:nil];
+    if (_assetWriter.status == AVAssetWriterStatusWriting)
+    {
+        dispatch_sync(_runningQueue, ^{
+            [_assetWriterVideoInput markAsFinished];
+            [_assetWriter cancelWriting];
+        });
+    }
 }
 
 
