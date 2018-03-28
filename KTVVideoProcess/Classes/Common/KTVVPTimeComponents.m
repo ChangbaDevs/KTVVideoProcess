@@ -8,16 +8,43 @@
 
 #import "KTVVPTimeComponents.h"
 
+@interface KTVVPTimeComponents ()
+
+@property (nonatomic, assign) CMTime deltaInterval;
+@property (nonatomic, assign) CMTime firstDroppedTimeStamp;
+
+@end
+
 @implementation KTVVPTimeComponents
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _timeStamp = kCMTimeZero;
+        _deltaInterval = kCMTimeZero;
+        _firstDroppedTimeStamp = kCMTimeInvalid;
+    }
+    return self;
+}
 
 - (void)putDroppedTimeStamp:(CMTime)timeStamp
 {
-    
+    if (CMTIME_IS_INVALID(_firstDroppedTimeStamp))
+    {
+        _firstDroppedTimeStamp = timeStamp;
+    }
 }
 
 - (void)putCurrentTimeStamp:(CMTime)timeStamp
 {
-    
+    if (CMTIME_IS_VALID(_firstDroppedTimeStamp))
+    {
+        CMTime currentDeltaInterva = CMTimeSubtract(timeStamp, _firstDroppedTimeStamp);
+        _deltaInterval = CMTimeAdd(_deltaInterval, currentDeltaInterva);
+        _firstDroppedTimeStamp = kCMTimeInvalid;
+    }
+    _timeStamp = CMTimeSubtract(timeStamp, _deltaInterval);
 }
 
 @end

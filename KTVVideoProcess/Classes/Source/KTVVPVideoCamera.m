@@ -24,6 +24,15 @@
 
 @implementation KTVVPVideoCamera
 
+- (instancetype)initWithContext:(KTVVPContext *)context
+{
+    if (self = [super initWithContext:context])
+    {
+        _timeComponents = [[KTVVPTimeComponents alloc] init];
+    }
+    return self;
+}
+
 - (void)start
 {
     NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
@@ -58,12 +67,12 @@
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     CMTime presentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-    if (self.paused)
+    if (self.paused || !self.pipeline)
     {
         [_timeComponents putDroppedTimeStamp:presentationTimeStamp];
         return;
     }
-    if (self.pipeline)
+    else
     {
         [_timeComponents putCurrentTimeStamp:presentationTimeStamp];
         KTVVPFramePool * framePool = [self.context framePoolForKey:[NSString stringWithFormat:@"%p", self]];
