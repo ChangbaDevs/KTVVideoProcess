@@ -291,10 +291,15 @@
         [frame unlock];
         return;
     }
-    if (CMTIME_IS_VALID(_timeComponents.timeStamp)
-        && CMTIME_IS_VALID(_videoPreviousFrameTime))
+    CMTime timeStamp = _timeComponents.timeStamp;
+    if (CMTIME_IS_INVALID(timeStamp))
     {
-        if (CMTimeCompare(_timeComponents.timeStamp, _videoPreviousFrameTime) < 0)
+        [frame unlock];
+        return;
+    }
+    if (CMTIME_IS_VALID(_videoPreviousFrameTime))
+    {
+        if (CMTimeCompare(timeStamp, _videoPreviousFrameTime) < 0)
         {
             NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
             [frame unlock];
@@ -303,13 +308,13 @@
     }
     if (CMTIME_IS_INVALID(_videoStartTime))
     {
-        [_assetWriter startSessionAtSourceTime:_timeComponents.timeStamp];
-        _videoStartTime = _timeComponents.timeStamp;
+        [_assetWriter startSessionAtSourceTime:timeStamp];
+        _videoStartTime = timeStamp;
     }
-    _videoPreviousFrameTime = _timeComponents.timeStamp;
+    _videoPreviousFrameTime = timeStamp;
     CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:_timeComponents.timeStamp];
+    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:timeStamp];
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     [frame unlock];
 }
