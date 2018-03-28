@@ -200,24 +200,24 @@
         }
         return;
     }
-    if (_delayIntervalInternal > 0)
-    {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+    dispatch_async(_runningQueue, ^{
+        if (_delayIntervalInternal > 0)
+        {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+                if (success)
+                {
+                    success();
+                }
+            });
+        }
+        else
+        {
             if (success)
             {
                 success();
             }
-        });
-    }
-    else
-    {
-        dispatch_async(_runningQueue, ^{
-            if (success)
-            {
-                success();
-            }
-        });
-    }
+        }
+    });
 }
 
 
