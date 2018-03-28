@@ -12,7 +12,11 @@
 
 - (void)putObject:(id)object;
 - (id)getObjectSync;
+- (id)getObjectAsync;
 
+- (void)broadcastAllSyncRequest;
+
+- (void)flush;
 - (void)destory;
 
 @end

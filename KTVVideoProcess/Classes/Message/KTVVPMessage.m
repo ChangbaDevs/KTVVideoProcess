@@ -25,4 +25,12 @@
     return self;
 }
 
+- (void)drop
+{
+    if (_dropCallback)
+    {
+        _dropCallback(self);
+    }
+}
+
 @end

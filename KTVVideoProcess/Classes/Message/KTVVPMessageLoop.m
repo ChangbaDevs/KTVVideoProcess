@@ -12,6 +12,7 @@
 @interface KTVVPMessageLoop ()
 
 @property (nonatomic, strong) NSThread * thread;
+@property (nonatomic, strong) NSCondition * waitThreadCondition;
 @property (nonatomic, strong) KTVVPObjectQueue * messageQueue;
 @property (nonatomic, assign) BOOL didClosed;
 
@@ -23,6 +24,7 @@
 {
     if (self = [super init])
     {
+        _waitThreadCondition = [[NSCondition alloc] init];
         _messageQueue = [[KTVVPObjectQueue alloc] init];
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(messageLoopThread) object:nil];
         _thread.qualityOfService = NSQualityOfServiceDefault;
@@ -33,12 +35,43 @@
 
 - (void)run
 {
-    [_thread start];
+    if (_didClosed)
+    {
+        return;
+    }
+    if (!_running)
+    {
+        _running = YES;
+        [_thread start];
+    }
 }
 
 - (void)stop
 {
+    if (_didClosed)
+    {
+        return;
+    }
     _didClosed = YES;
+    if (!_running)
+    {
+        _running = YES;
+        [_thread start];
+    }
+    else
+    {
+        [_messageQueue broadcastAllSyncRequest];
+    }
+}
+
+- (void)waitUntilThreadDidFinished
+{
+    [_waitThreadCondition lock];
+    while (_running)
+    {
+        [_waitThreadCondition wait];
+    }
+    [_waitThreadCondition unlock];
 }
 
 - (void)putMessage:(KTVVPMessage *)message
@@ -48,10 +81,27 @@
 
 - (void)messageLoopThread
 {
+    if (_threadDidStartedCallback)
+    {
+        _threadDidStartedCallback(self);
+    }
     while (YES)
     {
         if (_didClosed)
         {
+            while (YES)
+            {
+                KTVVPMessage * message = [_messageQueue getObjectAsync];
+                if (message)
+                {
+                    [message drop];
+                }
+                else
+                {
+                    break;
+                }
+            }
+            [_messageQueue destory];
             break;
         }
         KTVVPMessage * message = [_messageQueue getObjectSync];
@@ -59,8 +109,21 @@
         {
             continue;
         }
-        [self.delegate messageLoop:self processingMessage:message];
+        if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
+        {
+            [self.delegate messageLoop:self processingMessage:message];
+        }
+        else
+        {
+            [message drop];
+        }
     }
+    if (_threadDidFiniahedCallback)
+    {
+        _threadDidFiniahedCallback(self);
+    }
+    _running = NO;
+    [_waitThreadCondition broadcast];
 }
 
 @end

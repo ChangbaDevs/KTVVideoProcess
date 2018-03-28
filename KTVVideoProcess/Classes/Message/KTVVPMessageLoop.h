@@ -21,10 +21,19 @@
 
 @property (nonatomic, weak) id <KTVVPMessageLoopDelegate> delegate;
 @property (nonatomic, strong, readonly) NSThread * thread;
+@property (nonatomic, assign, readonly) BOOL running;
 
 - (void)run;
 - (void)stop;
 
 - (void)putMessage:(KTVVPMessage *)message;
+
+
+#pragma mark - Flow Control
+
+@property (nonatomic, copy) void (^threadDidStartedCallback)(KTVVPMessageLoop * messageLoop);
+@property (nonatomic, copy) void (^threadDidFiniahedCallback)(KTVVPMessageLoop * messageLoop);
+
+- (void)waitUntilThreadDidFinished;
 
 @end

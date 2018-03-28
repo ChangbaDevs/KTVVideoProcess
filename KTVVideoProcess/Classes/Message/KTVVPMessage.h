@@ -24,4 +24,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeOpenGL)
 @property (nonatomic, assign) NSUInteger type;
 @property (nonatomic, strong) id object;
 
+@property (nonatomic, copy) void (^dropCallback)(KTVVPMessage * message);
+- (void)drop;
+
 @end

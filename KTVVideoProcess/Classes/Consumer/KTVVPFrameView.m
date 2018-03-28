@@ -64,6 +64,12 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [_messageLoop stop];
+    _messageLoop = nil;
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -83,7 +89,12 @@
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     [frame lock];
-    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame]];
+    KTVVPMessage * message = [KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame];
+    [message setDropCallback:^(KTVVPMessage * message) {
+        KTVVPFrame * object = (KTVVPFrame *)message.object;
+        [object unlock];
+    }];
+    [_messageLoop putMessage:message];
 }
 
 
@@ -166,6 +177,23 @@
     }
 }
 
+- (void)destroyFramebufferWhenMessageLoopThreadDidFinished
+{
+    KTVVPContext * context = _context;
+    GLuint glFramebuffer = _glFramebuffer;
+    GLuint glRenderbuffer = _glRenderbuffer;
+    [_messageLoop setThreadDidFiniahedCallback:^(KTVVPMessageLoop * messageLoop) {
+        [context setGLContextForCurrentThreadIfNeeded];
+        if (glFramebuffer)
+        {
+            glDeleteFramebuffers(1, &glFramebuffer);
+        }
+        if (glRenderbuffer)
+        {
+            glDeleteRenderbuffers(1, &glRenderbuffer);
+        }
+    }];
+}
 
 #pragma mark - KTVVPMessageLoopDelegate
 
@@ -179,6 +207,7 @@
     {
         [self destroyFramebuffer];
         [self setupFramebuffer];
+        [self destroyFramebufferWhenMessageLoopThreadDidFinished];
     }
     else if (message.type == KTVVPMessageTypeOpenGLDrawing)
     {

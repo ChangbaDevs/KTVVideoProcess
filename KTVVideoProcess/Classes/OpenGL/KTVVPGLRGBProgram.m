@@ -32,7 +32,6 @@ static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
  void main()
  {
      gl_FragColor = texture2D(samplerRGB, varying_textureCoordinate);
-//     gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
  }
  );
 

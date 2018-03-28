@@ -13,6 +13,7 @@
 @property (nonatomic, strong) NSCondition * condition;
 @property (nonatomic, strong) NSMutableArray * objects;
 @property (nonatomic, assign) BOOL didDestoryed;
+@property (nonatomic, assign) BOOL disableSyncRequest;
 
 @end
 
@@ -28,8 +29,17 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self destory];
+}
+
 - (void)putObject:(id)object
 {
+    if (_didDestoryed)
+    {
+        return;
+    }
     [_condition lock];
     [_objects addObject:object];
     [_condition signal];
@@ -38,8 +48,12 @@
 
 - (id)getObjectSync
 {
+    if (_didDestoryed)
+    {
+        return nil;
+    }
     [_condition lock];
-    while (_objects.count <= 0)
+    while (_objects.count <= 0 && !_disableSyncRequest)
     {
         [_condition wait];
         if (_didDestoryed)
@@ -49,15 +63,62 @@
         }
     }
     id object = _objects.firstObject;
-    [_objects removeObjectAtIndex:0];
-    [_condition signal];
+    if (object)
+    {
+        [_objects removeObjectAtIndex:0];
+    }
     [_condition unlock];
     return object;
 }
 
+- (id)getObjectAsync
+{
+    if (_didDestoryed)
+    {
+        return nil;
+    }
+    [_condition lock];
+    id object = _objects.firstObject;
+    if (object)
+    {
+        [_objects removeObjectAtIndex:0];
+    }
+    [_condition unlock];
+    return object;
+}
+
+- (void)broadcastAllSyncRequest
+{
+    if (_didDestoryed)
+    {
+        return;
+    }
+    [_condition lock];
+    _disableSyncRequest = YES;
+    [_condition broadcast];
+    [_condition unlock];
+}
+
+- (void)flush
+{
+    if (_didDestoryed)
+    {
+        return;
+    }
+    [_condition lock];
+    [_objects removeAllObjects];
+    [_condition broadcast];
+    [_condition unlock];
+}
+
 - (void)destory
 {
+    if (_didDestoryed)
+    {
+        return;
+    }
     _didDestoryed = YES;
+    [self flush];
 }
 
 @end
