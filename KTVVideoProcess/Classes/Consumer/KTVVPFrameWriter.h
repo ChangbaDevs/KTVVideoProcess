@@ -33,7 +33,7 @@
 @property (nonatomic, copy) NSDictionary * videoOutputSettings;
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
 
-@property (nonatomic, assign) NSTimeInterval asyncDelayInterval;       // default is 0.
+@property (nonatomic, assign) NSTimeInterval delayInterval;       // default is 0.
 
 
 #pragma mark - Control

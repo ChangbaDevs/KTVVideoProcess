@@ -16,7 +16,7 @@
 @property (nonatomic, strong) AVAssetWriterInputPixelBufferAdaptor * assetWriterInputPixelBufferAdaptor;
 
 @property (nonatomic, strong) NSMutableArray <KTVVPFrame *> * frameQueue;
-@property (nonatomic, assign) NSTimeInterval asyncDelayIntervalInternal;
+@property (nonatomic, assign) NSTimeInterval delayIntervalInternal;
 @property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
 
 @property (nonatomic, strong) dispatch_queue_t runningQueue;
@@ -44,6 +44,8 @@
                                               (id)kCVPixelBufferWidthKey : @(_videoSize.width),
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
         _runningQueue = dispatch_queue_create("KTVVPFrameWriter-running-queue", DISPATCH_QUEUE_SERIAL);
+        _videoStartTime = kCMTimeInvalid;
+        _videoPreviousFrameTime = kCMTimeInvalid;
     }
     return self;
 }
@@ -92,7 +94,7 @@
     [_assetWriter addInput:_assetWriterVideoInput];
     
     _frameQueue = [NSMutableArray array];
-    _asyncDelayIntervalInternal = _asyncDelayInterval;
+    _delayIntervalInternal = _delayInterval;
     _timeComponents = [[KTVVPTimeComponents alloc] init];
 }
 
@@ -108,8 +110,10 @@
             }];
             [_frameQueue removeAllObjects];
             _frameQueue = nil;
-            _asyncDelayIntervalInternal = 0;
+            _delayIntervalInternal = 0;
             _timeComponents = nil;
+            _videoStartTime = kCMTimeInvalid;
+            _videoPreviousFrameTime = kCMTimeInvalid;
         });
     }
 }
@@ -196,9 +200,9 @@
         }
         return;
     }
-    if (_asyncDelayIntervalInternal > 0)
+    if (_delayIntervalInternal > 0)
     {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_asyncDelayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
             if (success)
             {
                 success();
@@ -238,9 +242,9 @@
     if (_paused)
     {
         dispatch_async(_runningQueue, ^{
-            if (_asyncDelayIntervalInternal > 0)
+            if (_delayIntervalInternal > 0)
             {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_asyncDelayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
                     [_timeComponents putDroppedTimeStamp:timeStamp];
                 });
             }
@@ -255,9 +259,9 @@
         [frame lock];
         dispatch_async(_runningQueue, ^{
             [self insertFrameInOrder:frame];
-            if (_asyncDelayIntervalInternal > 0)
+            if (_delayIntervalInternal > 0)
             {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_asyncDelayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
                     [_timeComponents putCurrentTimeStamp:timeStamp];
                     [self processFristFrame];
                 });

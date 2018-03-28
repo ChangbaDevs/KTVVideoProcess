@@ -43,7 +43,7 @@
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
-//    self.frameWriter.asyncDelayInterval = 0.06;
+    self.frameWriter.delayInterval = 0.0f;
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                    filterClasses:@[[KTVVPToneCurveFilter class],
