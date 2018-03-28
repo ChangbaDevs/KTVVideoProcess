@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 - (KTVVPFrameType)type;
 
-@property (nonatomic, assign) CMTime time;
+@property (nonatomic, assign) CMTime timeStamp;
 @property (nonatomic, assign) GLuint texture;
 @property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
 @property (nonatomic, assign) KTVVPGLSize size;

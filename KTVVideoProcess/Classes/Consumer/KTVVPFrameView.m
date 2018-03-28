@@ -183,17 +183,17 @@
     else if (message.type == KTVVPMessageTypeOpenGLDrawing)
     {
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
-        if (CMTIME_IS_VALID(frame.time)
+        if (CMTIME_IS_VALID(frame.timeStamp)
             && CMTIME_IS_VALID(_previousFrameTime))
         {
-            if (CMTimeCompare(frame.time, _previousFrameTime) < 0)
+            if (CMTimeCompare(frame.timeStamp, _previousFrameTime) < 0)
             {
                 NSLog(@"KTVVPFrameView Frame time is less than previous time.");
                 [frame unlock];
                 return;
             }
         }
-        _previousFrameTime = frame.time;
+        _previousFrameTime = frame.timeStamp;
         [self drawFrame:frame];
         [frame unlock];
     }

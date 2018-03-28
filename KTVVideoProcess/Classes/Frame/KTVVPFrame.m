@@ -96,7 +96,7 @@
 
 - (void)fillWithFrame:(KTVVPFrame *)frame
 {
-    _time = frame.time;
+    _timeStamp = frame.timeStamp;
     _size = frame.size;
     _rotationMode = frame.rotationMode;
     _flipMode = frame.flipMode;
@@ -104,7 +104,7 @@
 
 - (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame
 {
-    _time = frame.time;
+    _timeStamp = frame.timeStamp;
     _size = frame.finalSize;
     _rotationMode = KTVVPRotationModeNone;
     _flipMode = KTVVPFlipModeNone;
@@ -114,7 +114,7 @@
 
 - (void)clear
 {
-    _time = kCMTimeInvalid;
+    _timeStamp = kCMTimeInvalid;
     _rotationMode = KTVVPRotationModeNone;
     _flipMode = KTVVPFlipModeNone;
 }

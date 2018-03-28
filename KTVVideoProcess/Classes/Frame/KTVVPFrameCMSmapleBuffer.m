@@ -80,7 +80,6 @@
         int width = (int)CVPixelBufferGetWidth(pixelBuffer);
         int height = (int)CVPixelBufferGetHeight(pixelBuffer);
         KTVVPGLSize size = {width, height};
-        self.time = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
         self.size = size;
     }
 }

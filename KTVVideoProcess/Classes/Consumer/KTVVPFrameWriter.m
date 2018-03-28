@@ -221,10 +221,10 @@
         [frame unlock];
         return;
     }
-    if (CMTIME_IS_VALID(frame.time)
+    if (CMTIME_IS_VALID(frame.timeStamp)
         && CMTIME_IS_VALID(_videoPreviousFrameTime))
     {
-        if (CMTimeCompare(frame.time, _videoPreviousFrameTime) < 0)
+        if (CMTimeCompare(frame.timeStamp, _videoPreviousFrameTime) < 0)
         {
             NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
             [frame unlock];
@@ -233,13 +233,13 @@
     }
     if (CMTIME_IS_INVALID(_videoStartTime))
     {
-        [_assetWriter startSessionAtSourceTime:frame.time];
-        _videoStartTime = frame.time;
+        [_assetWriter startSessionAtSourceTime:frame.timeStamp];
+        _videoStartTime = frame.timeStamp;
     }
-    _videoPreviousFrameTime = frame.time;
+    _videoPreviousFrameTime = frame.timeStamp;
     CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:frame.time];
+    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:frame.timeStamp];
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     [frame unlock];
 }
@@ -248,10 +248,10 @@
 {
     [_frameQueue addObject:frame];
     [_frameQueue sortUsingComparator:^NSComparisonResult(KTVVPFrame * obj1, KTVVPFrame * obj2) {
-        if (CMTIME_IS_VALID(obj1.time)
-            && CMTIME_IS_VALID(obj2.time))
+        if (CMTIME_IS_VALID(obj1.timeStamp)
+            && CMTIME_IS_VALID(obj2.timeStamp))
         {
-            if (CMTimeCompare(obj1.time, obj2.time) > 0)
+            if (CMTimeCompare(obj1.timeStamp, obj2.timeStamp) > 0)
             {
                 return NSOrderedDescending;
             }

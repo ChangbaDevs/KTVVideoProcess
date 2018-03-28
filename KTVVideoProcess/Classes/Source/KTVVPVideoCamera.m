@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "KTVVPFramePool.h"
 #import "KTVVPFrameCMSmapleBuffer.h"
+#import "KTVVPTimeComponents.h"
 
 @interface KTVVPVideoCamera () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) AVCaptureDevice * videoDevice;
 @property (nonatomic, strong) AVCaptureDeviceInput * videoInput;
 @property (nonatomic, strong) AVCaptureVideoDataOutput * videoOutput;
+@property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
 
 @end
 
@@ -55,18 +57,22 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    CMTime presentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     if (self.paused)
     {
+        [_timeComponents putDroppedTimeStamp:presentationTimeStamp];
         return;
     }
     if (self.pipeline)
     {
+        [_timeComponents putCurrentTimeStamp:presentationTimeStamp];
         KTVVPFramePool * framePool = [self.context framePoolForKey:[NSString stringWithFormat:@"%p", self]];
         KTVVPFrameCMSmapleBuffer * frame = [framePool frameWithKey:[KTVVPFrameCMSmapleBuffer key] factory:^__kindof KTVVPFrame *{
             KTVVPFrameCMSmapleBuffer * result = [[KTVVPFrameCMSmapleBuffer alloc] init];
             return result;
         }];
         frame.sampleBuffer = sampleBuffer;
+        frame.timeStamp = _timeComponents.timeStamp;
         frame.rotationMode = KTVVPRotationMode270;
         frame.flipMode = KTVVPFlipModeHorizonal;
         [self.pipeline inputFrame:frame fromSource:self];
