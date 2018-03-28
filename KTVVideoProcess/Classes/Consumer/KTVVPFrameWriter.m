@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPFrameWriter.h"
+#import "KTVVPTimeComponents.h"
 
 @interface KTVVPFrameWriter ()
 
@@ -16,6 +17,7 @@
 
 @property (nonatomic, strong) NSMutableArray <KTVVPFrame *> * frameQueue;
 @property (nonatomic, assign) NSTimeInterval asyncDelayIntervalInternal;
+@property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
 
 @property (nonatomic, strong) dispatch_queue_t runningQueue;
 @property (nonatomic, assign) BOOL running;
@@ -42,6 +44,7 @@
                                               (id)kCVPixelBufferWidthKey : @(_videoSize.width),
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
         _runningQueue = dispatch_queue_create("KTVVPFrameWriter-running-queue", DISPATCH_QUEUE_SERIAL);
+        _timeComponents = [[KTVVPTimeComponents alloc] init];
     }
     return self;
 }
@@ -181,28 +184,45 @@
     {
         return;
     }
-    if (_paused)
-    {
-        return;
-    }
     if (_assetWriter.status != AVAssetWriterStatusWriting)
     {
         return;
     }
-    [frame lock];
-    dispatch_async(_runningQueue, ^{
-        [self insertFrameInOrder:frame];
-        if (_asyncDelayIntervalInternal > 0)
-        {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_asyncDelayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+    CMTime timeStamp = frame.timeStamp;
+    if (_paused)
+    {
+        dispatch_async(_runningQueue, ^{
+            if (_asyncDelayIntervalInternal > 0)
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_asyncDelayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+                    [_timeComponents putDroppedTimeStamp:timeStamp];
+                });
+            }
+            else
+            {
+                [_timeComponents putDroppedTimeStamp:timeStamp];
+            }
+        });
+    }
+    else
+    {
+        [frame lock];
+        dispatch_async(_runningQueue, ^{
+            [self insertFrameInOrder:frame];
+            if (_asyncDelayIntervalInternal > 0)
+            {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_asyncDelayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
+                    [_timeComponents putCurrentTimeStamp:timeStamp];
+                    [self processFristFrame];
+                });
+            }
+            else
+            {
+                [_timeComponents putCurrentTimeStamp:timeStamp];
                 [self processFristFrame];
-            });
-        }
-        else
-        {
-            [self processFristFrame];
-        }
-    });
+            }
+        });
+    }
 }
 
 
@@ -221,10 +241,10 @@
         [frame unlock];
         return;
     }
-    if (CMTIME_IS_VALID(frame.timeStamp)
+    if (CMTIME_IS_VALID(_timeComponents.timeStamp)
         && CMTIME_IS_VALID(_videoPreviousFrameTime))
     {
-        if (CMTimeCompare(frame.timeStamp, _videoPreviousFrameTime) < 0)
+        if (CMTimeCompare(_timeComponents.timeStamp, _videoPreviousFrameTime) < 0)
         {
             NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
             [frame unlock];
@@ -233,13 +253,13 @@
     }
     if (CMTIME_IS_INVALID(_videoStartTime))
     {
-        [_assetWriter startSessionAtSourceTime:frame.timeStamp];
-        _videoStartTime = frame.timeStamp;
+        [_assetWriter startSessionAtSourceTime:_timeComponents.timeStamp];
+        _videoStartTime = _timeComponents.timeStamp;
     }
-    _videoPreviousFrameTime = frame.timeStamp;
+    _videoPreviousFrameTime = _timeComponents.timeStamp;
     CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:frame.timeStamp];
+    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:_timeComponents.timeStamp];
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     [frame unlock];
 }

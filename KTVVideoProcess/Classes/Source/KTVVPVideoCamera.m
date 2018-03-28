@@ -70,7 +70,6 @@
     if (self.paused || !self.pipeline)
     {
         [_timeComponents putDroppedTimeStamp:presentationTimeStamp];
-        return;
     }
     else
     {
