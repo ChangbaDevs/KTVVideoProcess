@@ -44,7 +44,6 @@
                                               (id)kCVPixelBufferWidthKey : @(_videoSize.width),
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
         _runningQueue = dispatch_queue_create("KTVVPFrameWriter-running-queue", DISPATCH_QUEUE_SERIAL);
-        _timeComponents = [[KTVVPTimeComponents alloc] init];
     }
     return self;
 }
@@ -61,16 +60,21 @@
 }
 
 
-#pragma mark - Control
+#pragma mark - Setup
 
-- (BOOL)startRecording
+- (void)setup
 {
     if (!_outputFileURL || !_outputFileType)
     {
         NSString * domain = @"outputFileURL and outputFileType can't be nil";
         NSAssert(NO, domain);
         _error = [NSError errorWithDomain:domain code:-1 userInfo:nil];
-        return NO;
+        return;
+    }
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:_outputFileURL.path])
+    {
+        [[NSFileManager defaultManager] removeItemAtPath:_outputFileURL.path error:nil];
     }
     
     NSError * error = nil;
@@ -78,7 +82,7 @@
     if (error)
     {
         _error = error;
-        return NO;
+        return;
     }
     
     _assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:_videoOutputSettings];
@@ -86,14 +90,51 @@
     _assetWriterVideoInput.transform = _videoTransform;
     _assetWriterInputPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_assetWriterVideoInput sourcePixelBufferAttributes:_videoSourcePixelBufferAttributes];
     [_assetWriter addInput:_assetWriterVideoInput];
-    BOOL success = [_assetWriter startWriting];
-    if (!success)
-    {
-        return NO;
-    }
     
     _frameQueue = [NSMutableArray array];
     _asyncDelayIntervalInternal = _asyncDelayInterval;
+    _timeComponents = [[KTVVPTimeComponents alloc] init];
+}
+
+- (void)destory
+{
+    if (_assetWriter)
+    {
+        dispatch_sync(_runningQueue, ^{
+            [_assetWriterVideoInput markAsFinished];
+            [_assetWriter cancelWriting];
+            [_frameQueue enumerateObjectsUsingBlock:^(KTVVPFrame * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj unlock];
+            }];
+            [_frameQueue removeAllObjects];
+            _frameQueue = nil;
+            _asyncDelayIntervalInternal = 0;
+            _timeComponents = nil;
+        });
+    }
+}
+
+
+#pragma mark - Control
+
+- (BOOL)startRecording
+{
+    if (_running)
+    {
+        return YES;
+    }
+    [self destory];
+    [self setup];
+    if (_error)
+    {
+        return NO;
+    }
+    if (![_assetWriter startWriting])
+    {
+        NSString * domain = @"Start writing failed";
+        _error = [NSError errorWithDomain:domain code:-2 userInfo:nil];
+        return NO;
+    }
     _running = YES;
     return YES;
 }
@@ -189,6 +230,11 @@
         return;
     }
     CMTime timeStamp = frame.timeStamp;
+    if (CMTIME_IS_INVALID(timeStamp))
+    {
+        NSAssert(NO, @"timeStamp must a vaild CMTime value");
+        return;
+    }
     if (_paused)
     {
         dispatch_async(_runningQueue, ^{

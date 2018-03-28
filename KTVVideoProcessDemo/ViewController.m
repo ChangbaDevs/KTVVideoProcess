@@ -41,10 +41,6 @@
     
     KTVVPGLSize videoSize = {720, 1280};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath])
-    {
-        [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];
-    }
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
 //    self.frameWriter.asyncDelayInterval = 0.06;
