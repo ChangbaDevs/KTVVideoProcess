@@ -25,6 +25,8 @@
 {
     if (self = [super init])
     {
+        NSLog(@"%s", __func__);
+        
         self.size = size;
     }
     return self;
@@ -32,6 +34,8 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    
     [self.uploader.glContext setCurrentIfNeeded];
     if (_glFramebuffer)
     {

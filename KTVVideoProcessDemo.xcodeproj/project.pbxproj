@@ -10,7 +10,6 @@
 		9C3470F22065174F00A66180 /* KTVVPSerialPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3470F12065174F00A66180 /* KTVVPSerialPipeline.m */; };
 		9C3E5C772060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */; };
 		9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */; };
-		9C3E5C7D2060D56700F30377 /* KTVVPFrameGLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C7C2060D56700F30377 /* KTVVPFrameGLTexture.m */; };
 		9C3E5C832060E6ED00F30377 /* KTVVPToneCurveFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C822060E6ED00F30377 /* KTVVPToneCurveFilter.m */; };
 		9C3E5C862060E99800F30377 /* KTVVPToneCurveProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C852060E99800F30377 /* KTVVPToneCurveProgram.m */; };
 		9C3E5C8D2060EE1400F30377 /* blueCrystalFilter.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C882060EE1400F30377 /* blueCrystalFilter.acv */; };
@@ -62,8 +61,6 @@
 		9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameCMSmapleBuffer.m; sourceTree = "<group>"; };
 		9C3E5C782060C9A200F30377 /* KTVVPFrameDrawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameDrawable.h; sourceTree = "<group>"; };
 		9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameDrawable.m; sourceTree = "<group>"; };
-		9C3E5C7B2060D56700F30377 /* KTVVPFrameGLTexture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameGLTexture.h; sourceTree = "<group>"; };
-		9C3E5C7C2060D56700F30377 /* KTVVPFrameGLTexture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameGLTexture.m; sourceTree = "<group>"; };
 		9C3E5C812060E6ED00F30377 /* KTVVPToneCurveFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPToneCurveFilter.h; sourceTree = "<group>"; };
 		9C3E5C822060E6ED00F30377 /* KTVVPToneCurveFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPToneCurveFilter.m; sourceTree = "<group>"; };
 		9C3E5C842060E99800F30377 /* KTVVPToneCurveProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPToneCurveProgram.h; sourceTree = "<group>"; };
@@ -349,8 +346,6 @@
 				9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */,
 				9C3E5C782060C9A200F30377 /* KTVVPFrameDrawable.h */,
 				9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */,
-				9C3E5C7B2060D56700F30377 /* KTVVPFrameGLTexture.h */,
-				9C3E5C7C2060D56700F30377 /* KTVVPFrameGLTexture.m */,
 			);
 			path = Frame;
 			sourceTree = "<group>";
@@ -481,7 +476,6 @@
 				9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */,
 				9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */,
 				9C99059A205A194800D7CF3A /* ViewController.m in Sources */,
-				9C3E5C7D2060D56700F30377 /* KTVVPFrameGLTexture.m in Sources */,
 				9C9905CB205A4D3300D7CF3A /* KTVVPMessage.m in Sources */,
 				9C9905A5205A194800D7CF3A /* main.m in Sources */,
 				9C9905B9205A1DF900D7CF3A /* KTVVPFrame.m in Sources */,

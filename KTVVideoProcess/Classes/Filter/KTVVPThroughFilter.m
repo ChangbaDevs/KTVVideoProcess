@@ -28,6 +28,8 @@
                               framePool:framePool
                           frameUploader:frameUploader])
     {
+        NSLog(@"%s", __func__);
+        
         _directPass = NO;
         _handleTransform = YES;
         
