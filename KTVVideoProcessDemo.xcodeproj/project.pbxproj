@@ -268,19 +268,19 @@
 		9C9905AC205A19D200D7CF3A /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				9C9905D1205A626900D7CF3A /* OpenGL */,
-				9C9905CC205A4D6E00D7CF3A /* Message */,
-				9C9905B6205A1DCD00D7CF3A /* Frame */,
-				9C9905B3205A1C3B00D7CF3A /* Common */,
-				9C9905AD205A19D200D7CF3A /* Consumer */,
+				9C9905AF205A19D200D7CF3A /* Source */,
 				9C9905AE205A19D200D7CF3A /* Pipeline */,
 				9C622C2E2068C7AA00E7C630 /* Filter */,
-				9C9905AF205A19D200D7CF3A /* Source */,
+				9C9905AD205A19D200D7CF3A /* Output */,
+				9C9905B6205A1DCD00D7CF3A /* Frame */,
+				9C9905B3205A1C3B00D7CF3A /* Common */,
+				9C9905CC205A4D6E00D7CF3A /* Message */,
+				9C9905D1205A626900D7CF3A /* OpenGL */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		9C9905AD205A19D200D7CF3A /* Consumer */ = {
+		9C9905AD205A19D200D7CF3A /* Output */ = {
 			isa = PBXGroup;
 			children = (
 				9C9905BD205A211A00D7CF3A /* KTVVPFrameView.h */,
@@ -288,7 +288,7 @@
 				9C3E5CFB2062129200F30377 /* KTVVPFrameWriter.h */,
 				9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */,
 			);
-			path = Consumer;
+			path = Output;
 			sourceTree = "<group>";
 		};
 		9C9905AE205A19D200D7CF3A /* Pipeline */ = {
