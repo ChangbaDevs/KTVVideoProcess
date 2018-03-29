@@ -19,7 +19,6 @@
 typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 {
     KTVVPFrameTypeIdle,
-    KTVVPFrameTypeTextureOnly,
     KTVVPFrameTypeDrawable,
     KTVVPFrameTypeCMSampleBuffer,
 };

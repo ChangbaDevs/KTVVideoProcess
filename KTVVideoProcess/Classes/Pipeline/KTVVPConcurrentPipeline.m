@@ -24,9 +24,16 @@
     if (self = [super initWithContext:context
                         filterClasses:filterClasses])
     {
+        NSLog(@"%s", __func__);
+        
         _maxConcurrentCount = 3;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
 }
 
 - (void)setupInternal

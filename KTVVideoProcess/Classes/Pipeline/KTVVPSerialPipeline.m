@@ -24,8 +24,21 @@
 
 @implementation KTVVPSerialPipeline
 
+- (instancetype)initWithContext:(KTVVPContext *)context
+                  filterClasses:(NSArray <Class> *)filterClasses
+{
+    if (self = [super initWithContext:context
+                        filterClasses:filterClasses])
+    {
+        NSLog(@"%s", __func__);
+    }
+    return self;
+}
+
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    
     [_messageLoop stop];
     _messageLoop = nil;
 }
