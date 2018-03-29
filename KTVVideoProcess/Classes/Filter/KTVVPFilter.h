@@ -7,24 +7,30 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVVPContext.h"
+#import "EAGLContext+KTVVPExtension.h"
 #import "KTVVPFrameInput.h"
+#import "KTVVPFramePool.h"
+#import "KTVVPFrameUploader.h"
 
 @interface KTVVPFilter : NSObject <KTVVPFrameInput>
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithContext:(KTVVPContext *)context;
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+                        framePool:(KTVVPFramePool *)framePool
+                    frameUploader:(KTVVPFrameUploader *)frameUploader;
 
-@property (nonatomic, strong, readonly) KTVVPContext * context;
+@property (nonatomic, strong, readonly) EAGLContext * glContext;
+@property (nonatomic, strong, readonly) KTVVPFramePool * framePool;
+@property (nonatomic, strong, readonly) KTVVPFrameUploader * frameUploader;
 
 @property (nonatomic, assign) BOOL enable;      // default is YES.
 
 
 #pragma mark - Output
 
-@property (nonatomic, strong) id <KTVVPFrameInput> output;
+@property (nonatomic, weak) id <KTVVPFrameInput> output;
 
 - (void)outputFrame:(KTVVPFrame *)frame;
 

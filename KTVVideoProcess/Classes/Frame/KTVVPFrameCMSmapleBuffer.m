@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPFrameCMSmapleBuffer.h"
+#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameCMSmapleBuffer ()
 
@@ -29,6 +30,8 @@
     {
         return;
     }
+    
+    self.uploader = uploader;
     
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
     
@@ -92,6 +95,7 @@
 - (void)clear
 {
     [super clear];
+    [self.uploader.glContext setCurrentIfNeeded];
     if (_sampleBuffer)
     {
         CFRelease(_sampleBuffer);
@@ -104,6 +108,7 @@
     }
     KTVVPGLSize size = {0, 0};
     self.size = size;
+    self.uploader = nil;
     self.didUpload = NO;
 }
 

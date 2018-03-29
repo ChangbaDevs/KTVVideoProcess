@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPFrameDrawable.h"
+#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameDrawable ()
 
@@ -31,6 +32,7 @@
 
 - (void)dealloc
 {
+    [self.uploader.glContext setCurrentIfNeeded];
     if (_glFramebuffer)
     {
         glDeleteFramebuffers(1, &_glFramebuffer);
@@ -61,6 +63,8 @@
     {
         return;
     }
+    
+    self.uploader = uploader;
     
     glGenFramebuffers(1, &_glFramebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);

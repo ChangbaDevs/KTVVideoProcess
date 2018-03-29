@@ -27,6 +27,8 @@
 
 - (void)drop
 {
+    NSLog(@"%s", __func__);
+    
     if (_dropCallback)
     {
         _dropCallback(self);

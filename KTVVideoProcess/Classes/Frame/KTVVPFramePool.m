@@ -25,6 +25,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+}
+
 - (__kindof KTVVPFrame *)frameWithKey:(NSString *)key factory:(__kindof KTVVPFrame *(^)(void))factory
 {
     NSMutableSet <__kindof KTVVPFrame *> * frames = [_framesContainer objectForKey:key];

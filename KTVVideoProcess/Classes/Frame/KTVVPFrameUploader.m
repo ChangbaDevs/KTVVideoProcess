@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPFrameUploader.h"
+#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameUploader ()
 
@@ -26,6 +27,19 @@
     return self;
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+    
+    if (_glTextureCache)
+    {
+        [_glContext setCurrentIfNeeded];
+        CVOpenGLESTextureCacheFlush(_glTextureCache, 0);
+        CFRelease(_glTextureCache);
+        _glTextureCache = NULL;
+    }
+}
+
 - (CVOpenGLESTextureCacheRef)glTextureCache
 {
     if (!_glTextureCache)
@@ -37,16 +51,6 @@
         }
     }
     return _glTextureCache;
-}
-
-- (void)dealloc
-{
-    if (_glTextureCache)
-    {
-        CVOpenGLESTextureCacheFlush(_glTextureCache, 0);
-        CFRelease(_glTextureCache);
-        _glTextureCache = NULL;
-    }
 }
 
 @end

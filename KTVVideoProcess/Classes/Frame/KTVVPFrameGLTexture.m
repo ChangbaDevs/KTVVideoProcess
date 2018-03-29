@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPFrameGLTexture.h"
+#import "EAGLContext+KTVVPExtension.h"
 
 @implementation KTVVPFrameGLTexture
 
@@ -14,6 +15,7 @@
 {
     if (self.texture)
     {
+        [self.uploader.glContext setCurrentIfNeeded];
         GLuint texture = self.texture;
         glDeleteTextures(1, &texture);
         self.texture = 0;
@@ -31,6 +33,8 @@
     {
         return;
     }
+    
+    self.uploader = uploader;
     
     GLuint texture;
     glGenTextures(1, &texture);

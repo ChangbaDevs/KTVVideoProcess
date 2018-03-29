@@ -47,6 +47,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 @property (nonatomic, assign, readonly) KTVVPGLSize finalSize;
 @property (nonatomic, assign, readonly) KTVVPRotationMode completionRotationMode;
 @property (nonatomic, assign, readonly) KTVVPFlipMode textureFlipMode;
+@property (nonatomic, strong) KTVVPFrameUploader * uploader;
 @property (nonatomic, assign) BOOL didUpload;
 
 - (void)fillWithFrame:(KTVVPFrame *)frame;

@@ -14,11 +14,15 @@
 
 @implementation KTVVPFilter
 
-- (instancetype)initWithContext:(KTVVPContext *)context;
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+                        framePool:(KTVVPFramePool *)framePool
+                    frameUploader:(KTVVPFrameUploader *)frameUploader
 {
     if (self = [super init])
     {
-        _context = context;
+        _glContext = glContext;
+        _framePool = framePool;
+        _frameUploader = frameUploader;
         _enable = YES;
     }
     return self;

@@ -19,6 +19,7 @@
 @property (nonatomic, strong) AVCaptureDeviceInput * videoInput;
 @property (nonatomic, strong) AVCaptureVideoDataOutput * videoOutput;
 @property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
+@property (nonatomic, strong) KTVVPFramePool * framePool;
 
 @end
 
@@ -31,6 +32,11 @@
         _timeComponents = [[KTVVPTimeComponents alloc] init];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
 }
 
 - (void)start
@@ -74,8 +80,11 @@
     else
     {
         [_timeComponents putCurrentTimeStamp:presentationTimeStamp];
-        KTVVPFramePool * framePool = [self.context framePoolForKey:[NSString stringWithFormat:@"%p", self]];
-        KTVVPFrameCMSmapleBuffer * frame = [framePool frameWithKey:[KTVVPFrameCMSmapleBuffer key] factory:^__kindof KTVVPFrame *{
+        if (!self.framePool)
+        {
+            self.framePool = [[KTVVPFramePool alloc] init];
+        }
+        KTVVPFrameCMSmapleBuffer * frame = [self.framePool frameWithKey:[KTVVPFrameCMSmapleBuffer key] factory:^__kindof KTVVPFrame *{
             KTVVPFrameCMSmapleBuffer * result = [[KTVVPFrameCMSmapleBuffer alloc] init];
             return result;
         }];

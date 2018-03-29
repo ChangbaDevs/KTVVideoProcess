@@ -11,6 +11,11 @@
 
 @interface KTVVPGLRGBProgram : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithGLContext:(EAGLContext *)glContext;
+
 @property (nonatomic, assign, readonly) GLint position_location;
 @property (nonatomic, assign, readonly) GLint textureCoordinate_location;
 @property (nonatomic, assign, readonly) GLint sampler_location;

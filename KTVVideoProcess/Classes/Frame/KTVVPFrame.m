@@ -33,6 +33,8 @@
 {
     if (self = [super init])
     {
+        NSLog(@"%s", __func__);
+        
         _textureOptions = [KTVVPFrame defaultTextureOptions];
         [self clear];
     }
@@ -41,6 +43,8 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    
     [self clear];
 }
 
@@ -114,7 +118,7 @@
 
 - (void)clear
 {
-    _timeStamp = kCMTimeInvalid;
+    _timeStamp = kCMTimeZero;
     _rotationMode = KTVVPRotationModeNone;
     _flipMode = KTVVPFlipModeNone;
 }

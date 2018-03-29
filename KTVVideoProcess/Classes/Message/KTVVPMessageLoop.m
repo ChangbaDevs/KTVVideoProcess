@@ -33,6 +33,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+}
+
 - (void)run
 {
     if (_didClosed)

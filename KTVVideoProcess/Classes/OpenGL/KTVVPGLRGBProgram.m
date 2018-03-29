@@ -43,12 +43,13 @@ static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
 
 @implementation KTVVPGLRGBProgram
 
-- (instancetype)init
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
 {
     if (self = [super init])
     {
-        _program = [[KTVVPGLProgram alloc] initWithVertexShaderCString:vertex_shader_string
-                                                     fragmentShaderCString:fragment_shader_string];
+        _program = [[KTVVPGLProgram alloc] initWithGLContext:glContext
+                                         vertexShaderCString:vertex_shader_string
+                                       fragmentShaderCString:fragment_shader_string];
         if (_program.linkSuccess)
         {
             _position_location = [_program attributeLocation:@"position"];
@@ -57,6 +58,11 @@ static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
         }
     }
     return self;
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
 }
 
 - (void)bindTexture:(GLuint)texture

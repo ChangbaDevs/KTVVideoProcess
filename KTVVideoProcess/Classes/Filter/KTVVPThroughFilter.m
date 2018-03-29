@@ -20,14 +20,27 @@
 
 @implementation KTVVPThroughFilter
 
-- (instancetype)initWithContext:(KTVVPContext *)context
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+                        framePool:(KTVVPFramePool *)framePool
+                    frameUploader:(KTVVPFrameUploader *)frameUploader
 {
-    if (self = [super initWithContext:context])
+    if (self = [super initWithGLContext:glContext
+                              framePool:framePool
+                          frameUploader:frameUploader])
     {
         _directPass = NO;
         _handleTransform = YES;
+        
+        [self.glContext setCurrentIfNeeded];
+        _glModel = [[KTVVPGLPlaneModel alloc] initWithGLContext:self.glContext];
+        _glProgram = [[KTVVPGLRGBProgram alloc] initWithGLContext:self.glContext];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
 }
 
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
@@ -43,25 +56,15 @@
         return;
     }
     
-    [self.context setGLContextForCurrentThreadIfNeeded];
-    if (!_glModel)
-    {
-        _glModel = [[KTVVPGLPlaneModel alloc] init];
-    }
-    if (!_glProgram)
-    {
-        _glProgram = [[KTVVPGLRGBProgram alloc] init];
-    }
-    
+    [self.glContext setCurrentIfNeeded];
     [frame lock];
-    KTVVPFramePool * framePool = [self.context framePoolCurrentThread];
     KTVVPGLSize size = frame.size;
     if (_handleTransform)
     {
         size = frame.finalSize;
     }
     NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
-    KTVVPFrameDrawable * result = [framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
+    KTVVPFrameDrawable * result = [self.framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
         KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
         return result;
     }];
@@ -78,12 +81,12 @@
         _glModel.flipMode = KTVVPFlipModeNone;
     }
     [_glModel reloadDataIfNeeded];
-    [result uploadIfNeeded:[self.context frameUploaderForCurrentThread]];
+    [result uploadIfNeeded:self.frameUploader];
     [result bindFramebuffer];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     [_glProgram use];
-    [frame uploadIfNeeded:[self.context frameUploaderForCurrentThread]];
+    [frame uploadIfNeeded:self.frameUploader];
     [_glProgram bindTexture:frame.texture];
     [_glModel bindPosition_location:_glProgram.position_location
          textureCoordinate_location:_glProgram.textureCoordinate_location];

@@ -52,6 +52,8 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    
     if (_assetWriter.status == AVAssetWriterStatusWriting)
     {
         dispatch_sync(_runningQueue, ^{

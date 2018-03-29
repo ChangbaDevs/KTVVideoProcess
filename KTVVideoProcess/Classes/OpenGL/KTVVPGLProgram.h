@@ -14,10 +14,12 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithVertexShaderCString:(const char *)vertexShaderCString
-                      fragmentShaderCString:(const char *)fragmentShaderCString;
-- (instancetype)initWithVertexShaderString:(NSString *)vertexShaderString
-                      fragmentShaderString:(NSString *)fragmentShaderString;
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+              vertexShaderCString:(const char *)vertexShaderCString
+            fragmentShaderCString:(const char *)fragmentShaderCString;
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+               vertexShaderString:(NSString *)vertexShaderString
+             fragmentShaderString:(NSString *)fragmentShaderString;
 
 @property (nonatomic, copy, readonly) NSString * vertexShaderString;
 @property (nonatomic, copy, readonly) NSString * fragmentShaderString;

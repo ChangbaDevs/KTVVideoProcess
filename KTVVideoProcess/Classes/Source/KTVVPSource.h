@@ -30,6 +30,6 @@
 
 #pragma mark - Output
 
-@property (nonatomic, strong) KTVVPPipeline * pipeline;
+@property (nonatomic, weak) KTVVPPipeline * pipeline;
 
 @end

@@ -32,7 +32,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self setup:nil];
+}
+
+- (IBAction)setup:(UIButton *)sender
+{
     self.context = [[KTVVPContext alloc] init];
     
     self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
@@ -43,7 +47,7 @@
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
-    self.frameWriter.delayInterval = 0.0f;
+    self.frameWriter.delayInterval = 0.2f;
     
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                    filterClasses:@[[KTVVPToneCurveFilter class],
@@ -56,6 +60,16 @@
     self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];
     self.videoCamera.pipeline = self.pipeline;
     [self.videoCamera start];
+}
+
+- (IBAction)destory:(UIButton *)sender
+{
+    [self.frameView removeFromSuperview];
+    self.pipeline = nil;
+    self.frameView = nil;
+    self.frameWriter = nil;
+    self.videoCamera = nil;
+    self.context = nil;
 }
 
 - (IBAction)captureStartAction:(UIButton *)sender

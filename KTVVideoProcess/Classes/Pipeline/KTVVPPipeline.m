@@ -29,6 +29,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+}
+
 - (void)setupIfNeeded
 {
     if (!_didSetup)

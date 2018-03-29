@@ -13,12 +13,22 @@
 
 @interface KTVVPSerialPipeline () <KTVVPPipelinePrivate, KTVVPMessageLoopDelegate>
 
+@property (nonatomic, strong) EAGLContext * glContext;
+@property (nonatomic, strong) KTVVPFramePool * framePool;
+@property (nonatomic, strong) KTVVPFrameUploader * frameUploader;
+
 @property (nonatomic, strong) NSArray <KTVVPFilter *> * filters;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 
 @end
 
 @implementation KTVVPSerialPipeline
+
+- (void)dealloc
+{
+    [_messageLoop stop];
+    _messageLoop = nil;
+}
 
 - (void)setupInternal
 {
@@ -49,7 +59,12 @@
         _processing = YES;
         
         [frame lock];
-        [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame]];
+        KTVVPMessage * message = [KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame];
+        [message setDropCallback:^(KTVVPMessage * message) {
+            KTVVPFrame * object = (KTVVPFrame *)message.object;
+            [object unlock];
+        }];
+        [self.messageLoop putMessage:message];
     }
 }
 
@@ -60,14 +75,20 @@
 {
     if (message.type == KTVVPMessageTypeOpenGLSetupContext)
     {
-        [self.context setGLContextForCurrentThreadIfNeeded];
+        _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
+                                           sharegroup:self.context.mainGLContext.sharegroup];
+        [_glContext setCurrentIfNeeded];
+        _framePool = [[KTVVPFramePool alloc] init];
+        _frameUploader = [[KTVVPFrameUploader alloc] initWithGLContext:_glContext];
         
-        NSMutableArray * filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
+        NSMutableArray <__kindof KTVVPFilter *> * filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
         __kindof KTVVPFilter * lastFilter = nil;
         for (Class filterClass in self.filterClasses)
         {
             __kindof KTVVPFilter * obj = [filterClass alloc];
-            obj = [obj initWithContext:self.context];
+            obj = [obj initWithGLContext:_glContext
+                               framePool:_framePool
+                           frameUploader:_frameUploader];
             lastFilter.output = obj;
             lastFilter = obj;
             [filters addObject:obj];
@@ -80,7 +101,7 @@
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         if (frame)
         {
-            [self.context setGLContextForCurrentThreadIfNeeded];
+            [_glContext setCurrentIfNeeded];
             
             [_filters.firstObject inputFrame:frame fromSource:self];
             [frame unlock];

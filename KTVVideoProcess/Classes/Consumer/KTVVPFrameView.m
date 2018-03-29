@@ -13,6 +13,7 @@
 #import "KTVVPGLRGBProgram.h"
 #import "KTVVPGLPlaneModel.h"
 #import <GLKit/GLKit.h>
+#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameView () <KTVVPMessageLoopDelegate>
 
@@ -25,8 +26,10 @@
 
 @property (nonatomic, assign) CGFloat glScale;
 @property (nonatomic, strong) CAEAGLLayer * glLayer;
+@property (nonatomic, strong) EAGLContext * glContext;
 @property (nonatomic, strong) KTVVPGLRGBProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
+@property (nonatomic, strong) KTVVPFrameUploader * frameUploader;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) CMTime previousFrameTime;
 
@@ -66,6 +69,9 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    
+    [self destroyOnMessageLoopThread];
     [_messageLoop stop];
     _messageLoop = nil;
 }
@@ -104,7 +110,7 @@
 {
     [self drawPrepare];
     [_glProgram use];
-    [frame uploadIfNeeded:[_context frameUploaderForCurrentThread]];
+    [frame uploadIfNeeded:_frameUploader];
     [_glProgram bindTexture:frame.texture];
     _glModel.rotationMode = frame.rotationMode;
     _glModel.flipMode = frame.textureFlipMode;
@@ -124,7 +130,7 @@
 
 - (void)drawPrepare
 {
-    [_context setGLContextForCurrentThreadIfNeeded];
+    [_glContext setCurrentIfNeeded];
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
     glViewport(0, 0, (GLint)_displaySize.width * self.glScale, (GLint)_displaySize.height * self.glScale);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -134,7 +140,7 @@
 - (void)drawFlush
 {
     glBindRenderbuffer(GL_RENDERBUFFER, _glRenderbuffer);
-    [[_context glContextForCurrentThread] presentRenderbuffer:GL_RENDERBUFFER];
+    [_glContext presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 
@@ -142,9 +148,11 @@
 
 - (void)setupOpenGL
 {
-    [_context setGLContextForCurrentThreadIfNeeded];
-    _glModel = [[KTVVPGLPlaneModel alloc] init];
-    _glProgram = [[KTVVPGLRGBProgram alloc] init];
+    _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:_context.mainGLContext.sharegroup];
+    [_glContext setCurrentIfNeeded];
+    _glModel = [[KTVVPGLPlaneModel alloc] initWithGLContext:_glContext];
+    _glProgram = [[KTVVPGLRGBProgram alloc] initWithGLContext:_glContext];
+    _frameUploader = [[KTVVPFrameUploader alloc] initWithGLContext:_glContext];
 }
 
 - (void)setupFramebuffer
@@ -153,18 +161,18 @@
     {
         return;
     }
-    [_context setGLContextForCurrentThreadIfNeeded];
+    [_glContext setCurrentIfNeeded];
     glGenFramebuffers(1, &_glFramebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
     glGenRenderbuffers(1, &_glRenderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, _glRenderbuffer);
-    [[_context glContextForCurrentThread] renderbufferStorage:GL_RENDERBUFFER fromDrawable:_glLayer];
+    [_glContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:_glLayer];
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _glRenderbuffer);
 }
 
 - (void)destroyFramebuffer
 {
-    [_context setGLContextForCurrentThreadIfNeeded];
+    [_glContext setCurrentIfNeeded];
     if (_glFramebuffer)
     {
         glDeleteFramebuffers(1, &_glFramebuffer);
@@ -177,13 +185,13 @@
     }
 }
 
-- (void)destroyFramebufferWhenMessageLoopThreadDidFinished
+- (void)destroyOnMessageLoopThread
 {
-    KTVVPContext * context = _context;
+    EAGLContext * glContext = _glContext;
     GLuint glFramebuffer = _glFramebuffer;
     GLuint glRenderbuffer = _glRenderbuffer;
     [_messageLoop setThreadDidFiniahedCallback:^(KTVVPMessageLoop * messageLoop) {
-        [context setGLContextForCurrentThreadIfNeeded];
+        [glContext setCurrentIfNeeded];
         if (glFramebuffer)
         {
             glDeleteFramebuffers(1, &glFramebuffer);
@@ -207,7 +215,6 @@
     {
         [self destroyFramebuffer];
         [self setupFramebuffer];
-        [self destroyFramebufferWhenMessageLoopThreadDidFinished];
     }
     else if (message.type == KTVVPMessageTypeOpenGLDrawing)
     {

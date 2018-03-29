@@ -8,21 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
-#import "KTVVPFramePool.h"
-#import "KTVVPFrameUploader.h"
 
 @interface KTVVPContext : NSObject
 
 @property (nonatomic, strong, readonly) EAGLContext * mainGLContext;
-
-- (void)setGLContextForCurrentThreadIfNeeded;
-- (EAGLContext *)glContextForCurrentThread;
-- (EAGLContext *)glContextForKey:(NSString *)key;
-
-- (KTVVPFramePool *)framePoolCurrentThread;
-- (KTVVPFramePool *)framePoolForKey:(NSString *)key;
-
-- (KTVVPFrameUploader *)frameUploaderForCurrentThread;
-- (KTVVPFrameUploader *)frameUploaderForKey:(NSString *)key;
 
 @end

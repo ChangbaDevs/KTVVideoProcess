@@ -11,6 +11,11 @@
 
 @interface KTVVPGLModel : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithGLContext:(EAGLContext *)glContext;
+
 - (void)reloadData;
 
 - (void)bindPosition_location:(GLint)position_location textureCoordinate_location:(GLint)textureCoordinate_location;

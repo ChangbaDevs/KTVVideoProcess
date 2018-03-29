@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPGLProgram.h"
+#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPGLProgram ()
 
@@ -14,24 +15,30 @@
     GLuint _program;
 }
 
+@property (nonatomic, strong) EAGLContext * glContext;
 @property (nonatomic, assign) BOOL linkSuccess;
 
 @end
 
 @implementation KTVVPGLProgram
 
-- (instancetype)initWithVertexShaderCString:(const char *)vertexShaderCString
-                      fragmentShaderCString:(const char *)fragmentShaderCString
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+              vertexShaderCString:(const char *)vertexShaderCString
+            fragmentShaderCString:(const char *)fragmentShaderCString
 {
-    return [self initWithVertexShaderString:[NSString stringWithCString:vertexShaderCString encoding:NSUTF8StringEncoding]
-                       fragmentShaderString:[NSString stringWithCString:fragmentShaderCString encoding:NSUTF8StringEncoding]];
+    return [self initWithGLContext:glContext
+                vertexShaderString:[NSString stringWithCString:vertexShaderCString encoding:NSUTF8StringEncoding]
+              fragmentShaderString:[NSString stringWithCString:fragmentShaderCString encoding:NSUTF8StringEncoding]];
 }
 
-- (instancetype)initWithVertexShaderString:(NSString *)vertexShaderString
-                      fragmentShaderString:(NSString *)fragmentShaderString
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+               vertexShaderString:(NSString *)vertexShaderString
+             fragmentShaderString:(NSString *)fragmentShaderString
 {
     if (self = [super init])
     {
+        _glContext = glContext;
+        
         _vertexShaderString = vertexShaderString;
         _fragmentShaderString = fragmentShaderString;
         
@@ -63,8 +70,11 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    
     if (_program)
     {
+        [_glContext setCurrentIfNeeded];
         glDeleteProgram(_program);
     }
 }

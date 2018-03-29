@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPGLModel.h"
+#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPGLModel ()
 
@@ -23,14 +24,17 @@
     int _vertices_count;
 }
 
+@property (nonatomic, strong) EAGLContext * glContext;
+
 @end
 
 @implementation KTVVPGLModel
 
-- (instancetype)init
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
 {
     if (self = [super init])
     {
+        _glContext = glContext;
         [self setupDdata];
     }
     return self;
@@ -38,6 +42,8 @@
 
 - (void)dealloc
 {
+    NSLog(@"%s", __func__);
+    [_glContext setCurrentIfNeeded];
     [self destoryData];
 }
 
