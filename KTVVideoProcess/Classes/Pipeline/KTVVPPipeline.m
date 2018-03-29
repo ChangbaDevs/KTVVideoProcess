@@ -11,6 +11,7 @@
 
 @interface KTVVPPipeline () <KTVVPPipelinePrivate>
 
+@property (nonatomic, strong) NSLock * outputsLock;
 @property (nonatomic, strong) NSMutableArray <id <KTVVPFrameInput>> * outputsInternal;
 
 @end
@@ -25,6 +26,7 @@
         _context = context;
         _filterClasses = filterClasses;
         _needFlushBeforOutput = YES;
+        _outputsLock = [[NSLock alloc] init];
     }
     return self;
 }
@@ -46,11 +48,15 @@
 
 - (NSArray <id <KTVVPFrameInput>> *)outputs
 {
-    return [_outputsInternal copy];
+    [_outputsLock lock];
+    NSArray * obj = [_outputsInternal copy];
+    [_outputsLock unlock];
+    return obj;
 }
 
 - (void)addOutput:(id <KTVVPFrameInput>)output
 {
+    [_outputsLock lock];
     if (!_outputsInternal)
     {
         _outputsInternal = [NSMutableArray array];
@@ -59,6 +65,7 @@
     {
         [_outputsInternal addObject:output];
     }
+    [_outputsLock unlock];
 }
 
 - (void)addOutputs:(NSArray <id<KTVVPFrameInput>> *)outputs
@@ -71,7 +78,9 @@
 
 - (void)removeOutput:(id <KTVVPFrameInput>)output
 {
+    [_outputsLock lock];
     [_outputsInternal removeObject:output];
+    [_outputsLock unlock];
 }
 
 - (void)removeOutputs:(NSArray <id<KTVVPFrameInput>> *)outputs
@@ -84,7 +93,9 @@
 
 - (void)removeAllOutputs
 {
+    [_outputsLock lock];
     [_outputsInternal removeAllObjects];
+    [_outputsLock unlock];
 }
 
 - (void)outputFrame:(KTVVPFrame *)frame
@@ -94,10 +105,12 @@
         glFlush();
     }
     [frame lock];
+    [_outputsLock lock];
     for (id <KTVVPFrameInput> obj in _outputsInternal)
     {
         [obj inputFrame:frame fromSource:self];
     }
+    [_outputsLock unlock];
     [frame unlock];
 }
 
