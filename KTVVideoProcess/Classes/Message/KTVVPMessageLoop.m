@@ -20,15 +20,16 @@
 
 @implementation KTVVPMessageLoop
 
-- (instancetype)init
+- (instancetype)initWithIdentify:(NSString *)identify
 {
     if (self = [super init])
     {
+        _identify = identify;
         _waitThreadCondition = [[NSCondition alloc] init];
         _messageQueue = [[KTVVPObjectQueue alloc] init];
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(messageLoopThread) object:nil];
         _thread.qualityOfService = NSQualityOfServiceDefault;
-        _thread.name = @"KTVVPMessageLoop-thread";
+        _thread.name = [NSString stringWithFormat:@"KTVVPMessageLoop-thread-%@", _identify];
     }
     return self;
 }

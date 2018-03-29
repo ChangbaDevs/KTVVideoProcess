@@ -59,7 +59,7 @@
         _glLayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking : @(NO),
                                             kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
         
-        _messageLoop = [[KTVVPMessageLoop alloc] init];
+        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameView"];
         _messageLoop.delegate = self;
         [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupContext object:nil]];
         [_messageLoop run];

@@ -45,7 +45,7 @@
 
 - (void)setupInternal
 {
-    _messageLoop = [[KTVVPMessageLoop alloc] init];
+    _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"Pipeline"];
     _messageLoop.delegate = self;
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupContext object:nil]];
     [_messageLoop run];

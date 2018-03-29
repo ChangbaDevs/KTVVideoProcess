@@ -57,7 +57,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
         _videoStartTime = kCMTimeInvalid;
         
-        _messageLoop = [[KTVVPMessageLoop alloc] init];
+        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameWriter"];
         _messageLoop.delegate = self;
         [_messageLoop run];
     }

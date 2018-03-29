@@ -19,6 +19,12 @@
 
 @interface KTVVPMessageLoop : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithIdentify:(NSString *)identify;
+
+@property (nonatomic, copy, readonly) NSString * identify;
 @property (nonatomic, weak) id <KTVVPMessageLoopDelegate> delegate;
 @property (nonatomic, strong, readonly) NSThread * thread;
 @property (nonatomic, assign, readonly) BOOL running;
