@@ -12,6 +12,7 @@
 @interface KTVVPTimeComponents : NSObject
 
 @property (nonatomic, assign, readonly) CMTime timeStamp;
+@property (nonatomic, assign, readonly) CMTime previousTimeStamp;
 
 - (void)putDroppedTimeStamp:(CMTime)timeStamp;
 - (void)putCurrentTimeStamp:(CMTime)timeStamp;

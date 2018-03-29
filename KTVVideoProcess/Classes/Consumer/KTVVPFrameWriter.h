@@ -28,7 +28,6 @@
 
 @property (nonatomic, assign, readonly) KTVVPGLSize videoSize;
 @property (nonatomic, assign, readonly) CMTime videoStartTime;
-@property (nonatomic, assign, readonly) CMTime videoPreviousFrameTime;
 @property (nonatomic, assign) CGAffineTransform videoTransform;
 @property (nonatomic, copy) NSDictionary * videoOutputSettings;
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;

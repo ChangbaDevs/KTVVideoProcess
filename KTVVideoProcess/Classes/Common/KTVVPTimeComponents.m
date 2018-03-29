@@ -22,6 +22,7 @@
     if (self = [super init])
     {
         _timeStamp = kCMTimeZero;
+        _previousTimeStamp = kCMTimeZero;
         _deltaInterval = kCMTimeZero;
         _firstDroppedTimeStamp = kCMTimeInvalid;
     }
@@ -44,6 +45,7 @@
         _deltaInterval = CMTimeAdd(_deltaInterval, currentDeltaInterva);
         _firstDroppedTimeStamp = kCMTimeInvalid;
     }
+    _previousTimeStamp = _timeStamp;
     _timeStamp = CMTimeSubtract(timeStamp, _deltaInterval);
 }
 

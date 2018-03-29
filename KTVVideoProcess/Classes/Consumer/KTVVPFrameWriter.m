@@ -33,7 +33,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) BOOL didCallStartRecording;
-@property (nonatomic, assign) BOOL running;
 
 @end
 
@@ -57,7 +56,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
                                               (id)kCVPixelBufferWidthKey : @(_videoSize.width),
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
         _videoStartTime = kCMTimeInvalid;
-        _videoPreviousFrameTime = kCMTimeInvalid;
         
         _messageLoop = [[KTVVPMessageLoop alloc] init];
         _messageLoop.delegate = self;
@@ -129,6 +127,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 {
     if (!_didCallStartRecording)
     {
+        return;
+    }
+    if (CMTIME_IS_INVALID(frame.timeStamp))
+    {
+        NSAssert(NO, @"timeStamp must a vaild CMTime value");
         return;
     }
     [frame lock];
@@ -282,21 +285,17 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     }
     [_timeComponents putCurrentTimeStamp:frame.timeStamp];
     CMTime timeStamp = _timeComponents.timeStamp;
-    if (CMTIME_IS_VALID(_videoPreviousFrameTime))
+    if (CMTimeCompare(timeStamp, _timeComponents.previousTimeStamp) < 0)
     {
-        if (CMTimeCompare(timeStamp, _videoPreviousFrameTime) < 0)
-        {
-            NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
-            [frame unlock];
-            return;
-        }
+        NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
+        [frame unlock];
+        return;
     }
     if (CMTIME_IS_INVALID(_videoStartTime))
     {
         [_assetWriter startSessionAtSourceTime:timeStamp];
         _videoStartTime = timeStamp;
     }
-    _videoPreviousFrameTime = timeStamp;
     CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
     [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:timeStamp];
@@ -308,13 +307,9 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 {
     [_frameQueue addObject:frame];
     [_frameQueue sortUsingComparator:^NSComparisonResult(KTVVPFrame * obj1, KTVVPFrame * obj2) {
-        if (CMTIME_IS_VALID(obj1.timeStamp)
-            && CMTIME_IS_VALID(obj2.timeStamp))
+        if (CMTimeCompare(obj1.timeStamp, obj2.timeStamp) > 0)
         {
-            if (CMTimeCompare(obj1.timeStamp, obj2.timeStamp) > 0)
-            {
-                return NSOrderedDescending;
-            }
+            return NSOrderedDescending;
         }
         return NSOrderedAscending;
     }];
