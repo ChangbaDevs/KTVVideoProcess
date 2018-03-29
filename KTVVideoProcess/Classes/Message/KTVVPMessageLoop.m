@@ -84,6 +84,20 @@
     [_messageQueue putObject:message];
 }
 
+- (void)putMessage:(KTVVPMessage *)message delay:(NSTimeInterval)delay
+{
+    if (delay > 0)
+    {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [_messageQueue putObject:message];
+        });
+    }
+    else
+    {
+         [_messageQueue putObject:message];
+    }
+}
+
 - (void)messageLoopThread
 {
     if (_threadDidStartedCallback)

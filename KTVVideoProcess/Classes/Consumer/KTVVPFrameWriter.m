@@ -7,9 +7,21 @@
 //
 
 #import "KTVVPFrameWriter.h"
+#import "KTVVPMessageLoop.h"
 #import "KTVVPTimeComponents.h"
 
-@interface KTVVPFrameWriter ()
+typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
+{
+    KTVVPMessageTypeWriterIdle,
+    KTVVPMessageTypeWriterReset,
+    KTVVPMessageTypeWriterDrop,
+    KTVVPMessageTypeWriterInsert,
+    KTVVPMessageTypeWriterAppending,
+    KTVVPMessageTypeWriterFinish,
+    KTVVPMessageTypeWriterCancel,
+};
+
+@interface KTVVPFrameWriter () <KTVVPMessageLoopDelegate>
 
 @property (nonatomic, strong) AVAssetWriter * assetWriter;
 @property (nonatomic, strong) AVAssetWriterInput * assetWriterVideoInput;
@@ -19,7 +31,8 @@
 @property (nonatomic, assign) NSTimeInterval delayIntervalInternal;
 @property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
 
-@property (nonatomic, strong) dispatch_queue_t runningQueue;
+@property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
+@property (nonatomic, assign) BOOL didCallStartRecording;
 @property (nonatomic, assign) BOOL running;
 
 @end
@@ -43,9 +56,12 @@
         _videoSourcePixelBufferAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
                                               (id)kCVPixelBufferWidthKey : @(_videoSize.width),
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
-        _runningQueue = dispatch_queue_create("KTVVPFrameWriter-running-queue", DISPATCH_QUEUE_SERIAL);
         _videoStartTime = kCMTimeInvalid;
         _videoPreviousFrameTime = kCMTimeInvalid;
+        
+        _messageLoop = [[KTVVPMessageLoop alloc] init];
+        _messageLoop.delegate = self;
+        [_messageLoop run];
     }
     return self;
 }
@@ -54,19 +70,158 @@
 {
     NSLog(@"%s", __func__);
     
-    if (_assetWriter.status == AVAssetWriterStatusWriting)
+    if (_didCallStartRecording)
     {
-        dispatch_sync(_runningQueue, ^{
+        AVAssetWriter * assetWriter = _assetWriter;
+        AVAssetWriterInput * assetWriterVideoInput = _assetWriterVideoInput;
+        NSMutableArray <KTVVPFrame *> * frameQueue = _frameQueue;
+        [self.messageLoop setThreadDidFiniahedCallback:^(KTVVPMessageLoop *messageLoop) {
+            if (assetWriter.status == AVAssetWriterStatusWriting)
+            {
+                [assetWriterVideoInput markAsFinished];
+                [assetWriter cancelWriting];
+            }
+            [frameQueue enumerateObjectsUsingBlock:^(KTVVPFrame * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [obj unlock];
+            }];
+        }];
+    }
+    [_messageLoop stop];
+    _messageLoop = nil;
+}
+
+
+#pragma mark - Control
+
+- (void)start
+{
+    if (_didCallStartRecording)
+    {
+        return;
+    }
+    _didCallStartRecording = YES;
+    _delayIntervalInternal = _delayInterval;
+    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterReset object:nil]];
+}
+
+- (void)finish
+{
+    if (!_didCallStartRecording)
+    {
+        return;
+    }
+    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterFinish object:nil] delay:_delayIntervalInternal];
+}
+
+- (void)cancel
+{
+    if (!_didCallStartRecording)
+    {
+        return;
+    }
+    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterCancel object:nil] delay:_delayIntervalInternal];
+}
+
+
+#pragma mark - KTVVPFrameInput
+
+- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
+{
+    if (!_didCallStartRecording)
+    {
+        return;
+    }
+    [frame lock];
+    if (_paused)
+    {
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterDrop object:frame dropCallback:^(KTVVPMessage * message) {
+            KTVVPFrame * object = (KTVVPFrame *)message.object;
+            [object unlock];
+        }] delay:_delayIntervalInternal];
+    }
+    else
+    {
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterInsert object:frame dropCallback:^(KTVVPMessage * message) {
+            KTVVPFrame * object = (KTVVPFrame *)message.object;
+            [object unlock];
+        }]];
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterAppending object:nil] delay:_delayIntervalInternal];
+    }
+}
+
+
+#pragma mark - KTVVPMessageLoopDelegate
+
+- (void)messageLoop:(KTVVPMessageLoop *)messageLoop processingMessage:(KTVVPMessage *)message
+{
+    if (message.type == KTVVPMessageTypeWriterReset)
+    {
+        [self setupAssetWriter];
+        if (_startedCallback)
+        {
+            _startedCallback(_error ? NO : YES);
+        }
+    }
+    else if (message.type == KTVVPMessageTypeWriterDrop)
+    {
+        KTVVPFrame * frame = (KTVVPFrame *)message.object;
+        [_timeComponents putDroppedTimeStamp:frame.timeStamp];
+        [frame unlock];
+    }
+    else if (message.type == KTVVPMessageTypeWriterInsert)
+    {
+        KTVVPFrame * frame = (KTVVPFrame *)message.object;
+        [self insertFrameInOrder:frame];
+    }
+    else if (message.type == KTVVPMessageTypeWriterAppending)
+    {
+        [self processFristFrame];
+    }
+    else if (message.type == KTVVPMessageTypeWriterFinish)
+    {
+        if (_assetWriter.status == AVAssetWriterStatusWriting)
+        {
+            [_assetWriterVideoInput markAsFinished];
+            [_assetWriter finishWritingWithCompletionHandler:^{
+                if (_finishedCallback)
+                {
+                    _finishedCallback(YES);
+                }
+            }];
+        }
+        else
+        {
+            if (_finishedCallback)
+            {
+                _finishedCallback(NO);
+            }
+        }
+    }
+    else if (message.type == KTVVPMessageTypeWriterCancel)
+    {
+        if (_assetWriter.status == AVAssetWriterStatusWriting)
+        {
             [_assetWriterVideoInput markAsFinished];
             [_assetWriter cancelWriting];
-        });
+            if (_canceledCallback)
+            {
+                _canceledCallback(YES);
+            }
+        }
+        else
+        {
+            if (_canceledCallback)
+            {
+                _canceledCallback(NO);
+            }
+        }
     }
 }
 
 
 #pragma mark - Setup
 
-- (void)setup
+- (void)setupAssetWriter
 {
     if (!_outputFileURL || !_outputFileType)
     {
@@ -96,184 +251,12 @@
     [_assetWriter addInput:_assetWriterVideoInput];
     
     _frameQueue = [NSMutableArray array];
-    _delayIntervalInternal = _delayInterval;
     _timeComponents = [[KTVVPTimeComponents alloc] init];
-}
-
-- (void)destory
-{
-    if (_assetWriter)
-    {
-        dispatch_sync(_runningQueue, ^{
-            [_assetWriterVideoInput markAsFinished];
-            [_assetWriter cancelWriting];
-            [_frameQueue enumerateObjectsUsingBlock:^(KTVVPFrame * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [obj unlock];
-            }];
-            [_frameQueue removeAllObjects];
-            _frameQueue = nil;
-            _delayIntervalInternal = 0;
-            _timeComponents = nil;
-            _videoStartTime = kCMTimeInvalid;
-            _videoPreviousFrameTime = kCMTimeInvalid;
-        });
-    }
-}
-
-
-#pragma mark - Control
-
-- (BOOL)startRecording
-{
-    if (_running)
-    {
-        return YES;
-    }
-    [self destory];
-    [self setup];
-    if (_error)
-    {
-        return NO;
-    }
+    
     if (![_assetWriter startWriting])
     {
         NSString * domain = @"Start writing failed";
         _error = [NSError errorWithDomain:domain code:-2 userInfo:nil];
-        return NO;
-    }
-    _running = YES;
-    return YES;
-}
-
-- (void)finishRecordingWithCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    if (completionHandler)
-    {
-        [self closeRecordingWithSuccess:^{
-            [_assetWriterVideoInput markAsFinished];
-            [_assetWriter finishWritingWithCompletionHandler:^{
-                if (completionHandler)
-                {
-                    completionHandler(YES);
-                }
-            }];
-        } failed:^{
-            if (completionHandler)
-            {
-                completionHandler(NO);
-            }
-        }];
-    }
-}
-
-- (void)cancelRecordingWithCompletionHandler:(void (^)(BOOL))completionHandler
-{
-    [self closeRecordingWithSuccess:^{
-        [_assetWriterVideoInput markAsFinished];
-        [_assetWriter cancelWriting];
-        if (completionHandler)
-        {
-            completionHandler(YES);
-        }
-    } failed:^{
-        if (completionHandler)
-        {
-            completionHandler(NO);
-        }
-    }];
-}
-
-- (void)closeRecordingWithSuccess:(void (^)(void))success failed:(void (^)(void))failed
-{
-    if (!_running)
-    {
-        if (failed)
-        {
-            failed();
-        }
-        return;
-    }
-    _running = NO;
-    if (_assetWriter.status != AVAssetWriterStatusWriting)
-    {
-        if (failed)
-        {
-            failed();
-        }
-        return;
-    }
-    dispatch_async(_runningQueue, ^{
-        if (_delayIntervalInternal > 0)
-        {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
-                if (success)
-                {
-                    success();
-                }
-            });
-        }
-        else
-        {
-            if (success)
-            {
-                success();
-            }
-        }
-    });
-}
-
-
-#pragma mark - KTVVPFrameInput
-
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
-{
-    if (!_running)
-    {
-        return;
-    }
-    if (_assetWriter.status != AVAssetWriterStatusWriting)
-    {
-        return;
-    }
-    CMTime timeStamp = frame.timeStamp;
-    if (CMTIME_IS_INVALID(timeStamp))
-    {
-        NSAssert(NO, @"timeStamp must a vaild CMTime value");
-        return;
-    }
-    if (_paused)
-    {
-        dispatch_async(_runningQueue, ^{
-            if (_delayIntervalInternal > 0)
-            {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
-                    [_timeComponents putDroppedTimeStamp:timeStamp];
-                });
-            }
-            else
-            {
-                [_timeComponents putDroppedTimeStamp:timeStamp];
-            }
-        });
-    }
-    else
-    {
-        [frame lock];
-        dispatch_async(_runningQueue, ^{
-            [self insertFrameInOrder:frame];
-            if (_delayIntervalInternal > 0)
-            {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_delayIntervalInternal * NSEC_PER_SEC)), _runningQueue, ^{
-                    [_timeComponents putCurrentTimeStamp:timeStamp];
-                    [self processFristFrame];
-                });
-            }
-            else
-            {
-                [_timeComponents putCurrentTimeStamp:timeStamp];
-                [self processFristFrame];
-            }
-        });
     }
 }
 
@@ -287,18 +270,18 @@
     {
         return;
     }
-    if (_assetWriter.status != AVAssetWriterStatusWriting
-        || !_assetWriterVideoInput.readyForMoreMediaData)
+    if (_assetWriter.status != AVAssetWriterStatusWriting)
     {
         [frame unlock];
         return;
     }
+    if (!_assetWriterVideoInput.readyForMoreMediaData)
+    {
+        [frame unlock];
+        return;
+    }
+    [_timeComponents putCurrentTimeStamp:frame.timeStamp];
     CMTime timeStamp = _timeComponents.timeStamp;
-    if (CMTIME_IS_INVALID(timeStamp))
-    {
-        [frame unlock];
-        return;
-    }
     if (CMTIME_IS_VALID(_videoPreviousFrameTime))
     {
         if (CMTimeCompare(timeStamp, _videoPreviousFrameTime) < 0)

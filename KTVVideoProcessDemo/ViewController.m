@@ -94,7 +94,10 @@
 
 - (IBAction)recordStartAction:(UIButton *)sender
 {
-    [self.frameWriter startRecording];
+    [self.frameWriter setStartedCallback:^(BOOL success) {
+        NSLog(@"Record Started...");
+    }];
+    [self.frameWriter start];
 }
 
 - (IBAction)recordPauseAction:(UIButton *)sender
@@ -109,16 +112,18 @@
 
 - (IBAction)recordFinishAction:(UIButton *)sender
 {
-    [self.frameWriter finishRecordingWithCompletionHandler:^(BOOL success) {
+    [self.frameWriter setFinishedCallback:^(BOOL success) {
         NSLog(@"Record Finished...");
     }];
+    [self.frameWriter finish];
 }
 
 - (IBAction)recordCancelAction:(UIButton *)sender
 {
-    [self.frameWriter cancelRecordingWithCompletionHandler:^(BOOL success) {
+    [self.frameWriter setCanceledCallback:^(BOOL success) {
         NSLog(@"Record Canceled...");
     }];
+    [self.frameWriter cancel];
 }
 
 @end

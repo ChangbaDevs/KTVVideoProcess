@@ -27,6 +27,7 @@
 - (void)stop;
 
 - (void)putMessage:(KTVVPMessage *)message;
+- (void)putMessage:(KTVVPMessage *)message delay:(NSTimeInterval)delay;
 
 
 #pragma mark - Flow Control

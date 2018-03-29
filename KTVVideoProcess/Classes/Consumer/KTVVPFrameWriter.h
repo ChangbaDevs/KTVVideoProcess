@@ -38,10 +38,14 @@
 
 #pragma mark - Control
 
+@property (nonatomic, copy) void (^startedCallback)(BOOL success);
+@property (nonatomic, copy) void (^finishedCallback)(BOOL success);
+@property (nonatomic, copy) void (^canceledCallback)(BOOL success);
+
 @property (nonatomic, assign) BOOL paused;
 
-- (BOOL)startRecording;
-- (void)finishRecordingWithCompletionHandler:(void (^)(BOOL success))completionHandler;
-- (void)cancelRecordingWithCompletionHandler:(void (^)(BOOL success))completionHandler;
+- (void)start;
+- (void)finish;
+- (void)cancel;
 
 @end
