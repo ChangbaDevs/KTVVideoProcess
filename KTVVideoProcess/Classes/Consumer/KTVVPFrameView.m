@@ -95,12 +95,10 @@
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     [frame lock];
-    KTVVPMessage * message = [KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame];
-    [message setDropCallback:^(KTVVPMessage * message) {
+    [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage * message) {
         KTVVPFrame * object = (KTVVPFrame *)message.object;
         [object unlock];
-    }];
-    [_messageLoop putMessage:message];
+    }]];
 }
 
 
@@ -202,6 +200,7 @@
         }
     }];
 }
+
 
 #pragma mark - KTVVPMessageLoopDelegate
 

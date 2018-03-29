@@ -72,12 +72,10 @@
         _processing = YES;
         
         [frame lock];
-        KTVVPMessage * message = [KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame];
-        [message setDropCallback:^(KTVVPMessage * message) {
+        [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage * message) {
             KTVVPFrame * object = (KTVVPFrame *)message.object;
             [object unlock];
-        }];
-        [self.messageLoop putMessage:message];
+        }]];
     }
 }
 

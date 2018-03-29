@@ -12,15 +12,21 @@
 
 + (instancetype)messageWithType:(NSUInteger)type object:(id)object
 {
-    return [[self alloc] initWithType:type object:object];
+    return [[self alloc] initWithType:type object:object dropCallback:nil];
 }
 
-- (instancetype)initWithType:(NSUInteger)type object:(id)object
++ (instancetype)messageWithType:(NSUInteger)type object:(id)object dropCallback:(void (^)(KTVVPMessage *))dropCallback
+{
+    return [[self alloc] initWithType:type object:object dropCallback:dropCallback];
+}
+
+- (instancetype)initWithType:(NSUInteger)type object:(id)object dropCallback:(void (^)(KTVVPMessage *))dropCallback
 {
     if (self = [super init])
     {
         _type = type;
         _object = object;
+        _dropCallback = dropCallback;
     }
     return self;
 }
