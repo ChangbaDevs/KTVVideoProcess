@@ -58,7 +58,11 @@
 {
     if (source == self.filters.lastObject)
     {
+        NSLog(@"KTVVPSerialPipeline: end process frame.");
+        
         [self outputFrame:frame];
+        
+        NSLog(@"KTVVPSerialPipeline: end output frame.");
     }
     else
     {
@@ -112,6 +116,8 @@
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         if (frame)
         {
+            NSLog(@"KTVVPSerialPipeline: begin process frame.");
+            
             [_glContext setCurrentIfNeeded];
             
             [_filters.firstObject inputFrame:frame fromSource:self];
