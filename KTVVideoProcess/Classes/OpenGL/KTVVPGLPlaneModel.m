@@ -152,7 +152,7 @@
     };
     switch (_rotationMode)
     {
-        case KTVVPRotationModeNone:
+        case KTVVPRotationMode0:
         {
             switch (_flipMode)
             {

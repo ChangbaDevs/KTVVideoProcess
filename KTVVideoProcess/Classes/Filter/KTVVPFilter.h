@@ -30,7 +30,7 @@
 
 #pragma mark - Output
 
-@property (nonatomic, weak) id <KTVVPFrameInput> output;
+@property (atomic, weak) id <KTVVPFrameInput> output;
 
 - (void)outputFrame:(KTVVPFrame *)frame;
 

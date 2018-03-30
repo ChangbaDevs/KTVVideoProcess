@@ -15,7 +15,7 @@
 
 typedef NS_ENUM(NSUInteger, KTVVPRotationMode)
 {
-    KTVVPRotationModeNone,
+    KTVVPRotationMode0,
     KTVVPRotationMode90,
     KTVVPRotationMode180,
     KTVVPRotationMode270,

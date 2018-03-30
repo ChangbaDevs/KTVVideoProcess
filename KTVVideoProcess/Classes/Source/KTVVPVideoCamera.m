@@ -14,12 +14,19 @@
 
 @interface KTVVPVideoCamera () <AVCaptureVideoDataOutputSampleBufferDelegate>
 
-@property (nonatomic, strong) AVCaptureSession * captureSession;
+@property (nonatomic, copy) AVCaptureSessionPreset sessionPresetInternal;
+@property (nonatomic, assign) AVCaptureDevicePosition positionInternal;
+@property (nonatomic, assign) UIInterfaceOrientation orientationInternal;
+@property (nonatomic, assign) BOOL horizontalFlipForFrontInternal;
+
 @property (nonatomic, strong) AVCaptureDevice * videoDevice;
 @property (nonatomic, strong) AVCaptureDeviceInput * videoInput;
 @property (nonatomic, strong) AVCaptureVideoDataOutput * videoOutput;
+
 @property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
 @property (nonatomic, strong) KTVVPFramePool * framePool;
+@property (nonatomic, assign) BOOL didCallStartRecording;
+@property (nonatomic, assign) NSInteger configurationCount;
 
 @end
 
@@ -29,7 +36,14 @@
 {
     if (self = [super initWithContext:context])
     {
+        _captureSession = [[AVCaptureSession alloc] init];
         _timeComponents = [[KTVVPTimeComponents alloc] init];
+        
+        _sessionPreset = AVCaptureSessionPreset1280x720;
+        _position = AVCaptureDevicePositionFront;
+        _orientation = UIInterfaceOrientationPortrait;
+        _horizontalFlipForFront = YES;
+        [self reloadInternal];
     }
     return self;
 }
@@ -41,34 +55,193 @@
 
 - (void)start
 {
-    NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    if (_didCallStartRecording)
+    {
+        return;
+    }
+    _didCallStartRecording = YES;
+    [self reloadOutput];
+    [self reloadSessionPreset];
+    [self reloadPosition];
+    [_captureSession startRunning];
+}
+
+- (void)stop
+{
+    [_captureSession stopRunning];
+}
+
+- (void)beginConfiguration
+{
+    _configurationCount++;
+    [_captureSession beginConfiguration];
+}
+
+- (void)commitConfiguration
+{
+    [_captureSession commitConfiguration];
+    _configurationCount--;
+    if (_configurationCount <= 0)
+    {
+        _configurationCount = 0;
+        [self reloadInternal];
+    }
+}
+
+
+#pragma mark - Setup
+
+- (void)reloadOutput
+{
+    [self beginConfiguration];
+    _videoOutput = [[AVCaptureVideoDataOutput alloc] init];
+    _videoOutput.videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
+    [_videoOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];
+    if ([_captureSession canAddOutput:_videoOutput])
+    {
+        [_captureSession addOutput:_videoOutput];
+    }
+    [self commitConfiguration];
+}
+
+- (void)reloadSessionPreset
+{
+    [self beginConfiguration];
+    _captureSession.sessionPreset = _sessionPreset;
+    [self commitConfiguration];
+}
+
+- (void)reloadPosition
+{
+    _videoDevice = nil;
+    NSArray * devices = nil;
+    if (@available(iOS 10.0, *))
+    {
+        AVCaptureDeviceDiscoverySession * discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified];
+        devices = discoverySession.devices;
+    }
+    else
+    {
+        devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    }
     for (AVCaptureDevice * device in devices)
     {
-        if ([device position] == AVCaptureDevicePositionFront)
+        if (device.position == _position)
         {
             _videoDevice = device;
         }
     }
     if (!_videoDevice)
     {
-        return;
+        _videoDevice = devices.firstObject;
+        if (!_videoDevice)
+        {
+            _error = [NSError errorWithDomain:@"No vaild camera device." code:-1 userInfo:nil];
+            return;
+        }
     }
-    
-    _captureSession = [[AVCaptureSession alloc] init];
-    [_captureSession beginConfiguration];
-    
-    _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:self.videoDevice error:nil];
-    [_captureSession addInput:_videoInput];
-    
-    _videoOutput = [[AVCaptureVideoDataOutput alloc] init];
-    [_videoOutput setVideoSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
-    [_videoOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];
-    [_captureSession addOutput:_videoOutput];
-    
-    _captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
-    [_captureSession commitConfiguration];
-    [_captureSession startRunning];
+    [self beginConfiguration];
+    if (_videoInput)
+    {
+        [_captureSession removeInput:_videoInput];
+        _videoInput = nil;
+    }
+    _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:_videoDevice error:nil];
+    if ([_captureSession canAddInput:_videoInput])
+    {
+        [_captureSession addInput:_videoInput];
+    }
+    [self commitConfiguration];
 }
+
+- (void)reloadOrientation
+{
+    [self beginConfiguration];
+    [self commitConfiguration];
+}
+
+- (void)reloadHorizontalFlipForFront
+{
+    [self beginConfiguration];
+    [self commitConfiguration];
+}
+
+- (void)reloadInternal
+{
+    _sessionPresetInternal = _sessionPreset;
+    _positionInternal = _position;
+    _orientationInternal = _orientation;
+    _horizontalFlipForFrontInternal = _horizontalFlipForFront;
+}
+
+
+#pragma mark - Setter/Getter
+
+- (void)setPosition:(AVCaptureDevicePosition)position
+{
+    if (_position != position)
+    {
+        _position = position;
+        [self reloadPosition];
+    }
+}
+
+- (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset
+{
+    if (![_sessionPreset isEqualToString:sessionPreset])
+    {
+        _sessionPreset = sessionPreset;
+        [self reloadSessionPreset];
+    }
+}
+
+- (void)setOrientation:(UIInterfaceOrientation)orientation
+{
+    if (_orientation != orientation)
+    {
+        _orientation = orientation;
+        [self reloadOrientation];
+    }
+}
+
+- (void)setHorizontalFlipForFront:(BOOL)horizontalFlipForFront
+{
+    if (_horizontalFlipForFront != horizontalFlipForFront)
+    {
+        _horizontalFlipForFront = horizontalFlipForFront;
+        [self reloadHorizontalFlipForFront];
+    }
+}
+
+- (KTVVPRotationMode)rotationMode
+{
+    switch (_orientationInternal)
+    {
+        case UIInterfaceOrientationUnknown:
+        case UIInterfaceOrientationPortrait:
+            return KTVVPRotationMode270;
+        case UIInterfaceOrientationLandscapeLeft:
+            return KTVVPRotationMode0;
+        case UIInterfaceOrientationLandscapeRight:
+            return KTVVPRotationMode180;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return KTVVPRotationMode90;
+    }
+    return KTVVPRotationMode270;
+}
+
+- (KTVVPFlipMode)flipMode
+{
+    if (_positionInternal == AVCaptureDevicePositionFront
+        && _horizontalFlipForFrontInternal)
+    {
+        return KTVVPFlipModeHorizonal;
+    }
+    return KTVVPFlipModeNone;
+}
+
+
+#pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
@@ -90,8 +263,8 @@
         }];
         frame.sampleBuffer = sampleBuffer;
         frame.timeStamp = _timeComponents.timeStamp;
-        frame.rotationMode = KTVVPRotationMode270;
-        frame.flipMode = KTVVPFlipModeHorizonal;
+        frame.rotationMode = [self rotationMode];
+        frame.flipMode = [self flipMode];
         [self.pipeline inputFrame:frame fromSource:self];
         [frame unlock];
     }

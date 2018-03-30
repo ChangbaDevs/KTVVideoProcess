@@ -35,6 +35,12 @@
     [self setup:nil];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.frameView.frame = self.view.bounds;
+}
+
 - (IBAction)setup:(UIButton *)sender
 {
     // Context
@@ -46,7 +52,7 @@
     [self.view insertSubview:self.frameView atIndex:0];
     
     // Writer
-    KTVVPGLSize videoSize = {720, 720};
+    KTVVPGLSize videoSize = {720, 1280};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
@@ -90,6 +96,36 @@
     self.frameWriter = nil;
     self.videoCamera = nil;
     self.context = nil;
+}
+
+- (IBAction)changeToMirrorOn:(UIButton *)sender
+{
+    self.videoCamera.horizontalFlipForFront = YES;
+}
+
+- (IBAction)changeToMirrorOff:(UIButton *)sender
+{
+    self.videoCamera.horizontalFlipForFront = NO;
+}
+
+- (IBAction)changeTo1080p:(UIButton *)sender
+{
+    self.videoCamera.sessionPreset = AVCaptureSessionPreset1920x1080;
+}
+
+- (IBAction)changeTo720p:(UIButton *)sender
+{
+    self.videoCamera.sessionPreset = AVCaptureSessionPreset1280x720;
+}
+
+- (IBAction)changeToFrontCamera:(UIButton *)sender
+{
+    self.videoCamera.position = AVCaptureDevicePositionFront;
+}
+
+- (IBAction)changeToBackCamera:(UIButton *)sender
+{
+    self.videoCamera.position = AVCaptureDevicePositionBack;
 }
 
 - (IBAction)captureStartAction:(UIButton *)sender

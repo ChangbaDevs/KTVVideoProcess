@@ -79,7 +79,7 @@
     else
     {
         [result fillWithFrame:frame];
-        _glModel.rotationMode = KTVVPRotationModeNone;
+        _glModel.rotationMode = KTVVPRotationMode0;
         _glModel.flipMode = KTVVPFlipModeNone;
     }
     [_glModel reloadDataIfNeeded];

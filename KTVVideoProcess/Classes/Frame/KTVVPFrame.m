@@ -106,7 +106,7 @@
 {
     _timeStamp = frame.timeStamp;
     _size = frame.finalSize;
-    _rotationMode = KTVVPRotationModeNone;
+    _rotationMode = KTVVPRotationMode0;
     _flipMode = KTVVPFlipModeNone;
 }
 
@@ -115,7 +115,7 @@
 - (void)clear
 {
     _timeStamp = kCMTimeZero;
-    _rotationMode = KTVVPRotationModeNone;
+    _rotationMode = KTVVPRotationMode0;
     _flipMode = KTVVPFlipModeNone;
 }
 
