@@ -221,8 +221,16 @@
         case UIInterfaceOrientationPortrait:
             return KTVVPRotationMode270;
         case UIInterfaceOrientationLandscapeLeft:
+            if (_positionInternal == AVCaptureDevicePositionBack)
+            {
+                return KTVVPRotationMode180;
+            }
             return KTVVPRotationMode0;
         case UIInterfaceOrientationLandscapeRight:
+            if (_positionInternal == AVCaptureDevicePositionBack)
+            {
+                return KTVVPRotationMode0;
+            }
             return KTVVPRotationMode180;
         case UIInterfaceOrientationPortraitUpsideDown:
             return KTVVPRotationMode90;
