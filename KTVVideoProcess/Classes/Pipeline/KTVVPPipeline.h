@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVVPFrameInput.h"
 #import "KTVVPContext.h"
 #import "KTVVPFilter.h"
 

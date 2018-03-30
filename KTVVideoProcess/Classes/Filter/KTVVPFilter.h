@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "EAGLContext+KTVVPExtension.h"
 #import "KTVVPFrameInput.h"
 #import "KTVVPFramePool.h"
-#import "KTVVPFrameUploader.h"
 
 @interface KTVVPFilter : NSObject <KTVVPFrameInput>
 

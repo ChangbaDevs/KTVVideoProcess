@@ -7,7 +7,6 @@
 //
 
 #import "KTVVPVideoCamera.h"
-#import <AVFoundation/AVFoundation.h>
 #import "KTVVPFramePool.h"
 #import "KTVVPFrameCMSmapleBuffer.h"
 #import "KTVVPTimeComponents.h"
@@ -32,9 +31,9 @@
 
 @implementation KTVVPVideoCamera
 
-- (instancetype)initWithContext:(KTVVPContext *)context
+- (instancetype)init
 {
-    if (self = [super initWithContext:context])
+    if (self = [super init])
     {
         _captureSession = [[AVCaptureSession alloc] init];
         _timeComponents = [[KTVVPTimeComponents alloc] init];

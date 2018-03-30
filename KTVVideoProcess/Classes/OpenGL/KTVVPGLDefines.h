@@ -11,6 +11,11 @@
 
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <GLKit/GLKit.h>
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#import "EAGLContext+KTVVPExtension.h"
 
 
 typedef struct KTVVPGLSize {

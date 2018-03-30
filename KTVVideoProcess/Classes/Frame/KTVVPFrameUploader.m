@@ -7,7 +7,6 @@
 //
 
 #import "KTVVPFrameUploader.h"
-#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameUploader ()
 

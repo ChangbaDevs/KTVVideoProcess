@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
+#import "KTVVPGLDefines.h"
 
 @interface KTVVPGLModel : NSObject
 

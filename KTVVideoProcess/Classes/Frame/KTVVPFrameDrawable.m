@@ -7,7 +7,6 @@
 //
 
 #import "KTVVPFrameDrawable.h"
-#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameDrawable ()
 

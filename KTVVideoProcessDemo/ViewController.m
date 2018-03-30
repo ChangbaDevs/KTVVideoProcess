@@ -82,7 +82,7 @@
     [self.pipeline setupIfNeeded];
     
     // Camera
-    self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];
+    self.videoCamera = [[KTVVPVideoCamera alloc] init];
     self.videoCamera.pipeline = self.pipeline;
     
     // Start

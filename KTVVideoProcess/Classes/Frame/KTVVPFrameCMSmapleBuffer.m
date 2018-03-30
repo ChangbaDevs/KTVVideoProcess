@@ -7,7 +7,6 @@
 //
 
 #import "KTVVPFrameCMSmapleBuffer.h"
-#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPFrameCMSmapleBuffer ()
 

@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
+#import "KTVVPGLDefines.h"
 
 @interface KTVVPGLProgram : NSObject
 
@@ -17,6 +17,7 @@
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
               vertexShaderCString:(const char *)vertexShaderCString
             fragmentShaderCString:(const char *)fragmentShaderCString;
+
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
                vertexShaderString:(NSString *)vertexShaderString
              fragmentShaderString:(NSString *)fragmentShaderString;

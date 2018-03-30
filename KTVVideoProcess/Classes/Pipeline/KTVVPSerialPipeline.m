@@ -8,7 +8,6 @@
 
 #import "KTVVPSerialPipeline.h"
 #import "KTVVPPipelinePrivate.h"
-#import "KTVVPFilter.h"
 #import "KTVVPMessageLoop.h"
 
 @interface KTVVPSerialPipeline () <KTVVPPipelinePrivate, KTVVPMessageLoopDelegate>

@@ -7,10 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 #import "KTVVPContext.h"
 #import "KTVVPFrameInput.h"
-#import "KTVVPGLDefines.h"
 
 @interface KTVVPFrameWriter : NSObject <KTVVPFrameInput>
 
@@ -37,11 +35,11 @@
 
 #pragma mark - Control
 
-@property (nonatomic, copy) void (^startedCallback)(BOOL success);
-@property (nonatomic, copy) void (^finishedCallback)(BOOL success);
-@property (nonatomic, copy) void (^canceledCallback)(BOOL success);
+@property (atomic, copy) void (^startedCallback)(BOOL success);
+@property (atomic, copy) void (^finishedCallback)(BOOL success);
+@property (atomic, copy) void (^canceledCallback)(BOOL success);
 
-@property (nonatomic, assign) BOOL paused;
+@property (atomic, assign) BOOL paused;
 
 - (void)start;
 - (void)finish;

@@ -10,15 +10,6 @@
 
 @implementation KTVVPSource
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-{
-    if (self = [super init])
-    {
-        _context = context;
-    }
-    return self;
-}
-
 - (void)start {}
 - (void)stop {}
 

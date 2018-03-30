@@ -7,22 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVVPContext.h"
 #import "KTVVPPipeline.h"
 
 @interface KTVVPSource : NSObject
 
-+ (instancetype)new NS_UNAVAILABLE;
-- (instancetype)init NS_UNAVAILABLE;
-
-- (instancetype)initWithContext:(KTVVPContext *)context;
-
-@property (nonatomic, strong, readonly) KTVVPContext * context;
-
 
 #pragma mark - Control
 
-@property (nonatomic, assign) BOOL paused;
+@property (atomic, assign) BOOL paused;
 
 - (void)start;
 - (void)stop;

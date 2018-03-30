@@ -7,7 +7,6 @@
 //
 
 #import "KTVVPGLProgram.h"
-#import "EAGLContext+KTVVPExtension.h"
 
 @interface KTVVPGLProgram ()
 

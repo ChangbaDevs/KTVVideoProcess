@@ -8,12 +8,8 @@
 
 #import "KTVVPFrameView.h"
 #import "KTVVPMessageLoop.h"
-#import "KTVVPDefines.h"
-#import "KTVVPGLDefines.h"
 #import "KTVVPGLRGBProgram.h"
 #import "KTVVPGLPlaneModel.h"
-#import <GLKit/GLKit.h>
-#import "EAGLContext+KTVVPExtension.h"
 
 typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 {

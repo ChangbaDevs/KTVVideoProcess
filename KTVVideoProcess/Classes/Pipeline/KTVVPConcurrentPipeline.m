@@ -7,8 +7,8 @@
 //
 
 #import "KTVVPConcurrentPipeline.h"
-#import "KTVVPSerialPipeline.h"
 #import "KTVVPPipelinePrivate.h"
+#import "KTVVPSerialPipeline.h"
 
 @interface KTVVPConcurrentPipeline () <KTVVPPipelinePrivate>
 
