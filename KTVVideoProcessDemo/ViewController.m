@@ -25,6 +25,8 @@
 @property (nonatomic, strong) KTVVPFrameView * frameView;
 @property (nonatomic, strong) KTVVPFrameWriter * frameWriter;
 
+@property (weak, nonatomic) IBOutlet UIImageView * snapshotImageView;
+
 @end
 
 @implementation ViewController
@@ -96,6 +98,13 @@
     self.frameWriter = nil;
     self.videoCamera = nil;
     self.context = nil;
+}
+
+- (IBAction)snapshot:(UIButton *)sender
+{
+    [self.frameView snapshot:^(UIImage * image) {
+        self.snapshotImageView.image = image;
+    }];
 }
 
 - (IBAction)changeToMirrorOn:(UIButton *)sender

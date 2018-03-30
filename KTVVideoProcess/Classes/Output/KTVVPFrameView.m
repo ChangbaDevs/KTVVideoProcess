@@ -15,6 +15,12 @@
 #import <GLKit/GLKit.h>
 #import "EAGLContext+KTVVPExtension.h"
 
+typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
+{
+    KTVVPMessageTypeViewIdle = 1900,
+    KTVVPMessageTypeViewSnapshot,
+};
+
 @interface KTVVPFrameView () <KTVVPMessageLoopDelegate>
 
 {
@@ -33,6 +39,7 @@
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) CMTime previousFrameTime;
 @property (nonatomic, strong) KTVVPFrame * currentFrame;
+@property (nonatomic, copy) void (^snapshotCallback)(UIImage *);
 
 @end
 
@@ -86,6 +93,67 @@
         KTVVPGLSize displaySize = {width, height};
         _displaySize = displaySize;
         [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupFramebuffer object:nil]];
+    }
+}
+
+
+#pragma mark - Control
+
+- (void)snapshot:(void (^)(UIImage *))callback
+{
+    _snapshotCallback = callback;
+    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeViewSnapshot object:nil]];
+}
+
+- (void)snapshotAndCallback
+{
+    if (_snapshotCallback)
+    {
+        UIImage * image = nil;
+        CVPixelBufferRef pixelBuffer = _currentFrame.corePixelBuffer;
+        if (pixelBuffer)
+        {
+            if (@available(iOS 9.0, *))
+            {
+                CIImage * ciImage = [CIImage imageWithCVImageBuffer:pixelBuffer];
+                image = [UIImage imageWithCIImage:ciImage];
+            }
+            else
+            {
+                CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+                void * baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+                size_t width = CVPixelBufferGetWidth(pixelBuffer);
+                size_t height = CVPixelBufferGetHeight(pixelBuffer);
+                size_t bufferSize = CVPixelBufferGetDataSize(pixelBuffer);
+                size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+            
+                CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+                CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, baseAddress, bufferSize, NULL);
+                
+                CGImageRef cgImage = CGImageCreate(width,
+                                                   height,
+                                                   8,
+                                                   32,
+                                                   bytesPerRow,
+                                                   rgbColorSpace,
+                                                   kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little,
+                                                   provider,
+                                                   NULL,
+                                                   true,
+                                                   kCGRenderingIntentDefault);
+                
+                image = [UIImage imageWithCGImage:cgImage];
+                CGImageRelease(cgImage);
+                CGDataProviderRelease(provider);
+                CGColorSpaceRelease(rgbColorSpace);
+                CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+            }
+        }
+        void (^snapshotCallback)(UIImage *) = _snapshotCallback;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            snapshotCallback(image);
+        });
+        _snapshotCallback = nil;
     }
 }
 
@@ -248,6 +316,10 @@
     else if (message.type == KTVVPMessageTypeOpenGLClear)
     {
         [self drawClear];
+    }
+    else if (message.type == KTVVPMessageTypeViewSnapshot)
+    {
+        [self snapshotAndCallback];
     }
 }
 

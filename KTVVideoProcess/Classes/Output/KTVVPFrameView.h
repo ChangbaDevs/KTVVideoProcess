@@ -19,4 +19,6 @@
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 
+- (void)snapshot:(void (^)(UIImage * image))callback;
+
 @end
