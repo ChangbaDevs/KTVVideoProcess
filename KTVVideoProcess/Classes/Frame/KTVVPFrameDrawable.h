@@ -10,8 +10,6 @@
 
 @interface KTVVPFrameDrawable : KTVVPFrame
 
-- (instancetype)initWithSize:(KTVVPGLSize)size;
-
 - (void)bindFramebuffer;
 
 @end

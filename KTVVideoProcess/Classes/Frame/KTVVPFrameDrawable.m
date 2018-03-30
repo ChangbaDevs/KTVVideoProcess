@@ -21,13 +21,11 @@
 
 @implementation KTVVPFrameDrawable
 
-- (instancetype)initWithSize:(KTVVPGLSize)size
+- (instancetype)init
 {
     if (self = [super init])
     {
         NSLog(@"%s", __func__);
-        
-        self.size = size;
     }
     return self;
 }
@@ -65,6 +63,11 @@
 {
     if (self.didUpload)
     {
+        return;
+    }
+    if (self.size.width <= 0 || self.size.height <= 0)
+    {
+        NSAssert(NO, @"KTVVPFrameDrawable: size can't be zero.");
         return;
     }
     

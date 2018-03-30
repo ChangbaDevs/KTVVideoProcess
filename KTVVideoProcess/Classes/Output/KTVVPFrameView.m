@@ -32,6 +32,7 @@
 @property (nonatomic, strong) KTVVPFrameUploader * frameUploader;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) CMTime previousFrameTime;
+@property (nonatomic, strong) KTVVPFrame * currentFrame;
 
 @end
 
@@ -86,6 +87,13 @@
         _displaySize = displaySize;
         [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupFramebuffer object:nil]];
     }
+}
+
+- (void)updateCurrentFrame:(KTVVPFrame *)frame
+{
+    [frame lock];
+    [_currentFrame unlock];
+    _currentFrame = frame;
 }
 
 
@@ -187,6 +195,7 @@
     EAGLContext * glContext = _glContext;
     GLuint glFramebuffer = _glFramebuffer;
     GLuint glRenderbuffer = _glRenderbuffer;
+    KTVVPFrame * currentFrame = _currentFrame;
     [_messageLoop setFinishCallback:^(KTVVPMessageLoop * messageLoop) {
         [glContext setCurrentIfNeeded];
         if (glFramebuffer)
@@ -196,6 +205,10 @@
         if (glRenderbuffer)
         {
             glDeleteRenderbuffers(1, &glRenderbuffer);
+        }
+        if (currentFrame)
+        {
+            [currentFrame unlock];
         }
     }];
 }
@@ -229,6 +242,7 @@
         }
         _previousFrameTime = frame.timeStamp;
         [self drawFrame:frame];
+        [self updateCurrentFrame:frame];
         [frame unlock];
     }
     else if (message.type == KTVVPMessageTypeOpenGLClear)
