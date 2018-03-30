@@ -10,6 +10,7 @@
 
 @interface KTVVPSerialPipeline : KTVVPPipeline
 
+@property (nonatomic, assign) NSInteger pipelineIndex;
 @property (nonatomic, assign, readonly) BOOL processing;
 
 @end

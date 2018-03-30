@@ -23,6 +23,8 @@
 {
     if (self = [super init])
     {
+        NSAssert(filterClasses.count > 0, @"filterClasses can't be nil.");
+        
         _context = context;
         _filterClasses = filterClasses;
         _needFlushBeforOutput = YES;

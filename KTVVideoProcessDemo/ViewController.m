@@ -43,7 +43,7 @@
     self.frameView.frame = self.view.bounds;
     [self.view insertSubview:self.frameView atIndex:0];
     
-    KTVVPGLSize videoSize = {720, 1280};
+    KTVVPGLSize videoSize = {720, 720};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
@@ -53,6 +53,9 @@
                                                    filterClasses:@[[KTVVPToneCurveFilter class],
                                                                    [KTVVPSenseTimeFilter class],
                                                                    [KTVVPThroughFilter class]]];
+    [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger filterIndexInPipiline, NSInteger pipelineIndex) {
+        NSLog(@"%@, %ld, %ld", filter, filterIndexInPipiline, pipelineIndex);
+    }];
     [self.pipeline addOutput:self.frameView];
     [self.pipeline addOutput:self.frameWriter];
     [self.pipeline setupIfNeeded];

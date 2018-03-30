@@ -7,9 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVVPFrame.h"
 #import "KTVVPFrameInput.h"
 #import "KTVVPContext.h"
+#import "KTVVPFilter.h"
 
 @interface KTVVPPipeline : NSObject <KTVVPFrameInput>
 
@@ -22,6 +22,7 @@
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 @property (nonatomic, strong, readonly) NSArray <Class> * filterClasses;
 
+@property (nonatomic, copy) void (^filterConfigurationCallback)(__kindof KTVVPFilter * filter, NSInteger filterIndexInPipiline, NSInteger pipelineIndex);
 @property (nonatomic, assign) BOOL needFlushBeforOutput;        // default is YES.
 
 

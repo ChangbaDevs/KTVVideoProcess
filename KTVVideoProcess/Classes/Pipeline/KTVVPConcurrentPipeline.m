@@ -43,6 +43,7 @@
     {
         KTVVPSerialPipeline * obj = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                                    filterClasses:self.filterClasses];
+        obj.pipelineIndex = i;
         [pipelines addObject:obj];
     }
     _pipelines = [pipelines copy];

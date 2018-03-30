@@ -31,6 +31,7 @@
                         filterClasses:filterClasses])
     {
         NSLog(@"%s", __func__);
+        _pipelineIndex = 0;
     }
     return self;
 }
@@ -98,12 +99,17 @@
         
         NSMutableArray <__kindof KTVVPFilter *> * filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
         __kindof KTVVPFilter * lastFilter = nil;
-        for (Class filterClass in self.filterClasses)
+        for (NSInteger i = 0; i < self.filterClasses.count; i++)
         {
+            Class filterClass = [self.filterClasses objectAtIndex:i];
             __kindof KTVVPFilter * obj = [filterClass alloc];
             obj = [obj initWithGLContext:_glContext
                                framePool:_framePool
                            frameUploader:_frameUploader];
+            if (self.filterConfigurationCallback)
+            {
+                self.filterConfigurationCallback(obj, i, _pipelineIndex);
+            }
             lastFilter.output = obj;
             lastFilter = obj;
             [filters addObject:obj];
