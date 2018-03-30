@@ -37,18 +37,31 @@
 
 - (IBAction)setup:(UIButton *)sender
 {
+    // Context
     self.context = [[KTVVPContext alloc] init];
     
+    // View
     self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
     self.frameView.frame = self.view.bounds;
     [self.view insertSubview:self.frameView atIndex:0];
     
+    // Writer
     KTVVPGLSize videoSize = {720, 720};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
     self.frameWriter.delayInterval = 0.0f;
+    [self.frameWriter setStartedCallback:^(BOOL success) {
+        NSLog(@"Record Started...");
+    }];
+    [self.frameWriter setFinishedCallback:^(BOOL success) {
+        NSLog(@"Record Finished...");
+    }];
+    [self.frameWriter setCanceledCallback:^(BOOL success) {
+        NSLog(@"Record Canceled...");
+    }];
     
+    // Pipeline
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                    filterClasses:@[[KTVVPToneCurveFilter class],
                                                                    [KTVVPSenseTimeFilter class],
@@ -60,9 +73,11 @@
     [self.pipeline addOutput:self.frameWriter];
     [self.pipeline setupIfNeeded];
     
+    // Camera
     self.videoCamera = [[KTVVPVideoCamera alloc] initWithContext:self.context];
     self.videoCamera.pipeline = self.pipeline;
     
+    // Start
     [self.frameWriter start];
     [self.videoCamera start];
 }
@@ -99,9 +114,6 @@
 
 - (IBAction)recordStartAction:(UIButton *)sender
 {
-    [self.frameWriter setStartedCallback:^(BOOL success) {
-        NSLog(@"Record Started...");
-    }];
     [self.frameWriter start];
 }
 
@@ -117,17 +129,11 @@
 
 - (IBAction)recordFinishAction:(UIButton *)sender
 {
-    [self.frameWriter setFinishedCallback:^(BOOL success) {
-        NSLog(@"Record Finished...");
-    }];
     [self.frameWriter finish];
 }
 
 - (IBAction)recordCancelAction:(UIButton *)sender
 {
-    [self.frameWriter setCanceledCallback:^(BOOL success) {
-        NSLog(@"Record Canceled...");
-    }];
     [self.frameWriter cancel];
 }
 
