@@ -33,6 +33,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) BOOL didCallStartRecording;
+@property (nonatomic, assign) BOOL didClosed;
 
 @end
 
@@ -108,6 +109,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         return;
     }
+    if (_didClosed)
+    {
+        return;
+    }
+    _didClosed = YES;
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterFinish object:nil] delay:_delayIntervalInternal];
 }
 
@@ -117,6 +123,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         return;
     }
+    if (_didClosed)
+    {
+        return;
+    }
+    _didClosed = YES;
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterCancel object:nil] delay:_delayIntervalInternal];
 }
 
@@ -126,6 +137,10 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     if (!_didCallStartRecording)
+    {
+        return;
+    }
+    if (_didClosed)
     {
         return;
     }
