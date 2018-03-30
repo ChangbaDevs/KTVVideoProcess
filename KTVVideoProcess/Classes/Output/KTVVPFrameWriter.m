@@ -58,8 +58,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
                                               (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
         _videoStartTime = kCMTimeInvalid;
         
-        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameWriter"];
-        _messageLoop.delegate = self;
+        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameWriter" delegate:self];
         [_messageLoop run];
     }
     return self;
@@ -74,7 +73,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         AVAssetWriter * assetWriter = _assetWriter;
         AVAssetWriterInput * assetWriterVideoInput = _assetWriterVideoInput;
         NSMutableArray <KTVVPFrame *> * frameQueue = _frameQueue;
-        [self.messageLoop setThreadDidFiniahedCallback:^(KTVVPMessageLoop *messageLoop) {
+        [self.messageLoop setFinishCallback:^(KTVVPMessageLoop *messageLoop) {
             if (assetWriter.status == AVAssetWriterStatusWriting)
             {
                 [assetWriterVideoInput markAsFinished];

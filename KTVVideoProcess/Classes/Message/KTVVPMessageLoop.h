@@ -22,10 +22,10 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithIdentify:(NSString *)identify;
+- (instancetype)initWithIdentify:(NSString *)identify delegate:(id <KTVVPMessageLoopDelegate>)delegate;
 
 @property (nonatomic, copy, readonly) NSString * identify;
-@property (nonatomic, weak) id <KTVVPMessageLoopDelegate> delegate;
+@property (nonatomic, weak, readonly) id <KTVVPMessageLoopDelegate> delegate;
 @property (nonatomic, strong, readonly) NSThread * thread;
 @property (nonatomic, assign, readonly) BOOL running;
 
@@ -38,9 +38,9 @@
 
 #pragma mark - Flow Control
 
-@property (nonatomic, copy) void (^threadDidStartedCallback)(KTVVPMessageLoop * messageLoop);
-@property (nonatomic, copy) void (^threadDidFiniahedCallback)(KTVVPMessageLoop * messageLoop);
+@property (nonatomic, copy) void (^startCallback)(KTVVPMessageLoop * messageLoop);
+@property (nonatomic, copy) void (^finishCallback)(KTVVPMessageLoop * messageLoop);
 
-- (void)waitUntilThreadDidFinished;
+- (void)waitUntilFinished;
 
 @end

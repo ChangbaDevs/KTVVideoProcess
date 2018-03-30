@@ -59,10 +59,9 @@
         _glLayer.drawableProperties = @{kEAGLDrawablePropertyRetainedBacking : @(NO),
                                             kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
         
-        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameView"];
-        _messageLoop.delegate = self;
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupContext object:nil]];
+        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameView" delegate:self];
         [_messageLoop run];
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupContext object:nil]];
     }
     return self;
 }
@@ -188,7 +187,7 @@
     EAGLContext * glContext = _glContext;
     GLuint glFramebuffer = _glFramebuffer;
     GLuint glRenderbuffer = _glRenderbuffer;
-    [_messageLoop setThreadDidFiniahedCallback:^(KTVVPMessageLoop * messageLoop) {
+    [_messageLoop setFinishCallback:^(KTVVPMessageLoop * messageLoop) {
         [glContext setCurrentIfNeeded];
         if (glFramebuffer)
         {

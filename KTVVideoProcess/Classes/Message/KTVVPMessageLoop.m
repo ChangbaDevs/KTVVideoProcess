@@ -12,7 +12,7 @@
 @interface KTVVPMessageLoop ()
 
 @property (nonatomic, strong) NSThread * thread;
-@property (nonatomic, strong) NSCondition * waitThreadCondition;
+@property (nonatomic, strong) NSCondition * waitingCondition;
 @property (nonatomic, strong) KTVVPObjectQueue * messageQueue;
 @property (nonatomic, assign) BOOL didClosed;
 
@@ -20,12 +20,13 @@
 
 @implementation KTVVPMessageLoop
 
-- (instancetype)initWithIdentify:(NSString *)identify
+- (instancetype)initWithIdentify:(NSString *)identify delegate:(id <KTVVPMessageLoopDelegate>)delegate
 {
     if (self = [super init])
     {
         _identify = identify;
-        _waitThreadCondition = [[NSCondition alloc] init];
+        _delegate = delegate;
+        _waitingCondition = [[NSCondition alloc] init];
         _messageQueue = [[KTVVPObjectQueue alloc] init];
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(messageLoopThread) object:nil];
         _thread.qualityOfService = NSQualityOfServiceDefault;
@@ -59,29 +60,29 @@
         return;
     }
     _didClosed = YES;
-    if (!_running)
-    {
-        _running = YES;
-        [_thread start];
-    }
-    else
+    if (_running)
     {
         [_messageQueue broadcastAllSyncRequest];
     }
 }
 
-- (void)waitUntilThreadDidFinished
+- (void)waitUntilFinished
 {
-    [_waitThreadCondition lock];
+    [_waitingCondition lock];
     while (_running)
     {
-        [_waitThreadCondition wait];
+        [_waitingCondition wait];
     }
-    [_waitThreadCondition unlock];
+    [_waitingCondition unlock];
 }
 
 - (void)putMessage:(KTVVPMessage *)message
 {
+    if (!_running)
+    {
+        NSAssert(NO, @"Can't put message befor loop is running.");
+        return;
+    }
     [_messageQueue putObject:message];
 }
 
@@ -101,9 +102,9 @@
 
 - (void)messageLoopThread
 {
-    if (_threadDidStartedCallback)
+    if (_startCallback)
     {
-        _threadDidStartedCallback(self);
+        _startCallback(self);
     }
     while (YES)
     {
@@ -138,12 +139,12 @@
             [message drop];
         }
     }
-    if (_threadDidFiniahedCallback)
+    if (_finishCallback)
     {
-        _threadDidFiniahedCallback(self);
+        _finishCallback(self);
     }
     _running = NO;
-    [_waitThreadCondition broadcast];
+    [_waitingCondition broadcast];
 }
 
 @end
