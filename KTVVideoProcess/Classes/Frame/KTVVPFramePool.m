@@ -49,6 +49,7 @@
     }
     frame.lockingDelegate = self;
     frame.key = key;
+    [frame clear];
     [frame lock];
     return frame;
 }
@@ -58,7 +59,6 @@
 
 - (void)frameDidUnuse:(__kindof KTVVPFrame *)frame
 {
-    [frame clear];
     NSMutableSet <__kindof KTVVPFrame *> * frames = [_framesContainer objectForKey:frame.key];
     [frames addObject:frame];
 }
