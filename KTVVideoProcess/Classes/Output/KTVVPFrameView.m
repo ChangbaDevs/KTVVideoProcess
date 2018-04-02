@@ -51,6 +51,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     if (self = [super initWithFrame:CGRectZero])
     {
         _context = context;
+        _scalingMode = KTVVPFrameViewScalingModeResizeAspectFill;
         
         if ([self respondsToSelector:@selector(setContentScaleFactor:)])
         {
@@ -177,6 +178,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 - (void)drawFrame:(KTVVPFrame *)frame
 {
     [self drawPrepare];
+    [self drawUpdateViewport:frame.size];
     [_glProgram use];
     [frame uploadIfNeeded:_frameUploader];
     [_glProgram bindTexture:frame.texture];
@@ -203,6 +205,33 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     glViewport(0, 0, (GLint)_displaySize.width * self.glScale, (GLint)_displaySize.height * self.glScale);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+- (void)drawUpdateViewport:(KTVVPSize)size
+{
+    GLint width = (GLint)_displaySize.width * self.glScale;
+    GLint height = (GLint)_displaySize.height * self.glScale;
+    CGRect rect = CGRectMake(0, 0, width, height);
+    switch (_scalingMode)
+    {
+        case KTVVPFrameViewScalingModeResize:
+            break;
+        case KTVVPFrameViewScalingModeResizeAspect:
+            rect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(size.width, size.height), rect);
+            break;
+        case KTVVPFrameViewScalingModeResizeAspectFill:
+        {
+            rect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(size.width, size.height), rect);
+            CGFloat scale = 1 + MAX(rect.origin.x * 2 / rect.size.width, rect.origin.y * 2 / rect.size.height);
+            CGSize size = CGSizeApplyAffineTransform(rect.size, CGAffineTransformMakeScale(scale, scale));
+            rect = CGRectMake(-(size.width - width) / 2,
+                              -(size.height - height) / 2,
+                              size.width,
+                              size.height);
+        }
+            break;
+    }
+    glViewport(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 }
 
 - (void)drawFlush
