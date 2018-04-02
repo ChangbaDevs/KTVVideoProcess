@@ -52,7 +52,7 @@
     [self.view insertSubview:self.frameView atIndex:0];
     
     // Writer
-    NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
+    NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"KTVVideoProcess_temp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] init];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
     self.frameWriter.videoOutputSize = KTVVPSizeMake(720, 1280);
