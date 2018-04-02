@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     GLuint _glRenderbuffer;
 }
 
-@property (nonatomic, assign) KTVVPGLSize displaySize;
+@property (nonatomic, assign) KTVVPSize displaySize;
 
 @property (nonatomic, assign) CGFloat glScale;
 @property (nonatomic, strong) CAEAGLLayer * glLayer;
@@ -86,8 +86,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     int height = CGRectGetHeight(self.bounds);
     if (width != _displaySize.width || height != _displaySize.width)
     {
-        KTVVPGLSize displaySize = {width, height};
-        _displaySize = displaySize;
+        _displaySize = KTVVPSizeMake(width, height);
         [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupFramebuffer object:nil]];
     }
 }
@@ -260,7 +259,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     GLuint glFramebuffer = _glFramebuffer;
     GLuint glRenderbuffer = _glRenderbuffer;
     KTVVPFrame * currentFrame = _currentFrame;
-    [_messageLoop setFinishCallback:^(KTVVPMessageLoop * messageLoop) {
+    [_messageLoop setFinishedCallback:^(KTVVPMessageLoop * messageLoop) {
         [glContext setCurrentIfNeeded];
         if (glFramebuffer)
         {

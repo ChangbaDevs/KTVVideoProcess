@@ -39,7 +39,7 @@
 #pragma mark - Flow Control
 
 @property (nonatomic, copy) void (^startCallback)(KTVVPMessageLoop * messageLoop);
-@property (nonatomic, copy) void (^finishCallback)(KTVVPMessageLoop * messageLoop);
+@property (nonatomic, copy) void (^finishedCallback)(KTVVPMessageLoop * messageLoop);
 
 - (void)waitUntilFinished;
 

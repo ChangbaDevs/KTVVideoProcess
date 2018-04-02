@@ -95,8 +95,7 @@
         CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
         int width = (int)CVPixelBufferGetWidth(pixelBuffer);
         int height = (int)CVPixelBufferGetHeight(pixelBuffer);
-        KTVVPGLSize size = {width, height};
-        self.size = size;
+        self.size = KTVVPSizeMake(width, height);
     }
 }
 
@@ -119,8 +118,7 @@
         CFRelease(_cvOpenGLESTexture);
         _cvOpenGLESTexture = NULL;
     }
-    KTVVPGLSize size = {0, 0};
-    self.size = size;
+    self.size = KTVVPSizeZero();
     self.uploader = nil;
     self.didUpload = NO;
 }

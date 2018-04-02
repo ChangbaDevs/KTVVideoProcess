@@ -18,18 +18,6 @@
 #import "EAGLContext+KTVVPExtension.h"
 
 
-typedef struct KTVVPGLSize {
-    int width;
-    int height;
-} KTVVPGLSize;
-
-typedef struct KTVVPGLRect {
-    int x;
-    int y;
-    int width;
-    int height;
-} KTVVPGLRect;
-
 typedef struct KTVVPGLTextureOptions {
     GLenum minFilter;
     GLenum magFilter;

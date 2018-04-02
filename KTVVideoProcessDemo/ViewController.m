@@ -14,8 +14,6 @@
 #import "KTVVPFrameWriter.h"
 #import "KTVVPFilter.h"
 #import "KTVVPThroughFilter.h"
-#import "KTVVPToneCurveFilter.h"
-#import "KTVVPSenseTimeFilter.h"
 
 @interface ViewController ()
 
@@ -54,26 +52,25 @@
     [self.view insertSubview:self.frameView atIndex:0];
     
     // Writer
-    KTVVPGLSize videoSize = {720, 1280};
     NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"ktvvptmp.mov"];
-    self.frameWriter = [[KTVVPFrameWriter alloc] initWithContext:self.context videoSize:videoSize];
+    self.frameWriter = [[KTVVPFrameWriter alloc] init];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
+    self.frameWriter.videoOutputSize = KTVVPSizeMake(720, 1280);
+    self.frameWriter.videoSourceSize = KTVVPSizeMake(720, 1280);
     self.frameWriter.delayInterval = 0.0f;
-    [self.frameWriter setStartedCallback:^(BOOL success) {
+    [self.frameWriter setStartCallback:^(BOOL success) {
         NSLog(@"Record Started...");
     }];
     [self.frameWriter setFinishedCallback:^(BOOL success) {
         NSLog(@"Record Finished...");
     }];
-    [self.frameWriter setCanceledCallback:^(BOOL success) {
+    [self.frameWriter setCancelCallback:^(BOOL success) {
         NSLog(@"Record Canceled...");
     }];
     
     // Pipeline
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context
-                                                   filterClasses:@[[KTVVPToneCurveFilter class],
-                                                                   [KTVVPSenseTimeFilter class],
-                                                                   [KTVVPThroughFilter class]]];
+                                                   filterClasses:@[[KTVVPThroughFilter class]]];
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger filterIndexInPipiline, NSInteger pipelineIndex) {
         NSLog(@"%@, %ld, %ld", filter, filterIndexInPipiline, pipelineIndex);
     }];

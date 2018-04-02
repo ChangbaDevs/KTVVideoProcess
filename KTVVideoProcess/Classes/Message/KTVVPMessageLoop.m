@@ -139,9 +139,9 @@
             [message drop];
         }
     }
-    if (_finishCallback)
+    if (_finishedCallback)
     {
-        _finishCallback(self);
+        _finishedCallback(self);
     }
     _running = NO;
     [_waitingCondition broadcast];

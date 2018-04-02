@@ -60,7 +60,7 @@
     
     [self.glContext setCurrentIfNeeded];
     [frame lock];
-    KTVVPGLSize size = frame.size;
+    KTVVPSize size = frame.size;
     if (_handleTransform)
     {
         size = frame.finalSize;

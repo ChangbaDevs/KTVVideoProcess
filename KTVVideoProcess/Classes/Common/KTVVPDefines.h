@@ -6,12 +6,10 @@
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#ifndef KTVVPDefines_h
-#define KTVVPDefines_h
-
-
 #import <Foundation/Foundation.h>
 
+
+#pragma mark - Enum
 
 typedef NS_ENUM(NSUInteger, KTVVPRotationMode)
 {
@@ -30,4 +28,27 @@ typedef NS_ENUM(NSUInteger, KTVVPFlipMode)
 };
 
 
-#endif /* KTVVPDefines_h */
+#pragma mark - Struct
+
+typedef struct KTVVPSize {
+    int width;
+    int height;
+} KTVVPSize;
+
+typedef struct KTVVPRect {
+    int x;
+    int y;
+    int width;
+    int height;
+} KTVVPRect;
+
+
+#pragma mark - Function
+
+KTVVPSize KTVVPSizeZero(void);
+KTVVPSize KTVVPSizeMake(int width, int height);
+BOOL KTVVPSizeEqualToSize(KTVVPSize size1, KTVVPSize size2);
+
+KTVVPRect KTVVPRectZero(void);
+KTVVPRect KTVVPRectMake(int x, int y, int width, int height);
+BOOL KTVVPRectEqualToRect(KTVVPRect rect1, KTVVPRect rect2);

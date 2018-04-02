@@ -93,6 +93,11 @@
 - (void)reloadOutput
 {
     [self beginConfiguration];
+    if (_videoOutput)
+    {
+        [_captureSession removeOutput:_videoOutput];
+        _videoOutput = nil;
+    }
     _videoOutput = [[AVCaptureVideoDataOutput alloc] init];
     _videoOutput.videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
     [_videoOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];

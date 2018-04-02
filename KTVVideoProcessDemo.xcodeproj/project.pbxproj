@@ -26,6 +26,7 @@
 		9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */; };
 		9C544F4F206B336D008B2768 /* KTVVPTimeComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C544F4E206B336D008B2768 /* KTVVPTimeComponents.m */; };
 		9C544F54206C91A7008B2768 /* EAGLContext+KTVVPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C544F53206C91A7008B2768 /* EAGLContext+KTVVPExtension.m */; };
+		9C5F2CC12071CA4E00FA0657 /* KTVVPDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5F2CC02071CA4D00FA0657 /* KTVVPDefines.m */; };
 		9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C61192A205F58760040B277 /* KTVVPFilter.m */; };
 		9C611932205F8E120040B277 /* KTVVPThroughFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C611931205F8E120040B277 /* KTVVPThroughFilter.m */; };
 		9C622C2320688D4500E7C630 /* KTVVPSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C622C2220688D4500E7C630 /* KTVVPSource.m */; };
@@ -90,6 +91,7 @@
 		9C544F4E206B336D008B2768 /* KTVVPTimeComponents.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPTimeComponents.m; sourceTree = "<group>"; };
 		9C544F52206C91A7008B2768 /* EAGLContext+KTVVPExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EAGLContext+KTVVPExtension.h"; sourceTree = "<group>"; };
 		9C544F53206C91A7008B2768 /* EAGLContext+KTVVPExtension.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "EAGLContext+KTVVPExtension.m"; sourceTree = "<group>"; };
+		9C5F2CC02071CA4D00FA0657 /* KTVVPDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPDefines.m; sourceTree = "<group>"; };
 		9C611929205F58760040B277 /* KTVVPFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFilter.h; sourceTree = "<group>"; };
 		9C61192A205F58760040B277 /* KTVVPFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFilter.m; sourceTree = "<group>"; };
 		9C611930205F8E120040B277 /* KTVVPThroughFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPThroughFilter.h; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				9C3E5CFA206208F800F30377 /* KTVVPDefines.h */,
+				9C5F2CC02071CA4D00FA0657 /* KTVVPDefines.m */,
 				9CC08E55205B88F000F15D88 /* KTVVPContext.h */,
 				9CC08E56205B88F000F15D88 /* KTVVPContext.m */,
 				9C9905CD205A4D8600D7CF3A /* KTVVPObjectQueue.h */,
@@ -474,6 +477,7 @@
 				9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */,
 				9C9905C8205A4C5E00D7CF3A /* KTVVPMessageLoop.m in Sources */,
 				9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */,
+				9C5F2CC12071CA4E00FA0657 /* KTVVPDefines.m in Sources */,
 				9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */,
 				9C99059A205A194800D7CF3A /* ViewController.m in Sources */,
 				9C9905CB205A4D3300D7CF3A /* KTVVPMessage.m in Sources */,

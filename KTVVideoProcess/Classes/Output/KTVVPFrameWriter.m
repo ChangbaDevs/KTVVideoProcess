@@ -23,13 +23,15 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 
 @interface KTVVPFrameWriter () <KTVVPMessageLoopDelegate>
 
+@property (nonatomic, assign) NSTimeInterval delayIntervalInternal;
+
 @property (nonatomic, strong) AVAssetWriter * assetWriter;
 @property (nonatomic, strong) AVAssetWriterInput * assetWriterVideoInput;
 @property (nonatomic, strong) AVAssetWriterInputPixelBufferAdaptor * assetWriterInputPixelBufferAdaptor;
 
 @property (nonatomic, strong) NSMutableArray <KTVVPFrame *> * frameQueue;
-@property (nonatomic, assign) NSTimeInterval delayIntervalInternal;
 @property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
+@property (nonatomic, assign) CMTime videoStartTime;
 
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) BOOL didCallStartRecording;
@@ -39,27 +41,15 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 
 @implementation KTVVPFrameWriter
 
-- (instancetype)initWithContext:(KTVVPContext *)context videoSize:(KTVVPGLSize)videoSize
+- (instancetype)init
 {
     if (self = [super init])
     {
-        if (videoSize.width == 0 || videoSize.height == 0)
-        {
-            NSAssert(NO, @"video size can't be zero");
-        }
-        _context = context;
-        _videoSize = videoSize;
         _outputFileType = AVFileTypeQuickTimeMovie;
-        _videoOutputSettings = @{AVVideoCodecKey : AVVideoCodecH264,
-                                 AVVideoWidthKey : @(_videoSize.width),
-                                 AVVideoHeightKey : @(_videoSize.height)};
-        _videoSourcePixelBufferAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
-                                              (id)kCVPixelBufferWidthKey : @(_videoSize.width),
-                                              (id)kCVPixelBufferHeightKey : @(_videoSize.height)};
+        _videoOutputCodec = AVVideoCodecH264;
         _videoStartTime = kCMTimeInvalid;
-        
-        _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameWriter" delegate:self];
-        [_messageLoop run];
+        _frameQueue = [NSMutableArray array];
+        _timeComponents = [[KTVVPTimeComponents alloc] init];
     }
     return self;
 }
@@ -73,7 +63,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         AVAssetWriter * assetWriter = _assetWriter;
         AVAssetWriterInput * assetWriterVideoInput = _assetWriterVideoInput;
         NSMutableArray <KTVVPFrame *> * frameQueue = _frameQueue;
-        [self.messageLoop setFinishCallback:^(KTVVPMessageLoop *messageLoop) {
+        [self.messageLoop setFinishedCallback:^(KTVVPMessageLoop *messageLoop) {
             if (assetWriter.status == AVAssetWriterStatusWriting)
             {
                 [assetWriterVideoInput markAsFinished];
@@ -99,6 +89,9 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     }
     _didCallStartRecording = YES;
     _delayIntervalInternal = _delayInterval;
+    
+    _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameWriter" delegate:self];
+    [_messageLoop run];
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterReset object:nil]];
 }
 
@@ -174,9 +167,9 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     if (message.type == KTVVPMessageTypeWriterReset)
     {
         [self setupAssetWriter];
-        if (_startedCallback)
+        if (_startCallback)
         {
-            _startedCallback(_error ? NO : YES);
+            _startCallback(_error ? NO : YES);
         }
     }
     else if (message.type == KTVVPMessageTypeWriterDrop)
@@ -220,16 +213,16 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         {
             [_assetWriterVideoInput markAsFinished];
             [_assetWriter cancelWriting];
-            if (_canceledCallback)
+            if (_cancelCallback)
             {
-                _canceledCallback(YES);
+                _cancelCallback(YES);
             }
         }
         else
         {
-            if (_canceledCallback)
+            if (_cancelCallback)
             {
-                _canceledCallback(NO);
+                _cancelCallback(NO);
             }
         }
     }
@@ -247,7 +240,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         _error = [NSError errorWithDomain:domain code:-1 userInfo:nil];
         return;
     }
-    
     if ([[NSFileManager defaultManager] fileExistsAtPath:_outputFileURL.path])
     {
         [[NSFileManager defaultManager] removeItemAtPath:_outputFileURL.path error:nil];
@@ -261,14 +253,90 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         return;
     }
     
+    if (_videoOutputSettings)
+    {
+        NSMutableDictionary * videoOutputSettings = [NSMutableDictionary dictionaryWithDictionary:_videoOutputSettings];
+        
+        NSString * codec = [videoOutputSettings objectForKey:AVVideoCodecKey];
+        if (codec) {
+            _videoOutputCodec = codec;
+        } else {
+            [videoOutputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
+        }
+        
+        KTVVPSize size = KTVVPSizeZero();
+        NSNumber * width = [videoOutputSettings objectForKey:AVVideoWidthKey];
+        if (width) {
+            size.width = width.intValue;
+        } else {
+            [videoOutputSettings setObject:@(_videoOutputSize.width) forKey:AVVideoWidthKey];
+        }
+        NSNumber * height = [videoOutputSettings objectForKey:AVVideoHeightKey];
+        if (height) {
+            size.height = height.intValue;
+        } else {
+            [videoOutputSettings setObject:@(_videoOutputSize.height) forKey:AVVideoHeightKey];
+        }
+        _videoOutputSize = size;
+    }
+    else
+    {
+        _videoOutputSettings = @{AVVideoCodecKey : AVVideoCodecH264,
+                                 AVVideoWidthKey : @(_videoOutputSize.width),
+                                 AVVideoHeightKey : @(_videoOutputSize.height)};
+    }
+    if (KTVVPSizeEqualToSize(_videoOutputSize, KTVVPSizeZero()))
+    {
+        NSString * domain = @"video output size can't be zero";
+        NSAssert(NO, domain);
+        _error = [NSError errorWithDomain:domain code:-1 userInfo:nil];
+        return;
+    }
     _assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:_videoOutputSettings];
     _assetWriterVideoInput.expectsMediaDataInRealTime = NO;
-    _assetWriterVideoInput.transform = _videoTransform;
+    _assetWriterVideoInput.transform = _videoOutputTransform;
+    
+    if (_videoSourcePixelBufferAttributes)
+    {
+        NSMutableDictionary * videoSourcePixelBufferAttributes = [NSMutableDictionary dictionaryWithDictionary:_videoSourcePixelBufferAttributes];
+
+        NSNumber * format = [videoSourcePixelBufferAttributes objectForKey:(id)kCVPixelBufferPixelFormatTypeKey];
+        if (format) {
+            _videoSourcePixelFormat = format.integerValue;
+        } else {
+            [videoSourcePixelBufferAttributes setObject:@(kCVPixelFormatType_32BGRA) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+        }
+
+        KTVVPSize size = KTVVPSizeZero();
+        NSNumber * width = [videoSourcePixelBufferAttributes objectForKey:(id)kCVPixelBufferWidthKey];
+        if (width) {
+            size.width = width.intValue;
+        } else {
+            [videoSourcePixelBufferAttributes setObject:@(_videoSourceSize.width) forKey:(id)kCVPixelBufferWidthKey];
+        }
+        NSNumber * height = [videoSourcePixelBufferAttributes objectForKey:(id)kCVPixelBufferHeightKey];
+        if (height) {
+            size.height = height.intValue;
+        } else {
+            [videoSourcePixelBufferAttributes setObject:@(_videoSourceSize.height) forKey:(id)kCVPixelBufferHeightKey];
+        }
+        _videoSourceSize = size;
+    }
+    else
+    {
+        _videoSourcePixelBufferAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
+                                              (id)kCVPixelBufferWidthKey : @(_videoOutputSize.width),
+                                              (id)kCVPixelBufferHeightKey : @(_videoOutputSize.height)};
+    }
+    if (KTVVPSizeEqualToSize(_videoSourceSize, KTVVPSizeZero()))
+    {
+        NSString * domain = @"video source size can't be zero";
+        NSAssert(NO, domain);
+        _error = [NSError errorWithDomain:domain code:-1 userInfo:nil];
+        return;
+    }
     _assetWriterInputPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_assetWriterVideoInput sourcePixelBufferAttributes:_videoSourcePixelBufferAttributes];
     [_assetWriter addInput:_assetWriterVideoInput];
-    
-    _frameQueue = [NSMutableArray array];
-    _timeComponents = [[KTVVPTimeComponents alloc] init];
     
     if (![_assetWriter startWriting])
     {

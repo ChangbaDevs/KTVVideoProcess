@@ -49,7 +49,7 @@
     return KTVVPFrameTypeIdle;
 }
 
-- (KTVVPGLSize)finalSize
+- (KTVVPSize)finalSize
 {
     BOOL exchangeXY = NO;
     if (_rotationMode == KTVVPRotationMode90
@@ -59,8 +59,7 @@
     }
     if (exchangeXY)
     {
-        KTVVPGLSize size = {_size.height, _size.width};
-        return size;
+        return KTVVPSizeMake(_size.height, _size.width);
     }
     return _size;
 }
