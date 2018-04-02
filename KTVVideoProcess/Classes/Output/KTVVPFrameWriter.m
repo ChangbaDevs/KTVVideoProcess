@@ -47,6 +47,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         _outputFileType = AVFileTypeQuickTimeMovie;
         _videoOutputCodec = AVVideoCodecH264;
+        _videoOutputScalingMode = AVVideoScalingModeResizeAspectFill;
         _videoStartTime = kCMTimeInvalid;
         _frameQueue = [NSMutableArray array];
         _timeComponents = [[KTVVPTimeComponents alloc] init];
@@ -263,7 +264,12 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         } else {
             [videoOutputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
         }
-        
+        NSString * scalingMode = [videoOutputSettings objectForKey:AVVideoScalingModeKey];
+        if (scalingMode) {
+            _videoOutputScalingMode = scalingMode;
+        } else {
+            [videoOutputSettings setObject:AVVideoScalingModeResizeAspectFill forKey:AVVideoScalingModeKey];
+        }
         KTVVPSize size = KTVVPSizeZero();
         NSNumber * width = [videoOutputSettings objectForKey:AVVideoWidthKey];
         if (width) {
@@ -281,7 +287,8 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     }
     else
     {
-        _videoOutputSettings = @{AVVideoCodecKey : AVVideoCodecH264,
+        _videoOutputSettings = @{AVVideoCodecKey : _videoOutputCodec,
+                                 AVVideoScalingModeKey : _videoOutputScalingMode,
                                  AVVideoWidthKey : @(_videoOutputSize.width),
                                  AVVideoHeightKey : @(_videoOutputSize.height)};
     }

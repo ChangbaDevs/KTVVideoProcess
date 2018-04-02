@@ -19,6 +19,7 @@
 
 @property (nonatomic, copy) NSDictionary * videoOutputSettings;
 @property (nonatomic, copy) AVVideoCodecType videoOutputCodec;       // default is AVVideoCodecH264.
+@property (nonatomic, copy) NSString * videoOutputScalingMode;       // default is AVVideoScalingModeResizeAspectFill.
 @property (nonatomic, assign) KTVVPSize videoOutputSize;
 @property (nonatomic, assign) CGAffineTransform videoOutputTransform;
 
