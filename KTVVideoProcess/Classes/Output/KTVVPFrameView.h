@@ -10,13 +10,6 @@
 #import "KTVVPContext.h"
 #import "KTVVPFrameInput.h"
 
-typedef NS_ENUM(NSUInteger, KTVVPFrameViewScalingMode)
-{
-    KTVVPFrameViewScalingModeResize,
-    KTVVPFrameViewScalingModeResizeAspect,
-    KTVVPFrameViewScalingModeResizeAspectFill,
-};
-
 @interface KTVVPFrameView : UIView <KTVVPFrameInput>
 
 + (instancetype)new NS_UNAVAILABLE;
@@ -26,7 +19,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameViewScalingMode)
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 
-@property (atomic, assign) KTVVPFrameViewScalingMode scalingMode;        // default is KTVVPFrameViewScalingModeResizeAspectFill.
+@property (atomic, assign) KTVVPScalingMode scalingMode;        // default is KTVVPScalingModeResizeAspectFill.
 
 - (void)snapshot:(void (^)(UIImage * image))callback;
 

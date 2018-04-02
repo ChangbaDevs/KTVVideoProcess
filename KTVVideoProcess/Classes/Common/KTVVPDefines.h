@@ -27,6 +27,13 @@ typedef NS_ENUM(NSUInteger, KTVVPFlipMode)
     KTVVPFlipModeHorizonalAndVertical,
 };
 
+typedef NS_ENUM(NSUInteger, KTVVPScalingMode)
+{
+    KTVVPScalingModeResize,
+    KTVVPScalingModeResizeAspect,
+    KTVVPScalingModeResizeAspectFill,
+};
+
 
 #pragma mark - Struct
 

@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     if (self = [super initWithFrame:CGRectZero])
     {
         _context = context;
-        _scalingMode = KTVVPFrameViewScalingModeResizeAspectFill;
+        _scalingMode = KTVVPScalingModeResizeAspectFill;
         
         if ([self respondsToSelector:@selector(setContentScaleFactor:)])
         {
@@ -214,12 +214,12 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     CGRect rect = CGRectMake(0, 0, width, height);
     switch (_scalingMode)
     {
-        case KTVVPFrameViewScalingModeResize:
+        case KTVVPScalingModeResize:
             break;
-        case KTVVPFrameViewScalingModeResizeAspect:
+        case KTVVPScalingModeResizeAspect:
             rect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(size.width, size.height), rect);
             break;
-        case KTVVPFrameViewScalingModeResizeAspectFill:
+        case KTVVPScalingModeResizeAspectFill:
         {
             rect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(size.width, size.height), rect);
             CGFloat scale = 1 + MAX(rect.origin.x * 2 / rect.size.width, rect.origin.y * 2 / rect.size.height);
