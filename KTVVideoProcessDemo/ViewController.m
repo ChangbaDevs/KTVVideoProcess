@@ -56,7 +56,6 @@
     self.frameWriter = [[KTVVPFrameWriter alloc] init];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
     self.frameWriter.videoOutputSize = KTVVPSizeMake(720, 1280);
-    self.frameWriter.videoSourceSize = KTVVPSizeMake(720, 1280);
     self.frameWriter.delayInterval = 0.0f;
     [self.frameWriter setStartCallback:^(BOOL success) {
         NSLog(@"Record Started...");

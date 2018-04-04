@@ -25,7 +25,6 @@
 
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
 @property (nonatomic, assign) NSInteger videoSourcePixelFormat;      // default is kCVPixelFormatType_32BGRA.
-@property (nonatomic, assign) KTVVPSize videoSourceSize;
 
 @property (nonatomic, assign) NSTimeInterval delayInterval;          // default is 0.
 

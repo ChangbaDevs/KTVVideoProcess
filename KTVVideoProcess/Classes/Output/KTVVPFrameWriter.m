@@ -314,33 +314,20 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             [videoSourcePixelBufferAttributes setObject:@(kCVPixelFormatType_32BGRA) forKey:(id)kCVPixelBufferPixelFormatTypeKey];
         }
 
-        KTVVPSize size = KTVVPSizeZero();
         NSNumber * width = [videoSourcePixelBufferAttributes objectForKey:(id)kCVPixelBufferWidthKey];
-        if (width) {
-            size.width = width.intValue;
-        } else {
-            [videoSourcePixelBufferAttributes setObject:@(_videoSourceSize.width) forKey:(id)kCVPixelBufferWidthKey];
+        if (!width) {
+            [videoSourcePixelBufferAttributes setObject:@(_videoOutputSize.width) forKey:(id)kCVPixelBufferWidthKey];
         }
         NSNumber * height = [videoSourcePixelBufferAttributes objectForKey:(id)kCVPixelBufferHeightKey];
-        if (height) {
-            size.height = height.intValue;
-        } else {
-            [videoSourcePixelBufferAttributes setObject:@(_videoSourceSize.height) forKey:(id)kCVPixelBufferHeightKey];
+        if (!height) {
+            [videoSourcePixelBufferAttributes setObject:@(_videoOutputSize.height) forKey:(id)kCVPixelBufferHeightKey];
         }
-        _videoSourceSize = size;
     }
     else
     {
         _videoSourcePixelBufferAttributes = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
                                               (id)kCVPixelBufferWidthKey : @(_videoOutputSize.width),
                                               (id)kCVPixelBufferHeightKey : @(_videoOutputSize.height)};
-    }
-    if (KTVVPSizeEqualToSize(_videoSourceSize, KTVVPSizeZero()))
-    {
-        NSString * domain = @"video source size can't be zero";
-        NSAssert(NO, domain);
-        _error = [NSError errorWithDomain:domain code:-1 userInfo:nil];
-        return;
     }
     _assetWriterInputPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_assetWriterVideoInput sourcePixelBufferAttributes:_videoSourcePixelBufferAttributes];
     [_assetWriter addInput:_assetWriterVideoInput];
