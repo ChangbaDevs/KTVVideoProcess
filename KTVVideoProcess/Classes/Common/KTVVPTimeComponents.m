@@ -23,6 +23,7 @@
     {
         _timeStamp = kCMTimeZero;
         _previousTimeStamp = kCMTimeZero;
+        _firstTimeStamp = kCMTimeInvalid;
         _deltaInterval = kCMTimeZero;
         _firstDroppedTimeStamp = kCMTimeInvalid;
     }
@@ -47,6 +48,11 @@
     }
     _previousTimeStamp = _timeStamp;
     _timeStamp = CMTimeSubtract(timeStamp, _deltaInterval);
+    if (CMTIME_IS_INVALID(_firstTimeStamp))
+    {
+        _firstTimeStamp = _timeStamp;
+    }
+    _duration = CMTimeSubtract(_timeStamp, _firstTimeStamp);
 }
 
 @end

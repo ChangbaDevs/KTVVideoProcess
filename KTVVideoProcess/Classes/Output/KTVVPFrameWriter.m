@@ -125,6 +125,19 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 }
 
 
+#pragma mark - Setter/Getter
+
+- (NSTimeInterval)duration
+{
+    CMTime duration = _timeComponents.duration;
+    if (CMTIME_IS_INVALID(duration))
+    {
+        return 0;
+    }
+    return CMTimeGetSeconds(duration);
+}
+
+
 #pragma mark - KTVVPFrameInput
 
 - (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source

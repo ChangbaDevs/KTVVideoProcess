@@ -27,7 +27,7 @@
 @property (nonatomic, assign) NSInteger videoSourcePixelFormat;      // default is kCVPixelFormatType_32BGRA.
 
 @property (nonatomic, assign) NSTimeInterval delayInterval;          // default is 0.
-
+@property (nonatomic, assign, readonly) NSTimeInterval duration;
 
 #pragma mark - Control
 

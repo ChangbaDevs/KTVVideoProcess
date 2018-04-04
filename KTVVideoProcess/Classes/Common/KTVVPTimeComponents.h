@@ -13,6 +13,8 @@
 
 @property (nonatomic, assign, readonly) CMTime timeStamp;
 @property (nonatomic, assign, readonly) CMTime previousTimeStamp;
+@property (nonatomic, assign, readonly) CMTime firstTimeStamp;
+@property (nonatomic, assign, readonly) CMTime duration;
 
 - (void)putDroppedTimeStamp:(CMTime)timeStamp;
 - (void)putCurrentTimeStamp:(CMTime)timeStamp;
