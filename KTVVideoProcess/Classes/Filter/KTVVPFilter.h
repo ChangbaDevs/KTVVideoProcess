@@ -26,6 +26,11 @@
 @property (nonatomic, assign) BOOL enable;      // default is YES.
 
 
+#pragma mark - Parent
+
+@property (nonatomic, weak) __kindof KTVVPFilter * parentFilter;
+
+
 #pragma mark - Output
 
 @property (atomic, weak) id <KTVVPFrameInput> output;

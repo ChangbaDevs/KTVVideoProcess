@@ -35,7 +35,7 @@
 
 - (void)outputFrame:(KTVVPFrame *)frame
 {
-    [self.output inputFrame:frame fromSource:self];
+    [self.output inputFrame:frame fromSource:_parentFilter ? _parentFilter : self];
 }
 
 @end
