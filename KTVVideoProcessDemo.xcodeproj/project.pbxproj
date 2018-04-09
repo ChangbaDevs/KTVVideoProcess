@@ -56,6 +56,7 @@
 		9CD4D505207B5290002CDBD8 /* KTVVPStandardFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D504207B5290002CDBD8 /* KTVVPStandardFilter.m */; };
 		9CD4D508207B541F002CDBD8 /* KTVVPRadialFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D507207B541F002CDBD8 /* KTVVPRadialFilter.m */; };
 		9CD4D50B207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */; };
+		9CD4D50E207B629E002CDBD8 /* KTVVPTransformFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D50D207B629E002CDBD8 /* KTVVPTransformFilter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,6 +155,8 @@
 		9CD4D507207B541F002CDBD8 /* KTVVPRadialFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPRadialFilter.m; sourceTree = "<group>"; };
 		9CD4D509207B5830002CDBD8 /* KTVVPBlackWhiteFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPBlackWhiteFilter.h; sourceTree = "<group>"; };
 		9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPBlackWhiteFilter.m; sourceTree = "<group>"; };
+		9CD4D50C207B629E002CDBD8 /* KTVVPTransformFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPTransformFilter.h; sourceTree = "<group>"; };
+		9CD4D50D207B629E002CDBD8 /* KTVVPTransformFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPTransformFilter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,7 +171,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9C3E5C872060EE1400F30377 /* KTVVPToneCurveEffect */ = {
+		9C3E5C872060EE1400F30377 /* resources */ = {
 			isa = PBXGroup;
 			children = (
 				9C3E5C882060EE1400F30377 /* BlueCrystal.acv */,
@@ -177,7 +180,7 @@
 				9C3E5C8B2060EE1400F30377 /* Cool.acv */,
 				9C3E5C8C2060EE1400F30377 /* Grace.acv */,
 			);
-			path = KTVVPToneCurveEffect;
+			path = resources;
 			sourceTree = "<group>";
 		};
 		9C3E5C952060F4DE00F30377 /* face.mobilealignment */ = {
@@ -218,7 +221,7 @@
 			isa = PBXGroup;
 			children = (
 				9C3E5C952060F4DE00F30377 /* face.mobilealignment */,
-				9C3E5C872060EE1400F30377 /* KTVVPToneCurveEffect */,
+				9C3E5C872060EE1400F30377 /* resources */,
 				9C8827A9207A297A00CF8DE9 /* KTVVPEffectFilter.h */,
 				9C8827AA207A297A00CF8DE9 /* KTVVPEffectFilter.m */,
 				9CD4D506207B541F002CDBD8 /* KTVVPRadialFilter.h */,
@@ -246,6 +249,8 @@
 				9C611931205F8E120040B277 /* KTVVPThroughFilter.m */,
 				9CD4D503207B5290002CDBD8 /* KTVVPStandardFilter.h */,
 				9CD4D504207B5290002CDBD8 /* KTVVPStandardFilter.m */,
+				9CD4D50C207B629E002CDBD8 /* KTVVPTransformFilter.h */,
+				9CD4D50D207B629E002CDBD8 /* KTVVPTransformFilter.m */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -499,6 +504,7 @@
 				9C3470F22065174F00A66180 /* KTVVPSerialPipeline.m in Sources */,
 				9C3E5C832060E6ED00F30377 /* KTVVPToneCurveFilter.m in Sources */,
 				9C8827AB207A297A00CF8DE9 /* KTVVPEffectFilter.m in Sources */,
+				9CD4D50E207B629E002CDBD8 /* KTVVPTransformFilter.m in Sources */,
 				9C622C2320688D4500E7C630 /* KTVVPSource.m in Sources */,
 				9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */,
 				9C9905C8205A4C5E00D7CF3A /* KTVVPMessageLoop.m in Sources */,
