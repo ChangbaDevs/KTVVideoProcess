@@ -8,7 +8,7 @@
 
 #import "KTVVPFrameView.h"
 #import "KTVVPMessageLoop.h"
-#import "KTVVPGLRGBProgram.h"
+#import "KTVVPStandardProgram.h"
 #import "KTVVPGLPlaneModel.h"
 
 typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
@@ -29,7 +29,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 @property (nonatomic, assign) CGFloat glScale;
 @property (nonatomic, strong) CAEAGLLayer * glLayer;
 @property (nonatomic, strong) EAGLContext * glContext;
-@property (nonatomic, strong) KTVVPGLRGBProgram * glProgram;
+@property (nonatomic, strong) KTVVPStandardProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
 @property (nonatomic, strong) KTVVPFrameUploader * frameUploader;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
@@ -248,7 +248,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:_context.mainGLContext.sharegroup];
     [_glContext setCurrentIfNeeded];
     _glModel = [[KTVVPGLPlaneModel alloc] initWithGLContext:_glContext];
-    _glProgram = [[KTVVPGLRGBProgram alloc] initWithGLContext:_glContext];
+    _glProgram = [[KTVVPStandardProgram alloc] initWithGLContext:_glContext];
     _frameUploader = [[KTVVPFrameUploader alloc] initWithGLContext:_glContext];
 }
 

@@ -18,6 +18,10 @@
 #import "EAGLContext+KTVVPExtension.h"
 
 
+#define KTV_GLES_CSTRINGIZE(x) #x
+#define KTV_GLES_STRINGIZE(x) @ KTV_GLES_CSTRINGIZE(x)
+
+
 typedef struct KTVVPGLTextureOptions {
     GLenum minFilter;
     GLenum magFilter;

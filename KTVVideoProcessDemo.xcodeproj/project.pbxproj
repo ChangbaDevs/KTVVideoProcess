@@ -12,11 +12,11 @@
 		9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */; };
 		9C3E5C832060E6ED00F30377 /* KTVVPToneCurveFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C822060E6ED00F30377 /* KTVVPToneCurveFilter.m */; };
 		9C3E5C862060E99800F30377 /* KTVVPToneCurveProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C852060E99800F30377 /* KTVVPToneCurveProgram.m */; };
-		9C3E5C8D2060EE1400F30377 /* blueCrystalFilter.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C882060EE1400F30377 /* blueCrystalFilter.acv */; };
-		9C3E5C8E2060EE1400F30377 /* lakeWaterFilter.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C892060EE1400F30377 /* lakeWaterFilter.acv */; };
-		9C3E5C8F2060EE1400F30377 /* rixi.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8A2060EE1400F30377 /* rixi.acv */; };
-		9C3E5C902060EE1400F30377 /* videoEffectCool.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8B2060EE1400F30377 /* videoEffectCool.acv */; };
-		9C3E5C912060EE1400F30377 /* youya.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8C2060EE1400F30377 /* youya.acv */; };
+		9C3E5C8D2060EE1400F30377 /* BlueCrystal.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C882060EE1400F30377 /* BlueCrystal.acv */; };
+		9C3E5C8E2060EE1400F30377 /* LakeWater.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C892060EE1400F30377 /* LakeWater.acv */; };
+		9C3E5C8F2060EE1400F30377 /* Japanese.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8A2060EE1400F30377 /* Japanese.acv */; };
+		9C3E5C902060EE1400F30377 /* Cool.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8B2060EE1400F30377 /* Cool.acv */; };
+		9C3E5C912060EE1400F30377 /* Grace.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8C2060EE1400F30377 /* Grace.acv */; };
 		9C3E5C942060F2BA00F30377 /* KTVVPSenseTimeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */; };
 		9C3E5CA12060F4DE00F30377 /* action.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C972060F4DE00F30377 /* action.model */; };
 		9C3E5CA22060F4DE00F30377 /* libst_mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3E5C982060F4DE00F30377 /* libst_mobile.a */; };
@@ -32,6 +32,8 @@
 		9C622C2320688D4500E7C630 /* KTVVPSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C622C2220688D4500E7C630 /* KTVVPSource.m */; };
 		9C622C2520688E0D00E7C630 /* KTVVPPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C622C2420688E0D00E7C630 /* KTVVPPipeline.m */; };
 		9C622C312068C8BE00E7C630 /* KTVVPConcurrentPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C622C302068C8BE00E7C630 /* KTVVPConcurrentPipeline.m */; };
+		9C8827A82079FD5800CF8DE9 /* KTVVPToneCurveEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8827A72079FD5800CF8DE9 /* KTVVPToneCurveEffect.m */; };
+		9C8827AB207A297A00CF8DE9 /* KTVVPEffectFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8827AA207A297A00CF8DE9 /* KTVVPEffectFilter.m */; };
 		9C990597205A194800D7CF3A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C990596205A194800D7CF3A /* AppDelegate.m */; };
 		9C99059A205A194800D7CF3A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C990599205A194800D7CF3A /* ViewController.m */; };
 		9C99059D205A194800D7CF3A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C99059B205A194800D7CF3A /* Main.storyboard */; };
@@ -48,9 +50,12 @@
 		9C9905D4205A627F00D7CF3A /* KTVVPGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905D3205A627F00D7CF3A /* KTVVPGLProgram.m */; };
 		9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905D6205A6A5F00D7CF3A /* KTVVPGLModel.m */; };
 		9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905D9205A6B1000D7CF3A /* KTVVPGLPlaneModel.m */; };
-		9C9905DE205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C9905DD205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m */; };
 		9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC08E50205B6D0300F15D88 /* KTVVPFrameUploader.m */; };
 		9CC08E57205B88F000F15D88 /* KTVVPContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CC08E56205B88F000F15D88 /* KTVVPContext.m */; };
+		9CD4D502207B46D1002CDBD8 /* KTVVPStandardProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D501207B46D1002CDBD8 /* KTVVPStandardProgram.m */; };
+		9CD4D505207B5290002CDBD8 /* KTVVPStandardFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D504207B5290002CDBD8 /* KTVVPStandardFilter.m */; };
+		9CD4D508207B541F002CDBD8 /* KTVVPRadialFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D507207B541F002CDBD8 /* KTVVPRadialFilter.m */; };
+		9CD4D50B207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,11 +71,11 @@
 		9C3E5C822060E6ED00F30377 /* KTVVPToneCurveFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPToneCurveFilter.m; sourceTree = "<group>"; };
 		9C3E5C842060E99800F30377 /* KTVVPToneCurveProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPToneCurveProgram.h; sourceTree = "<group>"; };
 		9C3E5C852060E99800F30377 /* KTVVPToneCurveProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPToneCurveProgram.m; sourceTree = "<group>"; };
-		9C3E5C882060EE1400F30377 /* blueCrystalFilter.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = blueCrystalFilter.acv; sourceTree = "<group>"; };
-		9C3E5C892060EE1400F30377 /* lakeWaterFilter.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = lakeWaterFilter.acv; sourceTree = "<group>"; };
-		9C3E5C8A2060EE1400F30377 /* rixi.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = rixi.acv; sourceTree = "<group>"; };
-		9C3E5C8B2060EE1400F30377 /* videoEffectCool.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = videoEffectCool.acv; sourceTree = "<group>"; };
-		9C3E5C8C2060EE1400F30377 /* youya.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = youya.acv; sourceTree = "<group>"; };
+		9C3E5C882060EE1400F30377 /* BlueCrystal.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlueCrystal.acv; sourceTree = "<group>"; };
+		9C3E5C892060EE1400F30377 /* LakeWater.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = LakeWater.acv; sourceTree = "<group>"; };
+		9C3E5C8A2060EE1400F30377 /* Japanese.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = Japanese.acv; sourceTree = "<group>"; };
+		9C3E5C8B2060EE1400F30377 /* Cool.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cool.acv; sourceTree = "<group>"; };
+		9C3E5C8C2060EE1400F30377 /* Grace.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = Grace.acv; sourceTree = "<group>"; };
 		9C3E5C922060F2BA00F30377 /* KTVVPSenseTimeFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPSenseTimeFilter.h; sourceTree = "<group>"; };
 		9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPSenseTimeFilter.m; sourceTree = "<group>"; };
 		9C3E5C972060F4DE00F30377 /* action.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = action.model; sourceTree = "<group>"; };
@@ -102,6 +107,10 @@
 		9C622C2C2068A8EF00E7C630 /* KTVVPFrameInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameInput.h; sourceTree = "<group>"; };
 		9C622C2F2068C8BE00E7C630 /* KTVVPConcurrentPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPConcurrentPipeline.h; sourceTree = "<group>"; };
 		9C622C302068C8BE00E7C630 /* KTVVPConcurrentPipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPConcurrentPipeline.m; sourceTree = "<group>"; };
+		9C8827A62079FD5800CF8DE9 /* KTVVPToneCurveEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPToneCurveEffect.h; sourceTree = "<group>"; };
+		9C8827A72079FD5800CF8DE9 /* KTVVPToneCurveEffect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPToneCurveEffect.m; sourceTree = "<group>"; };
+		9C8827A9207A297A00CF8DE9 /* KTVVPEffectFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPEffectFilter.h; sourceTree = "<group>"; };
+		9C8827AA207A297A00CF8DE9 /* KTVVPEffectFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPEffectFilter.m; sourceTree = "<group>"; };
 		9C990592205A194800D7CF3A /* KTVVideoProcessDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KTVVideoProcessDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C990595205A194800D7CF3A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9C990596205A194800D7CF3A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -133,12 +142,18 @@
 		9C9905D6205A6A5F00D7CF3A /* KTVVPGLModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLModel.m; sourceTree = "<group>"; };
 		9C9905D8205A6B1000D7CF3A /* KTVVPGLPlaneModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLPlaneModel.h; sourceTree = "<group>"; };
 		9C9905D9205A6B1000D7CF3A /* KTVVPGLPlaneModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLPlaneModel.m; sourceTree = "<group>"; };
-		9C9905DC205A6D7C00D7CF3A /* KTVVPGLRGBProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPGLRGBProgram.h; sourceTree = "<group>"; };
-		9C9905DD205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPGLRGBProgram.m; sourceTree = "<group>"; };
 		9CC08E4F205B6D0300F15D88 /* KTVVPFrameUploader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameUploader.h; sourceTree = "<group>"; };
 		9CC08E50205B6D0300F15D88 /* KTVVPFrameUploader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameUploader.m; sourceTree = "<group>"; };
 		9CC08E55205B88F000F15D88 /* KTVVPContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPContext.h; sourceTree = "<group>"; };
 		9CC08E56205B88F000F15D88 /* KTVVPContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPContext.m; sourceTree = "<group>"; };
+		9CD4D500207B46D1002CDBD8 /* KTVVPStandardProgram.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPStandardProgram.h; sourceTree = "<group>"; };
+		9CD4D501207B46D1002CDBD8 /* KTVVPStandardProgram.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPStandardProgram.m; sourceTree = "<group>"; };
+		9CD4D503207B5290002CDBD8 /* KTVVPStandardFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPStandardFilter.h; sourceTree = "<group>"; };
+		9CD4D504207B5290002CDBD8 /* KTVVPStandardFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPStandardFilter.m; sourceTree = "<group>"; };
+		9CD4D506207B541F002CDBD8 /* KTVVPRadialFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPRadialFilter.h; sourceTree = "<group>"; };
+		9CD4D507207B541F002CDBD8 /* KTVVPRadialFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPRadialFilter.m; sourceTree = "<group>"; };
+		9CD4D509207B5830002CDBD8 /* KTVVPBlackWhiteFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPBlackWhiteFilter.h; sourceTree = "<group>"; };
+		9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPBlackWhiteFilter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,16 +168,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9C3E5C872060EE1400F30377 /* ACV */ = {
+		9C3E5C872060EE1400F30377 /* KTVVPToneCurveEffect */ = {
 			isa = PBXGroup;
 			children = (
-				9C3E5C882060EE1400F30377 /* blueCrystalFilter.acv */,
-				9C3E5C892060EE1400F30377 /* lakeWaterFilter.acv */,
-				9C3E5C8A2060EE1400F30377 /* rixi.acv */,
-				9C3E5C8B2060EE1400F30377 /* videoEffectCool.acv */,
-				9C3E5C8C2060EE1400F30377 /* youya.acv */,
+				9C3E5C882060EE1400F30377 /* BlueCrystal.acv */,
+				9C3E5C892060EE1400F30377 /* LakeWater.acv */,
+				9C3E5C8A2060EE1400F30377 /* Japanese.acv */,
+				9C3E5C8B2060EE1400F30377 /* Cool.acv */,
+				9C3E5C8C2060EE1400F30377 /* Grace.acv */,
 			);
-			path = ACV;
+			path = KTVVPToneCurveEffect;
 			sourceTree = "<group>";
 		};
 		9C3E5C952060F4DE00F30377 /* face.mobilealignment */ = {
@@ -203,11 +218,19 @@
 			isa = PBXGroup;
 			children = (
 				9C3E5C952060F4DE00F30377 /* face.mobilealignment */,
-				9C3E5C872060EE1400F30377 /* ACV */,
+				9C3E5C872060EE1400F30377 /* KTVVPToneCurveEffect */,
+				9C8827A9207A297A00CF8DE9 /* KTVVPEffectFilter.h */,
+				9C8827AA207A297A00CF8DE9 /* KTVVPEffectFilter.m */,
+				9CD4D506207B541F002CDBD8 /* KTVVPRadialFilter.h */,
+				9CD4D507207B541F002CDBD8 /* KTVVPRadialFilter.m */,
+				9CD4D509207B5830002CDBD8 /* KTVVPBlackWhiteFilter.h */,
+				9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */,
 				9C3E5C812060E6ED00F30377 /* KTVVPToneCurveFilter.h */,
 				9C3E5C822060E6ED00F30377 /* KTVVPToneCurveFilter.m */,
 				9C3E5C842060E99800F30377 /* KTVVPToneCurveProgram.h */,
 				9C3E5C852060E99800F30377 /* KTVVPToneCurveProgram.m */,
+				9C8827A62079FD5800CF8DE9 /* KTVVPToneCurveEffect.h */,
+				9C8827A72079FD5800CF8DE9 /* KTVVPToneCurveEffect.m */,
 				9C3E5C922060F2BA00F30377 /* KTVVPSenseTimeFilter.h */,
 				9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */,
 			);
@@ -221,6 +244,8 @@
 				9C61192A205F58760040B277 /* KTVVPFilter.m */,
 				9C611930205F8E120040B277 /* KTVVPThroughFilter.h */,
 				9C611931205F8E120040B277 /* KTVVPThroughFilter.m */,
+				9CD4D503207B5290002CDBD8 /* KTVVPStandardFilter.h */,
+				9CD4D504207B5290002CDBD8 /* KTVVPStandardFilter.m */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -374,8 +399,8 @@
 				9C9905D6205A6A5F00D7CF3A /* KTVVPGLModel.m */,
 				9C9905D8205A6B1000D7CF3A /* KTVVPGLPlaneModel.h */,
 				9C9905D9205A6B1000D7CF3A /* KTVVPGLPlaneModel.m */,
-				9C9905DC205A6D7C00D7CF3A /* KTVVPGLRGBProgram.h */,
-				9C9905DD205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m */,
+				9CD4D500207B46D1002CDBD8 /* KTVVPStandardProgram.h */,
+				9CD4D501207B46D1002CDBD8 /* KTVVPStandardProgram.m */,
 			);
 			path = OpenGL;
 			sourceTree = "<group>";
@@ -438,12 +463,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C3E5C912060EE1400F30377 /* youya.acv in Resources */,
-				9C3E5C8F2060EE1400F30377 /* rixi.acv in Resources */,
+				9C3E5C912060EE1400F30377 /* Grace.acv in Resources */,
+				9C3E5C8F2060EE1400F30377 /* Japanese.acv in Resources */,
 				9C9905A2205A194800D7CF3A /* LaunchScreen.storyboard in Resources */,
-				9C3E5C902060EE1400F30377 /* videoEffectCool.acv in Resources */,
-				9C3E5C8E2060EE1400F30377 /* lakeWaterFilter.acv in Resources */,
-				9C3E5C8D2060EE1400F30377 /* blueCrystalFilter.acv in Resources */,
+				9C3E5C902060EE1400F30377 /* Cool.acv in Resources */,
+				9C3E5C8E2060EE1400F30377 /* LakeWater.acv in Resources */,
+				9C3E5C8D2060EE1400F30377 /* BlueCrystal.acv in Resources */,
 				9C3E5CA12060F4DE00F30377 /* action.model in Resources */,
 				9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */,
 				9C99059F205A194800D7CF3A /* Assets.xcassets in Resources */,
@@ -465,6 +490,7 @@
 				9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */,
 				9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */,
 				9C544F54206C91A7008B2768 /* EAGLContext+KTVVPExtension.m in Sources */,
+				9CD4D50B207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m in Sources */,
 				9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */,
 				9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */,
 				9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */,
@@ -472,24 +498,28 @@
 				9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */,
 				9C3470F22065174F00A66180 /* KTVVPSerialPipeline.m in Sources */,
 				9C3E5C832060E6ED00F30377 /* KTVVPToneCurveFilter.m in Sources */,
-				9C9905DE205A6D7C00D7CF3A /* KTVVPGLRGBProgram.m in Sources */,
+				9C8827AB207A297A00CF8DE9 /* KTVVPEffectFilter.m in Sources */,
 				9C622C2320688D4500E7C630 /* KTVVPSource.m in Sources */,
 				9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */,
 				9C9905C8205A4C5E00D7CF3A /* KTVVPMessageLoop.m in Sources */,
 				9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */,
 				9C5F2CC12071CA4E00FA0657 /* KTVVPDefines.m in Sources */,
+				9CD4D502207B46D1002CDBD8 /* KTVVPStandardProgram.m in Sources */,
 				9C61192B205F58760040B277 /* KTVVPFilter.m in Sources */,
 				9C99059A205A194800D7CF3A /* ViewController.m in Sources */,
 				9C9905CB205A4D3300D7CF3A /* KTVVPMessage.m in Sources */,
 				9C9905A5205A194800D7CF3A /* main.m in Sources */,
 				9C9905B9205A1DF900D7CF3A /* KTVVPFrame.m in Sources */,
+				9CD4D508207B541F002CDBD8 /* KTVVPRadialFilter.m in Sources */,
 				9C9905BF205A211A00D7CF3A /* KTVVPFrameView.m in Sources */,
 				9C990597205A194800D7CF3A /* AppDelegate.m in Sources */,
 				9C9905BC205A1E1800D7CF3A /* KTVVPFramePool.m in Sources */,
 				9C622C2520688E0D00E7C630 /* KTVVPPipeline.m in Sources */,
+				9CD4D505207B5290002CDBD8 /* KTVVPStandardFilter.m in Sources */,
 				9CC08E57205B88F000F15D88 /* KTVVPContext.m in Sources */,
 				9C3E5C942060F2BA00F30377 /* KTVVPSenseTimeFilter.m in Sources */,
 				9C9905D4205A627F00D7CF3A /* KTVVPGLProgram.m in Sources */,
+				9C8827A82079FD5800CF8DE9 /* KTVVPToneCurveEffect.m in Sources */,
 				9C3E5C772060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

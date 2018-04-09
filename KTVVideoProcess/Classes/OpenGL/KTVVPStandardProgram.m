@@ -1,17 +1,15 @@
 //
-//  KTVVPGLRGBProgram.m
+//  KTVVPStandardProgram.m
 //  KTVVideoProcessDemo
 //
-//  Created by Single on 2018/3/15.
+//  Created by Single on 2018/4/9.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import "KTVVPGLRGBProgram.h"
+#import "KTVVPStandardProgram.h"
 #import "KTVVPGLProgram.h"
 
-#define KTV_GLES_STRINGIZE(x) #x
-
-static const char vertex_shader_string[] = KTV_GLES_STRINGIZE
+static NSString * const kVertexShaderString = KTV_GLES_STRINGIZE
 (
  attribute vec4 position;
  attribute vec2 textureCoordinate;
@@ -24,37 +22,44 @@ static const char vertex_shader_string[] = KTV_GLES_STRINGIZE
  }
  );
 
-static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
+static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 (
- uniform sampler2D samplerRGB;
+ uniform sampler2D inputImageTexture;
  varying mediump vec2 varying_textureCoordinate;
  
  void main()
  {
-     gl_FragColor = texture2D(samplerRGB, varying_textureCoordinate);
+     gl_FragColor = texture2D(inputImageTexture, varying_textureCoordinate);
  }
  );
 
-@interface KTVVPGLRGBProgram ()
+@interface KTVVPStandardProgram ()
 
 @property (nonatomic, strong) KTVVPGLProgram * program;
 
 @end
 
-@implementation KTVVPGLRGBProgram
+@implementation KTVVPStandardProgram
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
+{
+    return [self initWithGLContext:glContext
+              fragmentShaderString:kFragmentShaderString];
+}
+
+- (instancetype)initWithGLContext:(EAGLContext *)glContext
+             fragmentShaderString:(NSString *)fragmentShaderString
 {
     if (self = [super init])
     {
         _program = [[KTVVPGLProgram alloc] initWithGLContext:glContext
-                                         vertexShaderCString:vertex_shader_string
-                                       fragmentShaderCString:fragment_shader_string];
+                                          vertexShaderString:kVertexShaderString
+                                        fragmentShaderString:fragmentShaderString];
         if (_program.linkSuccess)
         {
             _position_location = [_program attributeLocation:@"position"];
             _textureCoordinate_location = [_program attributeLocation:@"textureCoordinate"];
-            _sampler_location = [_program uniformLocation:@"samplerRGB"];
+            _inputImageTexture_location = [_program uniformLocation:@"inputImageTexture"];
         }
     }
     return self;
@@ -69,12 +74,13 @@ static const char fragment_shader_string[] = KTV_GLES_STRINGIZE
 {
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(_sampler_location, 4);
+    glUniform1i(_inputImageTexture_location, 4);
 }
 
 - (void)use
 {
     [_program use];
 }
+
 
 @end

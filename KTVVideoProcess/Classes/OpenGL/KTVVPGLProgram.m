@@ -22,15 +22,6 @@
 @implementation KTVVPGLProgram
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
-              vertexShaderCString:(const char *)vertexShaderCString
-            fragmentShaderCString:(const char *)fragmentShaderCString
-{
-    return [self initWithGLContext:glContext
-                vertexShaderString:[NSString stringWithCString:vertexShaderCString encoding:NSUTF8StringEncoding]
-              fragmentShaderString:[NSString stringWithCString:fragmentShaderCString encoding:NSUTF8StringEncoding]];
-}
-
-- (instancetype)initWithGLContext:(EAGLContext *)glContext
                vertexShaderString:(NSString *)vertexShaderString
              fragmentShaderString:(NSString *)fragmentShaderString
 {

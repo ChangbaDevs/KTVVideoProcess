@@ -1,24 +1,30 @@
 //
-//  KTVVPThroughFilter.m
+//  KTVVPStandardFilter.m
 //  KTVVideoProcessDemo
 //
-//  Created by Single on 2018/3/19.
+//  Created by Single on 2018/4/9.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import "KTVVPThroughFilter.h"
+#import "KTVVPStandardFilter.h"
 #import "KTVVPStandardProgram.h"
 #import "KTVVPGLPlaneModel.h"
 #import "KTVVPFrameDrawable.h"
 
-@interface KTVVPThroughFilter ()
+@interface KTVVPStandardFilter ()
 
 @property (nonatomic, strong) KTVVPStandardProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
 
 @end
 
-@implementation KTVVPThroughFilter
+@implementation KTVVPStandardFilter
+
+- (NSString *)fragmentShaderString
+{
+    NSAssert(NO, @"must override by subclass");
+    return nil;
+}
 
 
 #pragma mark - KTVVPFrameInput
@@ -38,7 +44,7 @@
     }
     if (!_glProgram)
     {
-        _glProgram = [[KTVVPStandardProgram alloc] initWithGLContext:self.glContext];
+        _glProgram = [[KTVVPStandardProgram alloc] initWithGLContext:self.glContext fragmentShaderString:[self fragmentShaderString]];
     }
     [frame lock];
     KTVVPSize size = frame.finalSize;

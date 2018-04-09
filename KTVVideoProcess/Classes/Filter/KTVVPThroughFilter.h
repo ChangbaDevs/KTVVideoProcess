@@ -10,7 +10,4 @@
 
 @interface KTVVPThroughFilter : KTVVPFilter
 
-@property (nonatomic, assign) BOOL directPass;          // default is NO.
-@property (nonatomic, assign) BOOL handleTransform;     // default is YES.
-
 @end

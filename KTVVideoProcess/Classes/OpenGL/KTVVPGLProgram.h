@@ -15,10 +15,6 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
-              vertexShaderCString:(const char *)vertexShaderCString
-            fragmentShaderCString:(const char *)fragmentShaderCString;
-
-- (instancetype)initWithGLContext:(EAGLContext *)glContext
                vertexShaderString:(NSString *)vertexShaderString
              fragmentShaderString:(NSString *)fragmentShaderString;
 
