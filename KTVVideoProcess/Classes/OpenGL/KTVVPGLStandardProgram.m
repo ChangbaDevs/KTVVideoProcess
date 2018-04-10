@@ -1,12 +1,12 @@
 //
-//  KTVVPStandardProgram.m
+//  KTVVPGLStandardProgram.m
 //  KTVVideoProcessDemo
 //
 //  Created by Single on 2018/4/9.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import "KTVVPStandardProgram.h"
+#import "KTVVPGLStandardProgram.h"
 #import "KTVVPGLProgram.h"
 
 static NSString * const kVertexShaderString = KTV_GLES_STRINGIZE
@@ -33,13 +33,13 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
  }
  );
 
-@interface KTVVPStandardProgram ()
+@interface KTVVPGLStandardProgram ()
 
 @property (nonatomic, strong) KTVVPGLProgram * program;
 
 @end
 
-@implementation KTVVPStandardProgram
+@implementation KTVVPGLStandardProgram
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
 {

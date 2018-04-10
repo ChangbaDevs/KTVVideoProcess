@@ -7,13 +7,13 @@
 //
 
 #import "KTVVPThroughFilter.h"
-#import "KTVVPStandardProgram.h"
+#import "KTVVPGLStandardProgram.h"
 #import "KTVVPGLPlaneModel.h"
 #import "KTVVPFrameDrawable.h"
 
 @interface KTVVPThroughFilter ()
 
-@property (nonatomic, strong) KTVVPStandardProgram * glProgram;
+@property (nonatomic, strong) KTVVPGLStandardProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
 
 @end
@@ -38,7 +38,7 @@
     }
     if (!_glProgram)
     {
-        _glProgram = [[KTVVPStandardProgram alloc] initWithGLContext:self.glContext];
+        _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:self.glContext];
     }
     [frame lock];
     KTVVPSize size = frame.finalSize;

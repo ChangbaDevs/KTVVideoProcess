@@ -1,5 +1,5 @@
 //
-//  KTVVPStandardProgram.h
+//  KTVVPGLStandardProgram.h
 //  KTVVideoProcessDemo
 //
 //  Created by Single on 2018/4/9.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GLKit/GLKit.h>
 
-@interface KTVVPStandardProgram : NSObject
+@interface KTVVPGLStandardProgram : NSObject
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
