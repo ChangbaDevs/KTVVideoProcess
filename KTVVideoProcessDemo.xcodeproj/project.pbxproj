@@ -22,7 +22,6 @@
 		9C3E5CA22060F4DE00F30377 /* libst_mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3E5C982060F4DE00F30377 /* libst_mobile.a */; };
 		9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C992060F4DE00F30377 /* SENSEME.lic */; };
 		9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */; };
-		9C3E5CA72060F53700F30377 /* SenseTimeActiveCodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */; };
 		9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */; };
 		9C544F4F206B336D008B2768 /* KTVVPTimeComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C544F4E206B336D008B2768 /* KTVVPTimeComponents.m */; };
 		9C544F54206C91A7008B2768 /* EAGLContext+KTVVPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C544F53206C91A7008B2768 /* EAGLContext+KTVVPExtension.m */; };
@@ -57,6 +56,7 @@
 		9CD4D508207B541F002CDBD8 /* KTVVPRadialFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D507207B541F002CDBD8 /* KTVVPRadialFilter.m */; };
 		9CD4D50B207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */; };
 		9CD4D50E207B629E002CDBD8 /* KTVVPTransformFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD4D50D207B629E002CDBD8 /* KTVVPTransformFilter.m */; };
+		9CD7C5C1207C5651006605BC /* KTVVPSenseTimeChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD7C5C0207C5651006605BC /* KTVVPSenseTimeChecker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,8 +88,6 @@
 		9C3E5C9D2060F4DE00F30377 /* st_mobile_license.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_license.h; sourceTree = "<group>"; };
 		9C3E5C9F2060F4DE00F30377 /* STFaceResultConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFaceResultConverter.h; sourceTree = "<group>"; };
 		9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = STFaceResultConverter.mm; sourceTree = "<group>"; };
-		9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenseTimeActiveCodeManager.m; sourceTree = "<group>"; };
-		9C3E5CA62060F53700F30377 /* SenseTimeActiveCodeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenseTimeActiveCodeManager.h; sourceTree = "<group>"; };
 		9C3E5CFA206208F800F30377 /* KTVVPDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPDefines.h; sourceTree = "<group>"; };
 		9C3E5CFB2062129200F30377 /* KTVVPFrameWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameWriter.h; sourceTree = "<group>"; };
 		9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameWriter.m; sourceTree = "<group>"; };
@@ -157,6 +155,8 @@
 		9CD4D50A207B5830002CDBD8 /* KTVVPBlackWhiteFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPBlackWhiteFilter.m; sourceTree = "<group>"; };
 		9CD4D50C207B629E002CDBD8 /* KTVVPTransformFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPTransformFilter.h; sourceTree = "<group>"; };
 		9CD4D50D207B629E002CDBD8 /* KTVVPTransformFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPTransformFilter.m; sourceTree = "<group>"; };
+		9CD7C5BF207C5651006605BC /* KTVVPSenseTimeChecker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPSenseTimeChecker.h; sourceTree = "<group>"; };
+		9CD7C5C0207C5651006605BC /* KTVVPSenseTimeChecker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPSenseTimeChecker.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,8 +209,6 @@
 		9C3E5C9E2060F4DE00F30377 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				9C3E5CA62060F53700F30377 /* SenseTimeActiveCodeManager.h */,
-				9C3E5CA52060F53600F30377 /* SenseTimeActiveCodeManager.m */,
 				9C3E5C9F2060F4DE00F30377 /* STFaceResultConverter.h */,
 				9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */,
 			);
@@ -236,6 +234,8 @@
 				9C8827A72079FD5800CF8DE9 /* KTVVPToneCurveEffect.m */,
 				9C3E5C922060F2BA00F30377 /* KTVVPSenseTimeFilter.h */,
 				9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */,
+				9CD7C5BF207C5651006605BC /* KTVVPSenseTimeChecker.h */,
+				9CD7C5C0207C5651006605BC /* KTVVPSenseTimeChecker.m */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -489,6 +489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C544F4F206B336D008B2768 /* KTVVPTimeComponents.m in Sources */,
+				9CD7C5C1207C5651006605BC /* KTVVPSenseTimeChecker.m in Sources */,
 				9C3E5C862060E99800F30377 /* KTVVPToneCurveProgram.m in Sources */,
 				9C611932205F8E120040B277 /* KTVVPThroughFilter.m in Sources */,
 				9C622C312068C8BE00E7C630 /* KTVVPConcurrentPipeline.m in Sources */,
@@ -499,7 +500,6 @@
 				9C9905D7205A6A5F00D7CF3A /* KTVVPGLModel.m in Sources */,
 				9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */,
 				9C9905CF205A4D8600D7CF3A /* KTVVPObjectQueue.m in Sources */,
-				9C3E5CA72060F53700F30377 /* SenseTimeActiveCodeManager.m in Sources */,
 				9C9905DA205A6B1000D7CF3A /* KTVVPGLPlaneModel.m in Sources */,
 				9C3470F22065174F00A66180 /* KTVVPSerialPipeline.m in Sources */,
 				9C3E5C832060E6ED00F30377 /* KTVVPToneCurveFilter.m in Sources */,
