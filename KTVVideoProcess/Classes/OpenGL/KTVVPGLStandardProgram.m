@@ -62,7 +62,6 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
             _position_location = [_program attributeLocation:@"position"];
             _textureCoordinate_location = [_program attributeLocation:@"textureCoordinate"];
             _inputImageTexture_location = [_program uniformLocation:@"inputImageTexture"];
-            _modelViewProjectionMatrix_location = [_program uniformLocation:@"modelViewProjectionMatrix"];
         }
     }
     return self;
