@@ -44,22 +44,25 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
 {
     return [self initWithGLContext:glContext
-              fragmentShaderString:kFragmentShaderString];
+                vertexShaderString:nil
+              fragmentShaderString:nil];
 }
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
+               vertexShaderString:(NSString *)vertexShaderString
              fragmentShaderString:(NSString *)fragmentShaderString
 {
     if (self = [super init])
     {
         _program = [[KTVVPGLProgram alloc] initWithGLContext:glContext
-                                          vertexShaderString:kVertexShaderString
-                                        fragmentShaderString:fragmentShaderString];
+                                          vertexShaderString:vertexShaderString ? vertexShaderString : kVertexShaderString
+                                        fragmentShaderString:fragmentShaderString ? fragmentShaderString : kFragmentShaderString];
         if (_program.linkSuccess)
         {
             _position_location = [_program attributeLocation:@"position"];
             _textureCoordinate_location = [_program attributeLocation:@"textureCoordinate"];
             _inputImageTexture_location = [_program uniformLocation:@"inputImageTexture"];
+            _modelViewProjectionMatrix_location = [_program uniformLocation:@"modelViewProjectionMatrix"];
         }
     }
     return self;
@@ -81,6 +84,5 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 {
     [_program use];
 }
-
 
 @end

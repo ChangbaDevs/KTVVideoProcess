@@ -38,7 +38,9 @@
     }
     if (!_glProgram)
     {
-        _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:self.glContext];
+        _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:self.glContext
+                                                    vertexShaderString:self.vertexShaderString
+                                                  fragmentShaderString:self.fragmentShaderString];
     }
     [frame lock];
     KTVVPSize size = frame.finalSize;

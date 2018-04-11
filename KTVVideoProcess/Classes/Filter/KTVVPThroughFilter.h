@@ -10,4 +10,7 @@
 
 @interface KTVVPThroughFilter : KTVVPFilter
 
+@property (nonatomic, copy) NSString * vertexShaderString;
+@property (nonatomic, copy) NSString * fragmentShaderString;
+
 @end

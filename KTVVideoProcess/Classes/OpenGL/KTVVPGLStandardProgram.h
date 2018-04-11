@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GLKit/GLKit.h>
+#import "KTVVPGLProgram.h"
 
 @interface KTVVPGLStandardProgram : NSObject
 
@@ -16,7 +16,10 @@
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext;
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
+               vertexShaderString:(NSString *)vertexShaderString
              fragmentShaderString:(NSString *)fragmentShaderString;
+
+@property (nonatomic, strong, readonly) KTVVPGLProgram * program;
 
 @property (nonatomic, assign, readonly) GLint position_location;
 @property (nonatomic, assign, readonly) GLint textureCoordinate_location;

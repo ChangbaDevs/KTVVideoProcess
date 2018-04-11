@@ -186,7 +186,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     _glModel.flipMode = frame.textureFlipMode;
     [_glModel reloadDataIfNeeded];
     [_glModel bindPosition_location:_glProgram.position_location
-             textureCoordinate_location:_glProgram.textureCoordinate_location];
+         textureCoordinate_location:_glProgram.textureCoordinate_location];
     [_glModel draw];
     [_glModel bindEmpty];
     [self drawFlush];
