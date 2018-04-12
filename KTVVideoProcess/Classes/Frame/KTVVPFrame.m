@@ -99,6 +99,7 @@
     _size = frame.size;
     _rotationMode = frame.rotationMode;
     _flipMode = frame.flipMode;
+    _extendedObject = frame.extendedObject;
 }
 
 - (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame
@@ -107,6 +108,7 @@
     _size = frame.finalSize;
     _rotationMode = KTVVPRotationMode0;
     _flipMode = KTVVPFlipModeNone;
+    _extendedObject = frame.extendedObject;
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader {}
