@@ -116,6 +116,7 @@
     _timeStamp = kCMTimeZero;
     _rotationMode = KTVVPRotationMode0;
     _flipMode = KTVVPFlipModeNone;
+    _extendedObject = nil;
 }
 
 

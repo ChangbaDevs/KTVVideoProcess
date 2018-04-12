@@ -55,6 +55,8 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 - (CVPixelBufferRef)corePixelBuffer;
 
+@property (nonatomic, strong) id extendedObject;
+
 
 #pragma mark - Reuse Key
 

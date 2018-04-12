@@ -11,6 +11,23 @@
 
 #pragma mark - Function
 
+KTVVPPoint KTVVPPointZero(void)
+{
+    KTVVPPoint point = {0, 0};
+    return point;
+}
+
+KTVVPPoint KTVVPPointMake(int x, int y)
+{
+    KTVVPPoint point = {x, y};
+    return point;
+}
+
+BOOL KTVVPPointEqualToPoint(KTVVPPoint point1, KTVVPPoint point2)
+{
+    return point1.x == point2.x && point1.y == point2.y;
+}
+
 KTVVPSize KTVVPSizeZero(void)
 {
     KTVVPSize size = {0, 0};

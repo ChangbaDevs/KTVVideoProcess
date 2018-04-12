@@ -37,6 +37,11 @@ typedef NS_ENUM(NSUInteger, KTVVPScalingMode)
 
 #pragma mark - Struct
 
+typedef struct KTVVPPoint {
+    int x;
+    int y;
+} KTVVPPoint;
+
 typedef struct KTVVPSize {
     int width;
     int height;
@@ -51,6 +56,10 @@ typedef struct KTVVPRect {
 
 
 #pragma mark - Function
+
+KTVVPPoint KTVVPPointZero(void);
+KTVVPPoint KTVVPPointMake(int x, int y);
+BOOL KTVVPPointEqualToPoint(KTVVPPoint point1, KTVVPPoint point2);
 
 KTVVPSize KTVVPSizeZero(void);
 KTVVPSize KTVVPSizeMake(int width, int height);
