@@ -10,6 +10,15 @@
 
 @implementation KTVVPFrameLayout
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    KTVVPFrameLayout * obj = [[KTVVPFrameLayout alloc] init];
+    obj.size = self.size;
+    obj.rotationMode = self.rotationMode;
+    obj.flipMode = self.flipMode;
+    return obj;
+}
+
 - (KTVVPSize)finalSize
 {
     if (self.rotationQuarter)

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "KTVVPDefines.h"
 
-@interface KTVVPFrameLayout : NSObject
+@interface KTVVPFrameLayout : NSObject <NSCopying>
 
 @property (nonatomic, assign) KTVVPSize size;
 @property (nonatomic, assign) KTVVPRotationMode rotationMode;
