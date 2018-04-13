@@ -178,12 +178,12 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 - (void)drawFrame:(KTVVPFrame *)frame
 {
     [self drawPrepare];
-    [self drawUpdateViewport:frame.size];
+    [self drawUpdateViewport:frame.layout.size];
     [_glProgram use];
     [frame uploadIfNeeded:_frameUploader];
     [_glProgram bindTexture:frame.texture];
-    _glModel.rotationMode = frame.rotationMode;
-    _glModel.flipMode = frame.textureFlipMode;
+    _glModel.rotationMode = frame.layout.rotationMode;
+    _glModel.flipMode = frame.layout.textureFlipMode;
     [_glModel reloadDataIfNeeded];
     [_glModel bindPosition_location:_glProgram.position_location
          textureCoordinate_location:_glProgram.textureCoordinate_location];

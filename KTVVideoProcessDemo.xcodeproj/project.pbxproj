@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9C3470F22065174F00A66180 /* KTVVPSerialPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3470F12065174F00A66180 /* KTVVPSerialPipeline.m */; };
+		9C36BC26208055D700916196 /* KTVVPFrameLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C36BC25208055D700916196 /* KTVVPFrameLayout.m */; };
 		9C3E5C772060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */; };
 		9C3E5C7A2060C9A200F30377 /* KTVVPFrameDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C792060C9A200F30377 /* KTVVPFrameDrawable.m */; };
 		9C3E5C832060E6ED00F30377 /* KTVVPToneCurveFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C822060E6ED00F30377 /* KTVVPToneCurveFilter.m */; };
@@ -70,6 +71,8 @@
 		9C3470EF206515BC00A66180 /* KTVVPPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPPipeline.h; sourceTree = "<group>"; };
 		9C3470F02065174F00A66180 /* KTVVPSerialPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPSerialPipeline.h; sourceTree = "<group>"; };
 		9C3470F12065174F00A66180 /* KTVVPSerialPipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPSerialPipeline.m; sourceTree = "<group>"; };
+		9C36BC24208055D700916196 /* KTVVPFrameLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameLayout.h; sourceTree = "<group>"; };
+		9C36BC25208055D700916196 /* KTVVPFrameLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameLayout.m; sourceTree = "<group>"; };
 		9C3E5C752060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameCMSmapleBuffer.h; sourceTree = "<group>"; };
 		9C3E5C762060B6A200F30377 /* KTVVPFrameCMSmapleBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameCMSmapleBuffer.m; sourceTree = "<group>"; };
 		9C3E5C782060C9A200F30377 /* KTVVPFrameDrawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameDrawable.h; sourceTree = "<group>"; };
@@ -396,6 +399,8 @@
 			children = (
 				9C9905B7205A1DF900D7CF3A /* KTVVPFrame.h */,
 				9C9905B8205A1DF900D7CF3A /* KTVVPFrame.m */,
+				9C36BC24208055D700916196 /* KTVVPFrameLayout.h */,
+				9C36BC25208055D700916196 /* KTVVPFrameLayout.m */,
 				9C622C2C2068A8EF00E7C630 /* KTVVPFrameInput.h */,
 				9C9905BA205A1E1800D7CF3A /* KTVVPFramePool.h */,
 				9C9905BB205A1E1800D7CF3A /* KTVVPFramePool.m */,
@@ -538,6 +543,7 @@
 				9CD4D50E207B629E002CDBD8 /* KTVVPTransformFilter.m in Sources */,
 				9C622C2320688D4500E7C630 /* KTVVPSource.m in Sources */,
 				9C9905B2205A1A2600D7CF3A /* KTVVPVideoCamera.m in Sources */,
+				9C36BC26208055D700916196 /* KTVVPFrameLayout.m in Sources */,
 				9C9905C8205A4C5E00D7CF3A /* KTVVPMessageLoop.m in Sources */,
 				9CC08E51205B6D0300F15D88 /* KTVVPFrameUploader.m in Sources */,
 				9C5F2CC12071CA4E00FA0657 /* KTVVPDefines.m in Sources */,

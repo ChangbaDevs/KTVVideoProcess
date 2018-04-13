@@ -275,8 +275,8 @@
         }];
         frame.sampleBuffer = sampleBuffer;
         frame.timeStamp = _timeComponents.timeStamp;
-        frame.rotationMode = [self rotationMode];
-        frame.flipMode = [self flipMode];
+        frame.layout.rotationMode = [self rotationMode];
+        frame.layout.flipMode = [self flipMode];
         [self.pipeline inputFrame:frame fromSource:self];
         [frame unlock];
     }

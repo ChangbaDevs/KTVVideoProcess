@@ -30,8 +30,8 @@
         [super inputFrame:frame fromSource:source];
         return;
     }
-    if (frame.rotationMode == KTVVPRotationMode0
-        && frame.flipMode == KTVVPFlipModeNone)
+    if (frame.layout.rotationMode == KTVVPRotationMode0
+        && frame.layout.flipMode == KTVVPFlipModeNone)
     {
         [super inputFrame:frame fromSource:source];
         return;
@@ -47,15 +47,15 @@
         _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:self.glContext];
     }
     [frame lock];
-    KTVVPSize size = frame.finalSize;
+    KTVVPSize size = frame.layout.finalSize;
     NSString * key = [KTVVPFrameDrawable keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
     KTVVPFrameDrawable * result = [self.framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
         KTVVPFrame * result = [[KTVVPFrameDrawable alloc] init];
         return result;
     }];
     [result fillWithoutTransformWithFrame:frame];
-    _glModel.rotationMode = frame.rotationMode;
-    _glModel.flipMode = frame.flipMode;
+    _glModel.rotationMode = frame.layout.rotationMode;
+    _glModel.flipMode = frame.layout.flipMode;
     [_glModel reloadDataIfNeeded];
     [result uploadIfNeeded:self.frameUploader];
     [result bindFramebuffer];

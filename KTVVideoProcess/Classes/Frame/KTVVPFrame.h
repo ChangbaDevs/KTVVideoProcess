@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "KTVVPDefines.h"
 #import "KTVVPGLDefines.h"
+#import "KTVVPFrameLayout.h"
 #import "KTVVPFrameUploader.h"
 
 
@@ -33,15 +34,11 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 
 - (KTVVPFrameType)type;
 
+@property (nonatomic, strong) KTVVPFrameLayout * layout;
+
 @property (nonatomic, assign) CMTime timeStamp;
 @property (nonatomic, assign) GLuint texture;
 @property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
-@property (nonatomic, assign) KTVVPSize size;
-@property (nonatomic, assign) KTVVPRotationMode rotationMode;
-@property (nonatomic, assign) KTVVPFlipMode flipMode;
-@property (nonatomic, assign, readonly) KTVVPSize finalSize;
-@property (nonatomic, assign, readonly) KTVVPRotationMode completionRotationMode;
-@property (nonatomic, assign, readonly) KTVVPFlipMode textureFlipMode;
 @property (nonatomic, strong) KTVVPFrameUploader * uploader;
 @property (nonatomic, assign) BOOL didUpload;
 

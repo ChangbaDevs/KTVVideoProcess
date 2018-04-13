@@ -64,7 +64,7 @@
     {
         return;
     }
-    if (self.size.width <= 0 || self.size.height <= 0)
+    if (self.layout.size.width <= 0 || self.layout.size.height <= 0)
     {
         NSAssert(NO, @"KTVVPFrameDrawable: size can't be zero.");
         return;
@@ -77,8 +77,8 @@
     
     NSDictionary * attributes = @{(id)kCVPixelBufferIOSurfacePropertiesKey : @{}};
     CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                          self.size.width,
-                                          self.size.height,
+                                          self.layout.size.width,
+                                          self.layout.size.height,
                                           kCVPixelFormatType_32BGRA,
                                           (__bridge CFDictionaryRef)attributes,
                                           &_cvPixelBuffer);
@@ -92,8 +92,8 @@
                                                           NULL,
                                                           GL_TEXTURE_2D,
                                                           self.textureOptions.internalFormat,
-                                                          self.size.width,
-                                                          self.size.height,
+                                                          self.layout.size.width,
+                                                          self.layout.size.height,
                                                           self.textureOptions.format,
                                                           self.textureOptions.type,
                                                           0,
@@ -115,7 +115,7 @@
 - (void)bindFramebuffer
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
-    glViewport(0, 0, self.size.width, self.size.height);
+    glViewport(0, 0, self.layout.size.width, self.layout.size.height);
 }
 
 - (CVPixelBufferRef)corePixelBuffer

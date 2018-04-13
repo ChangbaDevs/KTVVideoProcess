@@ -33,6 +33,7 @@
 {
     if (self = [super init])
     {
+        _layout = [[KTVVPFrameLayout alloc] init];
         _textureOptions = [KTVVPFrame defaultTextureOptions];
         [self clear];
     }
@@ -49,65 +50,21 @@
     return KTVVPFrameTypeIdle;
 }
 
-- (KTVVPSize)finalSize
-{
-    BOOL exchangeXY = NO;
-    if (_rotationMode == KTVVPRotationMode90
-        || _rotationMode == KTVVPRotationMode270)
-    {
-        exchangeXY = YES;
-    }
-    if (exchangeXY)
-    {
-        return KTVVPSizeMake(_size.height, _size.width);
-    }
-    return _size;
-}
-
-- (KTVVPRotationMode)completionRotationMode
-{
-    if (_rotationMode == KTVVPRotationMode90)
-    {
-        return KTVVPRotationMode270;
-    }
-    if (_rotationMode == KTVVPRotationMode270)
-    {
-        return KTVVPRotationMode90;
-    }
-    return _rotationMode;
-}
-
-- (KTVVPFlipMode)textureFlipMode
-{
-    switch (_flipMode)
-    {
-        case KTVVPFlipModeNone:
-            return KTVVPFlipModeVertical;
-        case KTVVPFlipModeHorizonal:
-            return KTVVPFlipModeHorizonalAndVertical;
-        case KTVVPFlipModeVertical:
-            return KTVVPFlipModeNone;
-        case KTVVPFlipModeHorizonalAndVertical:
-            return KTVVPFlipModeHorizonal;
-    }
-    return KTVVPFlipModeNone;
-}
-
 - (void)fillWithFrame:(KTVVPFrame *)frame
 {
     _timeStamp = frame.timeStamp;
-    _size = frame.size;
-    _rotationMode = frame.rotationMode;
-    _flipMode = frame.flipMode;
+    _layout.size = frame.layout.size;
+    _layout.rotationMode = frame.layout.rotationMode;
+    _layout.flipMode = frame.layout.flipMode;
     _extendedObject = frame.extendedObject;
 }
 
 - (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame
 {
     _timeStamp = frame.timeStamp;
-    _size = frame.finalSize;
-    _rotationMode = KTVVPRotationMode0;
-    _flipMode = KTVVPFlipModeNone;
+    _layout.size = frame.layout.finalSize;
+    _layout.rotationMode = KTVVPRotationMode0;
+    _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = frame.extendedObject;
 }
 
@@ -116,8 +73,8 @@
 - (void)clear
 {
     _timeStamp = kCMTimeZero;
-    _rotationMode = KTVVPRotationMode0;
-    _flipMode = KTVVPFlipModeNone;
+    _layout.rotationMode = KTVVPRotationMode0;
+    _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = nil;
 }
 
