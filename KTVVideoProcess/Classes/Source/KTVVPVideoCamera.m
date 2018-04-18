@@ -24,7 +24,8 @@
 
 @property (nonatomic, strong) KTVVPTimeComponents * timeComponents;
 @property (nonatomic, strong) KTVVPFramePool * framePool;
-@property (nonatomic, assign) BOOL didCallStartRecording;
+@property (nonatomic, assign) BOOL didCallPrepare;
+@property (nonatomic, assign) BOOL didCallStart;
 @property (nonatomic, assign) NSInteger configurationCount;
 
 @end
@@ -52,16 +53,26 @@
     NSLog(@"%s", __func__);
 }
 
-- (void)start
+- (void)prepare
 {
-    if (_didCallStartRecording)
+    if (_didCallPrepare)
     {
         return;
     }
-    _didCallStartRecording = YES;
+    _didCallPrepare = YES;
     [self reloadOutput];
     [self reloadSessionPreset];
     [self reloadPosition];
+}
+
+- (void)start
+{
+    if (_didCallStart)
+    {
+        return;
+    }
+    _didCallStart = YES;
+    [self prepare];
     [_captureSession startRunning];
 }
 

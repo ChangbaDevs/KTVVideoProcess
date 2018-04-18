@@ -16,6 +16,7 @@
 
 @property (atomic, assign) BOOL paused;
 
+- (void)prepare;
 - (void)start;
 - (void)stop;
 

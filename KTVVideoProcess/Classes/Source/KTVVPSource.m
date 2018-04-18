@@ -10,6 +10,7 @@
 
 @implementation KTVVPSource
 
+- (void)prepare {}
 - (void)start {}
 - (void)stop {}
 
