@@ -63,7 +63,7 @@
     self.frameWriter = [[KTVVPFrameWriter alloc] init];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
     self.frameWriter.videoOutputSize = KTVVPSizeMake(720, 1280);
-    self.frameWriter.delayInterval = 0.0f;
+    self.frameWriter.videoEncodeDelayInterval = 0.0f;
     self.frameWriter.audioEnable = YES;
     [self.frameWriter setStartCallback:^(BOOL success) {
         NSLog(@"Record Started...");
@@ -174,38 +174,32 @@
 
 - (IBAction)captureStopAction:(UIButton *)sender
 {
-//    [self.videoCamera stop];
-    [self.frameWriter finish];
+    [self.videoCamera stop];
 }
 
 - (IBAction)recordStartAction:(UIButton *)sender
 {
-//    [self.frameWriter start];
-    self.effectFilter.type = KTVVPEffectTypeNone;
+    [self.frameWriter start];
 }
 
 - (IBAction)recordPauseAction:(UIButton *)sender
 {
     self.frameWriter.paused = YES;
-//    self.effectFilter.type = KTVVPEffectTypeRadial;
 }
 
 - (IBAction)recordResumeAction:(UIButton *)sender
 {
     self.frameWriter.paused = NO;
-//    self.effectFilter.type = KTVVPEffectTypeBlackWhite;
 }
 
 - (IBAction)recordFinishAction:(UIButton *)sender
 {
-//    [self.frameWriter finish];
-    self.effectFilter.type = KTVVPEffectTypeBlueCrystal;
+    [self.frameWriter finish];
 }
 
 - (IBAction)recordCancelAction:(UIButton *)sender
 {
-//    [self.frameWriter cancel];
-    self.effectFilter.type = KTVVPEffectTypeCool;
+    [self.frameWriter cancel];
 }
 
 @end
