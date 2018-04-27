@@ -14,8 +14,8 @@
 @interface KTVVPVideoCamera () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 
 @property (nonatomic, copy) AVCaptureSessionPreset sessionPresetInternal;
-@property (nonatomic, assign) AVCaptureDevicePosition positionInternal;
 @property (nonatomic, assign) UIInterfaceOrientation orientationInternal;
+@property (nonatomic, assign) AVCaptureDevicePosition positionInternal;
 @property (nonatomic, assign) BOOL horizontalFlipForFrontInternal;
 
 @property (nonatomic, strong) AVCaptureDevice * audioDevice;

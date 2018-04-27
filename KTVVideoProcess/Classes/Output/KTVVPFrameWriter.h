@@ -14,21 +14,32 @@
 @interface KTVVPFrameWriter : NSObject <KTVVPFrameInput, KTVVPAudioInput>
 
 @property (nonatomic, copy, readonly) NSError * error;
+@property (nonatomic, assign, readonly) NSTimeInterval duration;
+
+
+#pragma mark - File
 
 @property (nonatomic, copy) NSURL * outputFileURL;
-@property (nonatomic, copy) AVFileType outputFileType;               // default is AVFileTypeQuickTimeMovie.
+@property (nonatomic, copy) AVFileType outputFileType;               // default is AVFileTypeMPEG4.
 
-@property (nonatomic, copy) NSDictionary * videoOutputSettings;
-@property (nonatomic, copy) AVVideoCodecType videoOutputCodec;       // default is AVVideoCodecH264.
-@property (nonatomic, copy) NSString * videoOutputScalingMode;       // default is AVVideoScalingModeResizeAspectFill.
+
+#pragma mark - Video
+
 @property (nonatomic, assign) KTVVPSize videoOutputSize;
+@property (nonatomic, copy)   NSString * videoOutputScalingMode;                // default is AVVideoScalingModeResizeAspectFill.
+@property (nonatomic, assign) NSTimeInterval videoEncodeDelayInterval;          // default is 0.
 @property (nonatomic, assign) CGAffineTransform videoOutputTransform;
 
-@property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
-@property (nonatomic, assign) NSInteger videoSourcePixelFormat;      // default is kCVPixelFormatType_32BGRA.
 
-@property (nonatomic, assign) NSTimeInterval delayInterval;          // default is 0.
-@property (nonatomic, assign, readonly) NSTimeInterval duration;
+@property (nonatomic, copy) NSDictionary * videoOutputSettings;
+@property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
+
+
+#pragma mark - Audio
+
+@property (nonatomic, assign) BOOL audioEnable;
+@property (nonatomic, strong) NSDictionary * audioOutputSettings;
+
 
 #pragma mark - Control
 
@@ -41,11 +52,5 @@
 - (void)start;
 - (void)finish;
 - (void)cancel;
-
-
-#pragma mark - Audio
-
-@property (nonatomic, assign) BOOL audioEnable;
-@property (nonatomic, strong) NSDictionary * audioOutputSettings;
 
 @end
