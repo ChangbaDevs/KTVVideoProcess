@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "KTVVPContext.h"
 #import "KTVVPFrameInput.h"
+#import "KTVVPAudioInput.h"
 
-@interface KTVVPFrameWriter : NSObject <KTVVPFrameInput>
+@interface KTVVPFrameWriter : NSObject <KTVVPFrameInput, KTVVPAudioInput>
 
 @property (nonatomic, copy, readonly) NSError * error;
 
@@ -40,5 +41,11 @@
 - (void)start;
 - (void)finish;
 - (void)cancel;
+
+
+#pragma mark - Audio
+
+@property (nonatomic, assign) BOOL audioEnable;
+@property (nonatomic, strong) NSDictionary * audioOutputSettings;
 
 @end

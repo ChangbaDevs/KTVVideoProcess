@@ -8,6 +8,7 @@
 
 #import "KTVVPSource.h"
 #import <AVFoundation/AVFoundation.h>
+#import "KTVVPAudioInput.h"
 
 @interface KTVVPVideoCamera : KTVVPSource
 
@@ -21,5 +22,10 @@
 
 - (void)beginConfiguration;
 - (void)commitConfiguration;
+
+
+#pragma mark - Audio
+
+@property (nonatomic, strong) id <KTVVPAudioInput> audioOutput;
 
 @end
