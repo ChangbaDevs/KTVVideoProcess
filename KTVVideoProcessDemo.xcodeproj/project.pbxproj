@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		9C2714842093330700052130 /* KTVVPAudioSampleBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2714832093330700052130 /* KTVVPAudioSampleBuffer.m */; };
+		9C2714A12093663600052130 /* filter_style_ol.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C27148F2093663300052130 /* filter_style_ol.model */; };
+		9C2714A22093663600052130 /* filter_style_lofi.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C2714912093663300052130 /* filter_style_lofi.model */; };
+		9C2714A32093663600052130 /* filter_style_danube.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C2714922093663300052130 /* filter_style_danube.model */; };
+		9C2714A42093663600052130 /* filter_style_oldphoto.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C2714972093663400052130 /* filter_style_oldphoto.model */; };
+		9C2714A52093663600052130 /* filter_style_babypink.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C2714992093663400052130 /* filter_style_babypink.model */; };
+		9C2714A62093663600052130 /* action.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C27149A2093663500052130 /* action.model */; };
+		9C2714A72093663600052130 /* filter_style_process.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C27149B2093663500052130 /* filter_style_process.model */; };
+		9C2714A82093663600052130 /* libst_mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C27149C2093663500052130 /* libst_mobile.a */; };
+		9C2714A92093663600052130 /* SENSEME.lic in Resources */ = {isa = PBXBuildFile; fileRef = 9C27149D2093663500052130 /* SENSEME.lic */; };
+		9C2714AC2093697700052130 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2714AB2093696F00052130 /* libz.tbd */; };
 		9C2E3BF22089941800BC1F34 /* KTVVPFrameGLTexture.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C2E3BF12089941800BC1F34 /* KTVVPFrameGLTexture.m */; };
 		9C3470F22065174F00A66180 /* KTVVPSerialPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3470F12065174F00A66180 /* KTVVPSerialPipeline.m */; };
 		9C36BC26208055D700916196 /* KTVVPFrameLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C36BC25208055D700916196 /* KTVVPFrameLayout.m */; };
@@ -21,9 +31,6 @@
 		9C3E5C902060EE1400F30377 /* Cool.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8B2060EE1400F30377 /* Cool.acv */; };
 		9C3E5C912060EE1400F30377 /* Grace.acv in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C8C2060EE1400F30377 /* Grace.acv */; };
 		9C3E5C942060F2BA00F30377 /* KTVVPSenseTimeFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */; };
-		9C3E5CA12060F4DE00F30377 /* action.model in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C972060F4DE00F30377 /* action.model */; };
-		9C3E5CA22060F4DE00F30377 /* libst_mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3E5C982060F4DE00F30377 /* libst_mobile.a */; };
-		9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */ = {isa = PBXBuildFile; fileRef = 9C3E5C992060F4DE00F30377 /* SENSEME.lic */; };
 		9C3E5CA42060F4DE00F30377 /* STFaceResultConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */; };
 		9C3E5CFD2062129200F30377 /* KTVVPFrameWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C3E5CFC2062129200F30377 /* KTVVPFrameWriter.m */; };
 		9C544F4F206B336D008B2768 /* KTVVPTimeComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C544F4E206B336D008B2768 /* KTVVPTimeComponents.m */; };
@@ -72,6 +79,25 @@
 		9C2714812093232C00052130 /* KTVVPAudioInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPAudioInput.h; sourceTree = "<group>"; };
 		9C2714822093330700052130 /* KTVVPAudioSampleBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPAudioSampleBuffer.h; sourceTree = "<group>"; };
 		9C2714832093330700052130 /* KTVVPAudioSampleBuffer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPAudioSampleBuffer.m; sourceTree = "<group>"; };
+		9C27148F2093663300052130 /* filter_style_ol.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = filter_style_ol.model; sourceTree = "<group>"; };
+		9C2714902093663300052130 /* st_mobile_face_attribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_face_attribute.h; sourceTree = "<group>"; };
+		9C2714912093663300052130 /* filter_style_lofi.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = filter_style_lofi.model; sourceTree = "<group>"; };
+		9C2714922093663300052130 /* filter_style_danube.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = filter_style_danube.model; sourceTree = "<group>"; };
+		9C2714932093663300052130 /* st_mobile_object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_object.h; sourceTree = "<group>"; };
+		9C2714942093663400052130 /* st_mobile_license.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_license.h; sourceTree = "<group>"; };
+		9C2714952093663400052130 /* st_mobile_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_common.h; sourceTree = "<group>"; };
+		9C2714962093663400052130 /* st_mobile_filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_filter.h; sourceTree = "<group>"; };
+		9C2714972093663400052130 /* filter_style_oldphoto.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = filter_style_oldphoto.model; sourceTree = "<group>"; };
+		9C2714982093663400052130 /* st_mobile_human_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_human_action.h; sourceTree = "<group>"; };
+		9C2714992093663400052130 /* filter_style_babypink.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = filter_style_babypink.model; sourceTree = "<group>"; };
+		9C27149A2093663500052130 /* action.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = action.model; sourceTree = "<group>"; };
+		9C27149B2093663500052130 /* filter_style_process.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = filter_style_process.model; sourceTree = "<group>"; };
+		9C27149C2093663500052130 /* libst_mobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libst_mobile.a; sourceTree = "<group>"; };
+		9C27149D2093663500052130 /* SENSEME.lic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SENSEME.lic; sourceTree = "<group>"; };
+		9C27149E2093663600052130 /* st_mobile_sticker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_sticker.h; sourceTree = "<group>"; };
+		9C27149F2093663600052130 /* STMobileLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STMobileLog.h; sourceTree = "<group>"; };
+		9C2714A02093663600052130 /* st_mobile_beautify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_beautify.h; sourceTree = "<group>"; };
+		9C2714AB2093696F00052130 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9C2E3BF02089941700BC1F34 /* KTVVPFrameGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPFrameGLTexture.h; sourceTree = "<group>"; };
 		9C2E3BF12089941800BC1F34 /* KTVVPFrameGLTexture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPFrameGLTexture.m; sourceTree = "<group>"; };
 		9C3470EE206514BB00A66180 /* KTVVPSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPSource.h; sourceTree = "<group>"; };
@@ -95,13 +121,6 @@
 		9C3E5C8C2060EE1400F30377 /* Grace.acv */ = {isa = PBXFileReference; lastKnownFileType = file; path = Grace.acv; sourceTree = "<group>"; };
 		9C3E5C922060F2BA00F30377 /* KTVVPSenseTimeFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPSenseTimeFilter.h; sourceTree = "<group>"; };
 		9C3E5C932060F2BA00F30377 /* KTVVPSenseTimeFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KTVVPSenseTimeFilter.m; sourceTree = "<group>"; };
-		9C3E5C972060F4DE00F30377 /* action.model */ = {isa = PBXFileReference; lastKnownFileType = file; path = action.model; sourceTree = "<group>"; };
-		9C3E5C982060F4DE00F30377 /* libst_mobile.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libst_mobile.a; sourceTree = "<group>"; };
-		9C3E5C992060F4DE00F30377 /* SENSEME.lic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SENSEME.lic; sourceTree = "<group>"; };
-		9C3E5C9A2060F4DE00F30377 /* st_mobile_beautify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_beautify.h; sourceTree = "<group>"; };
-		9C3E5C9B2060F4DE00F30377 /* st_mobile_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_common.h; sourceTree = "<group>"; };
-		9C3E5C9C2060F4DE00F30377 /* st_mobile_human_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_human_action.h; sourceTree = "<group>"; };
-		9C3E5C9D2060F4DE00F30377 /* st_mobile_license.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = st_mobile_license.h; sourceTree = "<group>"; };
 		9C3E5C9F2060F4DE00F30377 /* STFaceResultConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STFaceResultConverter.h; sourceTree = "<group>"; };
 		9C3E5CA02060F4DE00F30377 /* STFaceResultConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = STFaceResultConverter.mm; sourceTree = "<group>"; };
 		9C3E5CFA206208F800F30377 /* KTVVPDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPDefines.h; sourceTree = "<group>"; };
@@ -191,7 +210,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C3E5CA22060F4DE00F30377 /* libst_mobile.a in Frameworks */,
+				9C2714AC2093697700052130 /* libz.tbd in Frameworks */,
+				9C2714A82093663600052130 /* libst_mobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +226,14 @@
 				9C2714832093330700052130 /* KTVVPAudioSampleBuffer.m */,
 			);
 			path = Audio;
+			sourceTree = "<group>";
+		};
+		9C2714AA2093696E00052130 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9C2714AB2093696F00052130 /* libz.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		9C3E5C872060EE1400F30377 /* resources */ = {
@@ -233,13 +261,24 @@
 		9C3E5C962060F4DE00F30377 /* SDKs */ = {
 			isa = PBXGroup;
 			children = (
-				9C3E5C972060F4DE00F30377 /* action.model */,
-				9C3E5C982060F4DE00F30377 /* libst_mobile.a */,
-				9C3E5C992060F4DE00F30377 /* SENSEME.lic */,
-				9C3E5C9A2060F4DE00F30377 /* st_mobile_beautify.h */,
-				9C3E5C9B2060F4DE00F30377 /* st_mobile_common.h */,
-				9C3E5C9C2060F4DE00F30377 /* st_mobile_human_action.h */,
-				9C3E5C9D2060F4DE00F30377 /* st_mobile_license.h */,
+				9C27149A2093663500052130 /* action.model */,
+				9C2714992093663400052130 /* filter_style_babypink.model */,
+				9C2714922093663300052130 /* filter_style_danube.model */,
+				9C2714912093663300052130 /* filter_style_lofi.model */,
+				9C27148F2093663300052130 /* filter_style_ol.model */,
+				9C2714972093663400052130 /* filter_style_oldphoto.model */,
+				9C27149B2093663500052130 /* filter_style_process.model */,
+				9C27149C2093663500052130 /* libst_mobile.a */,
+				9C27149D2093663500052130 /* SENSEME.lic */,
+				9C2714A02093663600052130 /* st_mobile_beautify.h */,
+				9C2714952093663400052130 /* st_mobile_common.h */,
+				9C2714902093663300052130 /* st_mobile_face_attribute.h */,
+				9C2714962093663400052130 /* st_mobile_filter.h */,
+				9C2714982093663400052130 /* st_mobile_human_action.h */,
+				9C2714942093663400052130 /* st_mobile_license.h */,
+				9C2714932093663300052130 /* st_mobile_object.h */,
+				9C27149E2093663600052130 /* st_mobile_sticker.h */,
+				9C27149F2093663600052130 /* STMobileLog.h */,
 			);
 			path = SDKs;
 			sourceTree = "<group>";
@@ -307,6 +346,7 @@
 				9C9905AB205A19D200D7CF3A /* KTVVideoProcess */,
 				9C990594205A194800D7CF3A /* KTVVideoProcessDemo */,
 				9C990593205A194800D7CF3A /* Products */,
+				9C2714AA2093696E00052130 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -526,11 +566,17 @@
 				9C9905A2205A194800D7CF3A /* LaunchScreen.storyboard in Resources */,
 				9C3E5C902060EE1400F30377 /* Cool.acv in Resources */,
 				9C3E5C8E2060EE1400F30377 /* LakeWater.acv in Resources */,
+				9C2714A42093663600052130 /* filter_style_oldphoto.model in Resources */,
+				9C2714A62093663600052130 /* action.model in Resources */,
+				9C2714A22093663600052130 /* filter_style_lofi.model in Resources */,
+				9C2714A92093663600052130 /* SENSEME.lic in Resources */,
 				9C3E5C8D2060EE1400F30377 /* BlueCrystal.acv in Resources */,
 				9CD7C5D7207CC92C006605BC /* Chartlet.bundle in Resources */,
-				9C3E5CA12060F4DE00F30377 /* action.model in Resources */,
-				9C3E5CA32060F4DE00F30377 /* SENSEME.lic in Resources */,
+				9C2714A52093663600052130 /* filter_style_babypink.model in Resources */,
+				9C2714A32093663600052130 /* filter_style_danube.model in Resources */,
 				9C99059F205A194800D7CF3A /* Assets.xcassets in Resources */,
+				9C2714A72093663600052130 /* filter_style_process.model in Resources */,
+				9C2714A12093663600052130 /* filter_style_ol.model in Resources */,
 				9C99059D205A194800D7CF3A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
