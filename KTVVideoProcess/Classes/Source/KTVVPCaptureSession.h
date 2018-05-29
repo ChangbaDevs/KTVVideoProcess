@@ -8,7 +8,7 @@
 
 #import "KTVVPSource.h"
 #import <AVFoundation/AVFoundation.h>
-#import "KTVVPAudioInput.h"
+#import "KTVVPSampleInput.h"
 
 @interface KTVVPCaptureSession : KTVVPSource
 
@@ -65,6 +65,6 @@
  *  Audio config.
  */
 @property (nonatomic, assign) BOOL audioEnable;
-@property (atomic, strong) id <KTVVPAudioInput> audioOutput;
+@property (atomic, strong) id <KTVVPSampleInput> audioOutput;
 
 @end

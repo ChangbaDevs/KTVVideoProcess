@@ -145,7 +145,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     return CMTimeGetSeconds(duration);
 }
 
-#pragma mark - KTVVPAudioInput
+#pragma mark - KTVVPSampleInput
 
 - (BOOL)inputSample:(KTVVPSample *)sample fromSource:(id)source
 {

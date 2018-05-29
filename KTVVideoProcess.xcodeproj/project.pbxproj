@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9C640EEA20BD412D004DCE20 /* KTVVideoProcess.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C640EE820BD412D004DCE20 /* KTVVideoProcess.h */; };
-		9C640F4620BD413C004DCE20 /* KTVVPAudioInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C640EED20BD413B004DCE20 /* KTVVPAudioInput.h */; };
+		9C640F4620BD413C004DCE20 /* KTVVPSampleInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C640EED20BD413B004DCE20 /* KTVVPSampleInput.h */; };
 		9C640F4720BD413C004DCE20 /* KTVVPSample.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C640EEE20BD413B004DCE20 /* KTVVPSample.h */; };
 		9C640F4820BD413C004DCE20 /* KTVVPSample.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C640EEF20BD413B004DCE20 /* KTVVPSample.m */; };
 		9C640F4920BD413C004DCE20 /* KTVVPContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C640EF120BD413B004DCE20 /* KTVVPContext.h */; };
@@ -92,7 +92,7 @@
 		9C1037E220BD3FC500CF6ACD /* KTVVideoProcess.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KTVVideoProcess.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C640EE720BD412D004DCE20 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Framework/Info.plist; sourceTree = SOURCE_ROOT; };
 		9C640EE820BD412D004DCE20 /* KTVVideoProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KTVVideoProcess.h; path = Framework/KTVVideoProcess.h; sourceTree = SOURCE_ROOT; };
-		9C640EED20BD413B004DCE20 /* KTVVPAudioInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPAudioInput.h; sourceTree = "<group>"; };
+		9C640EED20BD413B004DCE20 /* KTVVPSampleInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPSampleInput.h; sourceTree = "<group>"; };
 		9C640EEE20BD413B004DCE20 /* KTVVPSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPSample.h; sourceTree = "<group>"; };
 		9C640EEF20BD413B004DCE20 /* KTVVPSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPSample.m; sourceTree = "<group>"; };
 		9C640EF120BD413B004DCE20 /* KTVVPContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPContext.h; sourceTree = "<group>"; };
@@ -215,7 +215,7 @@
 			children = (
 				9C640EEC20BD413B004DCE20 /* Audio */,
 				9C640EF020BD413B004DCE20 /* Common */,
-				9C640EF520BD413B004DCE20 /* Composition */,
+				9C640EF520BD413B004DCE20 /* Export */,
 				9C640EFC20BD413B004DCE20 /* Filter */,
 				9C640F0320BD413B004DCE20 /* Frame */,
 				9C640F1620BD413B004DCE20 /* Internal */,
@@ -231,7 +231,7 @@
 		9C640EEC20BD413B004DCE20 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				9C640EED20BD413B004DCE20 /* KTVVPAudioInput.h */,
+				9C640EED20BD413B004DCE20 /* KTVVPSampleInput.h */,
 				9C640EEE20BD413B004DCE20 /* KTVVPSample.h */,
 				9C640EEF20BD413B004DCE20 /* KTVVPSample.m */,
 			);
@@ -249,7 +249,7 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		9C640EF520BD413B004DCE20 /* Composition */ = {
+		9C640EF520BD413B004DCE20 /* Export */ = {
 			isa = PBXGroup;
 			children = (
 				9C640EF620BD413B004DCE20 /* KTVVPExportReader.h */,
@@ -259,7 +259,7 @@
 				9C640EFA20BD413B004DCE20 /* KTVVPExportWriter.h */,
 				9C640EFB20BD413B004DCE20 /* KTVVPExportWriter.m */,
 			);
-			path = Composition;
+			path = Export;
 			sourceTree = "<group>";
 		};
 		9C640EFC20BD413B004DCE20 /* Filter */ = {
@@ -420,7 +420,7 @@
 				9C640F4720BD413C004DCE20 /* KTVVPSample.h in Headers */,
 				9C640F5F20BD413C004DCE20 /* KTVVPFrameInput.h in Headers */,
 				9C640F7820BD413C004DCE20 /* KTVVPGLModel.h in Headers */,
-				9C640F4620BD413C004DCE20 /* KTVVPAudioInput.h in Headers */,
+				9C640F4620BD413C004DCE20 /* KTVVPSampleInput.h in Headers */,
 				9C640F8620BD413C004DCE20 /* KTVVPConcurrentPipeline.h in Headers */,
 				9C640F7C20BD413C004DCE20 /* KTVVPGLProgram.h in Headers */,
 				9C640F6220BD413C004DCE20 /* KTVVPFramePool.h in Headers */,

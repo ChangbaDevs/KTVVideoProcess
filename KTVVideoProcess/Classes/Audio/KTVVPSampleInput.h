@@ -1,5 +1,5 @@
 //
-//  KTVVPAudioInput.h
+//  KTVVPSampleInput.h
 //  KTVVideoProcess
 //
 //  Created by Single on 2018/4/27.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "KTVVPSample.h"
 
-@protocol KTVVPAudioInput <NSObject>
+@protocol KTVVPSampleInput <NSObject>
 
 - (BOOL)inputSample:(KTVVPSample *)sample fromSource:(id)source;
 

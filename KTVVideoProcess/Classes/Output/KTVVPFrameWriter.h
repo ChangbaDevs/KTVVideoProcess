@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVVPFrameInput.h"
-#import "KTVVPAudioInput.h"
+#import "KTVVPSampleInput.h"
 
-@interface KTVVPFrameWriter : NSObject <KTVVPFrameInput, KTVVPAudioInput>
+@interface KTVVPFrameWriter : NSObject <KTVVPFrameInput, KTVVPSampleInput>
 
 /**
  *  File config.
