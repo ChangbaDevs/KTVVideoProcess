@@ -47,7 +47,9 @@
     self.frameView.frame = self.view.bounds;
     [self.view insertSubview:self.frameView atIndex:0];
     
-    self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:@[[KTVVPBlackAndWhiteFilter class], [KTVVPTransformFilter class]]];
+    NSArray <Class> * filterClasses = @[[KTVVPBlackAndWhiteFilter class],
+                                        [KTVVPTransformFilter class]];
+    self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
         if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
