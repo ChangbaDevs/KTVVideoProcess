@@ -15,5 +15,3 @@ DerivedData
 *.ipa
 *.xcuserstate
 .DS_Store
-framework/
-KTVVideoProcess/Extension
