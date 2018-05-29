@@ -1,0 +1,5 @@
+framework module KTVVideoProcess {
+    umbrella header "KTVVideoProcess.h"
+    export *
+    module * { export * }
+}
