@@ -261,13 +261,15 @@
                                     <constraint firstAttribute="width" constant="90" id="ide-Us-CXy"/>
                                 </constraints>
                             </imageView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="88k-Qr-aaB">
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="88k-Qr-aaB">
                                 <rect key="frame" x="59.5" y="629" width="300.5" height="29"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="I93-24-DdZ"/>
                                 </constraints>
                                 <segments>
                                     <segment title="None"/>
+                                    <segment title="RGB"/>
+                                    <segment title="Exposure"/>
                                     <segment title="Brightness"/>
                                     <segment title="B&amp;W"/>
                                 </segments>
@@ -275,7 +277,7 @@
                                     <action selector="chooseFilterAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="ueq-oA-19d"/>
                                 </connections>
                             </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5g-BF-yBc">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Filter:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g5g-BF-yBc">
                                 <rect key="frame" x="15" y="633" width="34.5" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="qNP-cu-ZoV"/>

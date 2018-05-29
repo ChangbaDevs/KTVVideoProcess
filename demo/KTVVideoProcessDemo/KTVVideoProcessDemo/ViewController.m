@@ -17,6 +17,8 @@
 @property (nonatomic, strong) KTVVPFrameView * frameView;
 @property (nonatomic, strong) KTVVPFrameWriter * frameWriter;
 
+@property (nonatomic, strong) KTVVPRGBFilter * RGBFilter;
+@property (nonatomic, strong) KTVVPExposureFilter * exposureFilter;
 @property (nonatomic, strong) KTVVPBrightnessFilter * brightnessFilter;
 @property (nonatomic, strong) KTVVPBlackAndWhiteFilter * blackAndWhiteFilter;
 
@@ -68,16 +70,26 @@
     self.frameView.frame = self.view.bounds;
     [self.view insertSubview:self.frameView atIndex:0];
     
-    NSArray <Class> * filterClasses = @[[KTVVPBrightnessFilter class],
+    NSArray <Class> * filterClasses = @[[KTVVPRGBFilter class],
+                                        [KTVVPExposureFilter class],
+                                        [KTVVPBrightnessFilter class],
                                         [KTVVPBlackAndWhiteFilter class],
                                         [KTVVPTransformFilter class]];
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
         filter.enable = NO;
-        if ([filter isKindOfClass:[KTVVPBrightnessFilter class]]) {
+        if ([filter isKindOfClass:[KTVVPRGBFilter class]]) {
+            weakSelf.RGBFilter = filter;
+            weakSelf.RGBFilter.red = 1.0;
+            weakSelf.RGBFilter.green = 0.6;
+            weakSelf.RGBFilter.blue = 1.0;
+        } else if ([filter isKindOfClass:[KTVVPExposureFilter class]]) {
+            weakSelf.exposureFilter = filter;
+            weakSelf.exposureFilter.exposure = 0.5;
+        } else if ([filter isKindOfClass:[KTVVPBrightnessFilter class]]) {
             weakSelf.brightnessFilter = filter;
-            weakSelf.brightnessFilter.brightness = 0.2f;
+            weakSelf.brightnessFilter.brightness = 0.2;
         } else if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
             weakSelf.blackAndWhiteFilter = filter;
         }
@@ -213,9 +225,15 @@
             [self enableFilter:nil];
             break;
         case 1:
-            [self enableFilter:self.brightnessFilter];
+            [self enableFilter:self.RGBFilter];
             break;
         case 2:
+            [self enableFilter:self.exposureFilter];
+            break;
+        case 3:
+            [self enableFilter:self.brightnessFilter];
+            break;
+        case 4:
             [self enableFilter:self.blackAndWhiteFilter];
             break;
     }
@@ -223,11 +241,14 @@
 
 - (void)enableFilter:(__kindof KTVVPFilter *)filter
 {
-    NSArray <KTVVPFilter *> * filters = @[self.brightnessFilter,
+    NSArray <KTVVPFilter *> * filters = @[self.RGBFilter,
+                                          self.exposureFilter,
+                                          self.brightnessFilter,
                                           self.blackAndWhiteFilter];
     for (KTVVPFilter * obj in filters)
     {
-        obj.enable = obj == filter;
+        BOOL enable = obj == filter;
+        obj.enable = enable;
     }
 }
 
