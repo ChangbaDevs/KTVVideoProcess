@@ -20,6 +20,10 @@
 
 @implementation KTVVPPassthroughFilter
 
+- (void)programCreated:(KTVVPGLProgram *)program {}
+- (void)programPrepare {}
+- (void)programDone {}
+
 #pragma mark - KTVVPFrameInput
 
 - (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
@@ -37,6 +41,7 @@
     if (!_glProgram)
     {
         _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:self.glContext vertexShaderString:self.vertexShaderString fragmentShaderString:self.fragmentShaderString];
+        [self programCreated:_glProgram.program];
     }
     [frame lock];
     KTVVPSize size = frame.layout.finalSize;
@@ -46,19 +51,21 @@
         return obj;
     }];
     [result fillWithFrameWithoutTransform:frame];
-    _glModel.rotationMode = frame.layout.rotationMode;
-    _glModel.flipMode = frame.layout.flipMode;
-    [_glModel reloadDataIfNeeded];
     [frame uploadIfNeeded:self.frameUploader];
     [result uploadIfNeeded:self.frameUploader];
     [result bindDrawable];
     [result fillColorBlack];
     [_glProgram use];
     [_glProgram bindTexture:frame.texture];
+    [self programPrepare];
+    _glModel.rotationMode = frame.layout.rotationMode;
+    _glModel.flipMode = frame.layout.flipMode;
+    [_glModel reloadDataIfNeeded];
     [_glModel bindPosition_location:_glProgram.position_location
              textureCoordinate_location:_glProgram.textureCoordinate_location];
     [_glModel draw];
     [_glModel unbind];
+    [self programDone];
     [_glProgram unbindTexture];
     [result unbindDrawable];
     [frame unlock];

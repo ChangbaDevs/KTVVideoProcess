@@ -50,15 +50,15 @@
         return obj;
     }];
     [result fillWithFrameWithoutTransform:frame];
-    _glModel.rotationMode = frame.layout.rotationMode;
-    _glModel.flipMode = frame.layout.flipMode;
-    [_glModel reloadDataIfNeeded];
     [frame uploadIfNeeded:self.frameUploader];
     [result uploadIfNeeded:self.frameUploader];
     [result bindDrawable];
     [result fillColorBlack];
     [_glProgram use];
     [_glProgram bindTexture:frame.texture];
+    _glModel.rotationMode = frame.layout.rotationMode;
+    _glModel.flipMode = frame.layout.flipMode;
+    [_glModel reloadDataIfNeeded];
     [_glModel bindPosition_location:_glProgram.position_location
          textureCoordinate_location:_glProgram.textureCoordinate_location];
     [_glModel draw];
