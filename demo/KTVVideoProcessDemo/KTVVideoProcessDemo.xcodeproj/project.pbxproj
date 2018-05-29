@@ -379,12 +379,7 @@
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../Extension/face.mobilealignment\"",
-					"\"$(SRCROOT)/../Extension/face.mobilealignment/SDKs\"",
-					"$(PROJECT_DIR)/KTVVideoProcess/Extension/sdk",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.changba.KTVVideoProcess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -401,12 +396,7 @@
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../Extension/face.mobilealignment\"",
-					"\"$(SRCROOT)/../Extension/face.mobilealignment/SDKs\"",
-					"$(PROJECT_DIR)/KTVVideoProcess/Extension/sdk",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.changba.KTVVideoProcess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
