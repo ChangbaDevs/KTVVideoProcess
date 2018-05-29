@@ -17,6 +17,7 @@
 @property (nonatomic, strong) KTVVPFrameView * frameView;
 @property (nonatomic, strong) KTVVPFrameWriter * frameWriter;
 
+@property (nonatomic, strong) KTVVPBrightnessFilter * brightnessFilter;
 @property (nonatomic, strong) KTVVPBlackAndWhiteFilter * blackAndWhiteFilter;
 
 @property (nonatomic, weak) IBOutlet UIImageView * snapshotImageView;
@@ -67,13 +68,17 @@
     self.frameView.frame = self.view.bounds;
     [self.view insertSubview:self.frameView atIndex:0];
     
-    NSArray <Class> * filterClasses = @[[KTVVPBlackAndWhiteFilter class],
+    NSArray <Class> * filterClasses = @[[KTVVPBrightnessFilter class],
+                                        [KTVVPBlackAndWhiteFilter class],
                                         [KTVVPTransformFilter class]];
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
         filter.enable = NO;
-        if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
+        if ([filter isKindOfClass:[KTVVPBrightnessFilter class]]) {
+            weakSelf.brightnessFilter = filter;
+            weakSelf.brightnessFilter.brightness = 0.2f;
+        } else if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
             weakSelf.blackAndWhiteFilter = filter;
         }
     }];
@@ -208,6 +213,9 @@
             [self enableFilter:nil];
             break;
         case 1:
+            [self enableFilter:self.brightnessFilter];
+            break;
+        case 2:
             [self enableFilter:self.blackAndWhiteFilter];
             break;
     }
@@ -215,7 +223,8 @@
 
 - (void)enableFilter:(__kindof KTVVPFilter *)filter
 {
-    NSArray <KTVVPFilter *> * filters = @[self.blackAndWhiteFilter];
+    NSArray <KTVVPFilter *> * filters = @[self.brightnessFilter,
+                                          self.blackAndWhiteFilter];
     for (KTVVPFilter * obj in filters)
     {
         obj.enable = obj == filter;
