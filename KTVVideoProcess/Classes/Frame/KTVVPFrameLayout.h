@@ -1,6 +1,6 @@
 //
 //  KTVVPFrameLayout.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/4/13.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -14,6 +14,7 @@
 @property (nonatomic, assign) KTVVPSize size;
 @property (nonatomic, assign) KTVVPRotationMode rotationMode;
 @property (nonatomic, assign) KTVVPFlipMode flipMode;
+
 @property (nonatomic, assign, readonly) KTVVPSize finalSize;
 @property (nonatomic, assign, readonly) KTVVPRotationMode completionRotationMode;
 @property (nonatomic, assign, readonly) KTVVPFlipMode textureFlipMode;

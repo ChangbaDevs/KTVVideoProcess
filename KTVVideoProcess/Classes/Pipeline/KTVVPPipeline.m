@@ -1,15 +1,14 @@
 //
 //  KTVVPPipeline.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/26.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPPipeline.h"
-#import "KTVVPPipelinePrivate.h"
 
-@interface KTVVPPipeline () <KTVVPPipelinePrivate>
+@interface KTVVPPipeline ()
 
 @property (nonatomic, strong) NSLock * outputsLock;
 @property (nonatomic, strong) NSMutableArray <id <KTVVPFrameInput>> * outputsInternal;
@@ -18,13 +17,11 @@
 
 @implementation KTVVPPipeline
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-                  filterClasses:(NSArray <Class> *)filterClasses
+- (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses
 {
     if (self = [super init])
     {
         NSAssert(filterClasses.count > 0, @"filterClasses can't be nil.");
-        
         _context = context;
         _filterClasses = filterClasses;
         _needFlushBeforOutput = YES;
@@ -42,9 +39,16 @@
     }
 }
 
-- (void)setupInternal {}
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source {}
+- (void)setupInternal {NSAssert(NO, @"Subclass must override.");}
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source {return NO;}
 
+#pragma mark - OpenGL
+
+- (void)glFinish {}
+
+#pragma mark - Control
+
+- (void)waitUntilFinished {}
 
 #pragma mark - Output
 
@@ -98,22 +102,6 @@
     [_outputsLock lock];
     [_outputsInternal removeAllObjects];
     [_outputsLock unlock];
-}
-
-- (void)outputFrame:(KTVVPFrame *)frame
-{
-    if (_needFlushBeforOutput)
-    {
-        glFlush();
-    }
-    [frame lock];
-    [_outputsLock lock];
-    for (id <KTVVPFrameInput> obj in _outputsInternal)
-    {
-        [obj inputFrame:frame fromSource:self];
-    }
-    [_outputsLock unlock];
-    [frame unlock];
 }
 
 @end

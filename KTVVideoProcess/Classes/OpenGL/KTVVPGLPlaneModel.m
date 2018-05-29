@@ -1,6 +1,6 @@
 //
 //  KTVVPGLPlaneModel.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -115,40 +115,12 @@
         0.0, 0.0,
         1.0, 0.0,
     };
-    static GLfloat textureCoordinates_data_r180_fh[] =
-    {
-        0.0, 1.0,
-        1.0, 1.0,
-        1.0, 0.0,
-        0.0, 0.0,
-    };
-    static GLfloat textureCoordinates_data_r180_fv[] =
-    {
-        1.0, 0.0,
-        0.0, 0.0,
-        0.0, 1.0,
-        1.0, 1.0,
-    };
     static GLfloat textureCoordinates_data_r270_fn[] =
     {
         0.0, 1.0,
         0.0, 0.0,
         1.0, 0.0,
         1.0, 1.0,
-    };
-    static GLfloat textureCoordinates_data_r270_fh[] =
-    {
-        0.0, 0.0,
-        0.0, 1.0,
-        1.0, 1.0,
-        1.0, 0.0,
-    };
-    static GLfloat textureCoordinates_data_r270_fv[] =
-    {
-        1.0, 1.0,
-        1.0, 0.0,
-        0.0, 0.0,
-        0.0, 1.0,
     };
     switch (_rotationMode)
     {
@@ -187,9 +159,9 @@
                 case KTVVPFlipModeNone:
                     return textureCoordinates_data_r180_fn;
                 case KTVVPFlipModeHorizonal:
-                    return textureCoordinates_data_r180_fh;
+                    return textureCoordinates_data_r0_fv;
                 case KTVVPFlipModeVertical:
-                    return textureCoordinates_data_r180_fv;
+                    return textureCoordinates_data_r0_fh;
                 case KTVVPFlipModeHorizonalAndVertical:
                     return textureCoordinates_data_r0_fn;
             }
@@ -201,9 +173,9 @@
                 case KTVVPFlipModeNone:
                     return textureCoordinates_data_r270_fn;
                 case KTVVPFlipModeHorizonal:
-                    return textureCoordinates_data_r270_fh;
+                    return textureCoordinates_data_r90_fv;
                 case KTVVPFlipModeVertical:
-                    return textureCoordinates_data_r270_fv;
+                    return textureCoordinates_data_r90_fh;
                 case KTVVPFlipModeHorizonalAndVertical:
                     return textureCoordinates_data_r90_fn;
             }

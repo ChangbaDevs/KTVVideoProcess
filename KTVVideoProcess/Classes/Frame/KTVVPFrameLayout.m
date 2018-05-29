@@ -1,6 +1,6 @@
 //
 //  KTVVPFrameLayout.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/4/13.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -17,6 +17,17 @@
     obj.rotationMode = self.rotationMode;
     obj.flipMode = self.flipMode;
     return obj;
+}
+
+- (instancetype)init
+{
+    if (self = [super init])
+    {
+        _size = KTVVPSizeZero();
+        _rotationMode = KTVVPRotationMode0;
+        _flipMode = KTVVPFlipModeNone;
+    }
+    return self;
 }
 
 - (KTVVPSize)finalSize
@@ -59,8 +70,7 @@
 
 - (BOOL)rotationQuarter
 {
-    if (_rotationMode == KTVVPRotationMode90
-        || _rotationMode == KTVVPRotationMode270)
+    if (_rotationMode == KTVVPRotationMode90 || _rotationMode == KTVVPRotationMode270)
     {
         return YES;
     }

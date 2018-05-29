@@ -1,6 +1,6 @@
 //
 //  KTVVPGLProgram.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -10,12 +10,12 @@
 
 @interface KTVVPGLProgram ()
 
-{
-    GLuint _program;
-}
-
 @property (nonatomic, strong) EAGLContext * glContext;
-@property (nonatomic, assign) BOOL linkSuccess;
+@property (nonatomic, copy) NSString * vertexShaderString;
+@property (nonatomic, copy) NSString * fragmentShaderString;
+
+@property (nonatomic, assign) GLuint program;
+@property (nonatomic, assign) BOOL linked;
 
 @end
 
@@ -44,7 +44,16 @@
             glLinkProgram(_program);
             GLint linkSuccess;
             glGetProgramiv(_program, GL_LINK_STATUS, &linkSuccess);
-            _linkSuccess = linkSuccess == GL_TRUE;
+            _linked = linkSuccess == GL_TRUE;
+            if (!_linked)
+            {
+                GLint logLength;
+                glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
+                GLchar * log = (GLchar *)malloc(logLength);
+                glGetProgramInfoLog(_program, logLength, &logLength, log);
+                NSLog(@"Failed to link program : %s", log);
+                free(log);
+            }
         }
         if (vertexShader)
         {
@@ -64,7 +73,7 @@
     
     if (_program)
     {
-        [_glContext setCurrentIfNeeded];
+        KTVVPSetCurrentGLContextIfNeeded(_glContext);
         glDeleteProgram(_program);
     }
 }

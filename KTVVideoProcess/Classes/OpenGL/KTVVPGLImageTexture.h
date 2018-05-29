@@ -1,6 +1,6 @@
 //
 //  KTVVPGLImageTexture.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/4/10.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -18,7 +18,11 @@
 @property (nonatomic, assign, readonly) GLuint texture;
 @property (nonatomic, assign, readonly) KTVVPSize size;
 
+/**
+ *  Upload texture
+ */
 - (void)uploadIfNeeded;
+
 - (void)destory;
 
 @end

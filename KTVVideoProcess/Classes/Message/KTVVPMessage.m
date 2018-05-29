@@ -1,6 +1,6 @@
 //
 //  KTVVPMessage.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -34,7 +34,6 @@
 - (void)drop
 {
     NSLog(@"%s", __func__);
-    
     if (_dropCallback)
     {
         _dropCallback(self);

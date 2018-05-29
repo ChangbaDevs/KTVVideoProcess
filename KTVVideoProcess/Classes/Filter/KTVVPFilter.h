@@ -1,6 +1,6 @@
 //
 //  KTVVPFilter.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/19.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -15,26 +15,33 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithGLContext:(EAGLContext *)glContext
-                        framePool:(KTVVPFramePool *)framePool
-                    frameUploader:(KTVVPFrameUploader *)frameUploader;
+/**
+ *  @param glContext     The OpenGL context for current enviroment.
+ *  @param framePool     The frame pool for current enviroment.
+ *  @param frameUploader The frame uploader for current enviroment.
+ */
+- (instancetype)initWithGLContext:(EAGLContext *)glContext framePool:(KTVVPFramePool *)framePool frameUploader:(KTVVPFrameUploader *)frameUploader;
 
+/**
+ *  Environment
+ */
 @property (nonatomic, strong, readonly) EAGLContext * glContext;
 @property (nonatomic, strong, readonly) KTVVPFramePool * framePool;
 @property (nonatomic, strong, readonly) KTVVPFrameUploader * frameUploader;
 
-@property (nonatomic, assign) BOOL enable;      // default is YES.
+/**
+ *  Default value is YES.
+ */
+@property (nonatomic, assign) BOOL enable;
 
-
-#pragma mark - Parent
-
+/**
+ *  Filter relationship
+ */
 @property (nonatomic, weak) __kindof KTVVPFilter * parentFilter;
 
-
-#pragma mark - Output
-
+/**
+ *  Output
+ */
 @property (atomic, weak) id <KTVVPFrameInput> output;
-
-- (void)outputFrame:(KTVVPFrame *)frame;
 
 @end

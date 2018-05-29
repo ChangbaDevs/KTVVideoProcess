@@ -1,6 +1,6 @@
 //
 //  KTVVPFrame.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -8,64 +8,67 @@
 
 #import <Foundation/Foundation.h>
 #import "KTVVPDefines.h"
-#import "KTVVPGLDefines.h"
 #import "KTVVPFrameLayout.h"
 #import "KTVVPFrameUploader.h"
 
-
+/**
+ *  Frame types.
+ */
 typedef NS_ENUM(NSUInteger, KTVVPFrameType)
 {
-    KTVVPFrameTypeIdle,
-    KTVVPFrameTypeDrawable,
+    KTVVPFrameTypeUnknown,
+    KTVVPFrameTypeGLTexture,
+    KTVVPFrameTypeGLDrawable,
+    KTVVPFrameTypeCVPixelBuffer,
     KTVVPFrameTypeCMSampleBuffer,
 };
-
-
-@class KTVVPFrame;
-
-@protocol KTVVPFrameLockingDelegate <NSObject>
-
-- (void)frameDidUnuse:(KTVVPFrame *)frame;
-
-@end
-
 
 @interface KTVVPFrame : NSObject
 
 - (KTVVPFrameType)type;
 
+/**
+ *  Basic information.
+ */
+@property (nonatomic, assign) CMTime timeStamp;
 @property (nonatomic, strong) KTVVPFrameLayout * layout;
 
-@property (nonatomic, assign) CMTime timeStamp;
-@property (nonatomic, assign) GLuint texture;
-@property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
-@property (nonatomic, strong) KTVVPFrameUploader * uploader;
-@property (nonatomic, assign) BOOL didUpload;
-
+/**
+ *  Filling Data.
+ */
 - (void)fillWithFrame:(KTVVPFrame *)frame;
-- (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame;
-- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader;
+- (void)fillWithFrameWithoutTransform:(KTVVPFrame *)frame;
 - (void)clear;
 
+/**
+ *  Texture.
+ */
+@property (nonatomic, assign) GLuint texture;
+@property (nonatomic, assign) KTVVPGLTextureOptions textureOptions;
 
-#pragma mark - Data
+/**
+ *  Upload texture.
+ */
+@property (nonatomic, assign) BOOL didUpload;
+@property (nonatomic, strong) KTVVPFrameUploader * uploader;
+- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader;
 
+/**
+ *  Containing data.
+ */
 - (CVPixelBufferRef)corePixelBuffer;
-
 @property (nonatomic, strong) id extendedObject;
 
-
-#pragma mark - Reuse Key
-
+/**
+ *  Reuse Key.
+ */
 @property (nonatomic, copy) NSString * key;
 + (NSString *)key;
 + (NSString *)keyWithAppendString:(NSString *)string;
 
-
-#pragma mark - Locking
-
-@property (nonatomic, weak) id <KTVVPFrameLockingDelegate> lockingDelegate;
-
+/**
+ *  Locking.
+ */
 - (void)lock;
 - (void)unlock;
 

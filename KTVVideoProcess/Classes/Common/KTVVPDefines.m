@@ -1,15 +1,12 @@
 //
 //  KTVVPDefines.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/21.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPDefines.h"
-
-
-#pragma mark - Function
 
 KTVVPPoint KTVVPPointZero(void)
 {

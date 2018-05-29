@@ -1,6 +1,6 @@
 //
 //  KTVVPSource.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/23.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -11,8 +11,7 @@
 
 @interface KTVVPSource : NSObject
 
-
-#pragma mark - Control
+#pragma mark - Trigger
 
 @property (atomic, assign) BOOL paused;
 
@@ -20,9 +19,8 @@
 - (void)start;
 - (void)stop;
 
-
 #pragma mark - Output
 
-@property (atomic, weak) KTVVPPipeline * pipeline;
+@property (atomic, strong) KTVVPPipeline * pipeline;
 
 @end

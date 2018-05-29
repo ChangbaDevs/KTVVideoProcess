@@ -1,6 +1,6 @@
 //
 //  KTVVPPipeline.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/23.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -15,21 +15,29 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-                  filterClasses:(NSArray <Class> *)filterClasses;
+- (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses;
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 @property (nonatomic, strong, readonly) NSArray <Class> * filterClasses;
 
-@property (nonatomic, copy) void (^filterConfigurationCallback)(__kindof KTVVPFilter * filter, NSInteger filterIndexInPipiline, NSInteger pipelineIndex);
-@property (nonatomic, assign) BOOL needFlushBeforOutput;        // default is YES.
-
-
-#pragma mark - Setup
-
+/**
+ *  Setup
+ */
 @property (nonatomic, assign, readonly) BOOL didSetup;
 - (void)setupIfNeeded;
 
+/**
+ *  OpenGL
+ *
+ *  @property needFlushBeforOutput  Default value is YES.
+ */
+@property (nonatomic, assign) BOOL needFlushBeforOutput;
+- (void)glFinish;
+
+/**
+ *  Block current thread until finished all operations.
+ */
+- (void)waitUntilFinished;
 
 #pragma mark - Output
 
@@ -41,7 +49,5 @@
 - (void)removeOutput:(id <KTVVPFrameInput>)output;
 - (void)removeOutputs:(NSArray <id <KTVVPFrameInput>> *)outputs;
 - (void)removeAllOutputs;
-
-- (void)outputFrame:(KTVVPFrame *)frame;
 
 @end

@@ -1,16 +1,17 @@
 //
 //  KTVVPSerialPipeline.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/23.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPSerialPipeline.h"
-#import "KTVVPPipelinePrivate.h"
 #import "KTVVPMessageLoop.h"
 
-@interface KTVVPSerialPipeline () <KTVVPPipelinePrivate, KTVVPMessageLoopDelegate>
+@interface KTVVPSerialPipeline () <KTVVPMessageLoopDelegate>
+
+@property (nonatomic, assign) BOOL processing;
 
 @property (nonatomic, strong) EAGLContext * glContext;
 @property (nonatomic, strong) KTVVPFramePool * framePool;
@@ -23,14 +24,11 @@
 
 @implementation KTVVPSerialPipeline
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-                  filterClasses:(NSArray <Class> *)filterClasses
+- (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses
 {
-    if (self = [super initWithContext:context
-                        filterClasses:filterClasses])
+    if (self = [super initWithContext:context filterClasses:filterClasses])
     {
         NSLog(@"%s", __func__);
-        _pipelineIndex = 0;
     }
     return self;
 }
@@ -38,7 +36,6 @@
 - (void)dealloc
 {
     NSLog(@"%s", __func__);
-    
     [_messageLoop stop];
     _messageLoop = nil;
 }
@@ -46,42 +43,75 @@
 - (void)setupInternal
 {
     _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"Pipeline" delegate:self];
-    [_messageLoop run];
+    [_messageLoop start];
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupContext object:nil]];
 }
 
+- (NSArray <KTVVPFilter *> *)filtersOfClass:(Class)queryClass
+{
+    NSMutableArray <KTVVPFilter *> * ret = nil;
+    for (KTVVPFilter * obj in [_filters copy])
+    {
+        if ([obj isKindOfClass:queryClass])
+        {
+            if (!ret)
+            {
+                ret = [NSMutableArray array];
+            }
+            [ret addObject:obj];
+        }
+    }
+    return ret;
+}
+
+#pragma mark - OpenGL
+
+- (void)glFinish
+{
+    [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLFinish object:nil]];
+}
+
+#pragma mark - Control
+
+- (void)waitUntilFinished
+{
+    [_messageLoop waitUntilFinished];
+}
 
 #pragma mark - KTVVPFrameInput
 
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
-    if (source == self.filters.lastObject)
+    if (source == _filters.lastObject)
     {
-//        NSLog(@"KTVVPSerialPipeline: end process frame.");
-        
-        [self outputFrame:frame];
-        
-//        NSLog(@"KTVVPSerialPipeline: end output frame.");
+        if (self.needFlushBeforOutput)
+        {
+            glFlush();
+        }
+        [frame lock];
+        for (id <KTVVPFrameInput> obj in self.outputs)
+        {
+            [obj inputFrame:frame fromSource:self];
+        }
+        [frame unlock];
     }
     else
     {
         [self setupIfNeeded];
-        
         if (_processing)
         {
             NSLog(@"KTVVPSerialPipeline: Frame did drop...");
-            return;
+            return NO;
         }
         _processing = YES;
-        
         [frame lock];
-        [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage * message) {
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage * message) {
             KTVVPFrame * object = (KTVVPFrame *)message.object;
             [object unlock];
         }]];
     }
+    return YES;
 }
-
 
 #pragma mark - KTVVPMessageLoopDelegate
 
@@ -91,7 +121,7 @@
     {
         _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
                                            sharegroup:self.context.mainGLContext.sharegroup];
-        [_glContext setCurrentIfNeeded];
+        KTVVPSetCurrentGLContextIfNeeded(_glContext);
         _framePool = [[KTVVPFramePool alloc] init];
         _frameUploader = [[KTVVPFrameUploader alloc] initWithGLContext:_glContext];
         
@@ -104,9 +134,9 @@
             obj = [obj initWithGLContext:_glContext
                                framePool:_framePool
                            frameUploader:_frameUploader];
-            if (self.filterConfigurationCallback)
+            if (_filterConfigurationCallback)
             {
-                self.filterConfigurationCallback(obj, i, _pipelineIndex);
+                _filterConfigurationCallback(obj, i);
             }
             lastFilter.output = obj;
             lastFilter = obj;
@@ -120,15 +150,15 @@
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         if (frame)
         {
-//            NSLog(@"KTVVPSerialPipeline: begin process frame.");
-            
-            [_glContext setCurrentIfNeeded];
-            
+            KTVVPSetCurrentGLContextIfNeeded(_glContext);
             [_filters.firstObject inputFrame:frame fromSource:self];
             [frame unlock];
-            
             _processing = NO;
         }
+    }
+    else if (message.type == KTVVPMessageTypeOpenGLFinish)
+    {
+        glFinish();
     }
 }
 

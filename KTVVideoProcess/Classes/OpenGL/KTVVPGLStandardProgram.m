@@ -1,6 +1,6 @@
 //
 //  KTVVPGLStandardProgram.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/4/9.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -54,10 +54,11 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 {
     if (self = [super init])
     {
-        _program = [[KTVVPGLProgram alloc] initWithGLContext:glContext
-                                          vertexShaderString:vertexShaderString ? vertexShaderString : kVertexShaderString
-                                        fragmentShaderString:fragmentShaderString ? fragmentShaderString : kFragmentShaderString];
-        if (_program.linkSuccess)
+        vertexShaderString = vertexShaderString ? vertexShaderString : kVertexShaderString;
+        fragmentShaderString = fragmentShaderString ? fragmentShaderString : kFragmentShaderString;
+        
+        _program = [[KTVVPGLProgram alloc] initWithGLContext:glContext vertexShaderString:vertexShaderString fragmentShaderString:fragmentShaderString];
+        if (_program.linked)
         {
             _position_location = [_program attributeLocation:@"position"];
             _textureCoordinate_location = [_program attributeLocation:@"textureCoordinate"];
@@ -77,6 +78,11 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, texture);
     glUniform1i(_inputImageTexture_location, 4);
+}
+
+- (void)unbindTexture
+{
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 - (void)use

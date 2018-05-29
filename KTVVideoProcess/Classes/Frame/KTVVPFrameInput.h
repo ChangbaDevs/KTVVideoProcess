@@ -1,6 +1,6 @@
 //
 //  KTVVPFrameInput.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/26.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -11,6 +11,6 @@
 
 @protocol KTVVPFrameInput <NSObject>
 
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source;
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source;
 
 @end

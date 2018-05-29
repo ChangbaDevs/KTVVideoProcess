@@ -1,6 +1,6 @@
 //
 //  KTVVPMessage.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeOpenGL)
     KTVVPMessageTypeOpenGLSetupFramebuffer,
     KTVVPMessageTypeOpenGLDrawing,
     KTVVPMessageTypeOpenGLClear,
+    KTVVPMessageTypeOpenGLFinish,
 };
 
 @interface KTVVPMessage : NSObject

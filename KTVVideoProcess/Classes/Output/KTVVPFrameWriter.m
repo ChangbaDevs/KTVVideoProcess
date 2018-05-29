@@ -1,6 +1,6 @@
 //
 //  KTVVPFrameWriter.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/21.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -9,16 +9,17 @@
 #import "KTVVPFrameWriter.h"
 #import "KTVVPMessageLoop.h"
 #import "KTVVPTimeComponents.h"
+#import "KTVVPPixelBufferPool.h"
 
 typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 {
     KTVVPMessageTypeWriterIdle,
     KTVVPMessageTypeWriterReset,
-    KTVVPMessageTypeWriterVdieoFrameDrop,
-    KTVVPMessageTypeWriterVdieoFrameInsert,
-    KTVVPMessageTypeWriterVideoFrameAppending,
-    KTVVPMessageTypeWriterAudioSampleBufferDrop,
-    KTVVPMessageTypeWriterAudioSampleBufferAppending,
+    KTVVPMessageTypeWriterFrameDrop,
+    KTVVPMessageTypeWriterFrameInsert,
+    KTVVPMessageTypeWriterFrameAppending,
+    KTVVPMessageTypeWriterSampleDrop,
+    KTVVPMessageTypeWriterSampleAppending,
     KTVVPMessageTypeWriterFinish,
     KTVVPMessageTypeWriterCancel,
 };
@@ -37,9 +38,13 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 @property (nonatomic, strong) KTVVPTimeComponents * videoTimeComponents;
 
 @property (nonatomic, strong) NSMutableArray <KTVVPFrame *> * frameQueue;
+@property (nonatomic, strong) KTVVPPixelBufferPool * pixelBufferPool;
 @property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
 @property (nonatomic, assign) BOOL didCallStartRecording;
 @property (nonatomic, assign) BOOL didClosed;
+
+@property (nonatomic, assign) long long numberOfFrames;
+@property (nonatomic, assign) long long numberOfSamples;
 
 @end
 
@@ -50,7 +55,8 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     if (self = [super init])
     {
         _outputFileType = AVFileTypeMPEG4;
-        _videoOutputScalingMode = AVVideoScalingModeResizeAspectFill;
+        _videoOutputScalingMode = AVVideoScalingModeResizeAspect;
+        _videoOutputBitRate = 0;
         _assetWriterStartTime = kCMTimeInvalid;
         _videoTimeComponents = [[KTVVPTimeComponents alloc] init];
         _audioTimeComponents = [[KTVVPTimeComponents alloc] init];
@@ -69,7 +75,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         AVAssetWriterInput * assetWriterAudioInput = _assetWriterAudioInput;
         AVAssetWriterInput * assetWriterVideoInput = _assetWriterVideoInput;
         NSMutableArray <KTVVPFrame *> * frameQueue = _frameQueue;
-        [self.messageLoop setFinishedCallback:^(KTVVPMessageLoop *messageLoop) {
+        [_messageLoop setStopCallback:^(KTVVPMessageLoop * messageLoop) {
             if (assetWriter.status == AVAssetWriterStatusWriting)
             {
                 [assetWriterAudioInput markAsFinished];
@@ -85,9 +91,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     _messageLoop = nil;
 }
 
-
-#pragma mark - Control
-
 - (void)start
 {
     if (_didCallStartRecording)
@@ -98,7 +101,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     _videoEncodeDelayIntervalInternal = _videoEncodeDelayInterval;
     
     _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameWriter" delegate:self];
-    [_messageLoop run];
+    [_messageLoop start];
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterReset object:nil]];
 }
 
@@ -130,7 +133,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterCancel object:nil] delay:_videoEncodeDelayIntervalInternal];
 }
 
-
 #pragma mark - Setter/Getter
 
 - (NSTimeInterval)duration
@@ -143,72 +145,71 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     return CMTimeGetSeconds(duration);
 }
 
-
 #pragma mark - KTVVPAudioInput
 
-- (void)inputAudioSampleBuffer:(KTVVPAudioSampleBuffer *)audioSampleBuffer fromSource:(id)source
+- (BOOL)inputSample:(KTVVPSample *)sample fromSource:(id)source
 {
     if (!_didCallStartRecording)
     {
-        return;
+        return NO;
     }
     if (_didClosed)
     {
-        return;
+        return NO;
     }
-    if (CMTIME_IS_INVALID(audioSampleBuffer.timeStamp))
+    if (CMTIME_IS_INVALID(sample.timeStamp))
     {
         NSAssert(NO, @"timeStamp must a vaild CMTime value");
-        return;
+        return NO;
     }
     if (_paused)
     {
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterAudioSampleBufferDrop
-                                                        object:audioSampleBuffer]];
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterSampleDrop
+                                                        object:sample]];
     }
     else
     {
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterAudioSampleBufferAppending
-                                                        object:audioSampleBuffer]];
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterSampleAppending
+                                                        object:sample]];
     }
+    return YES;
 }
-
 
 #pragma mark - KTVVPFrameInput
 
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     if (!_didCallStartRecording)
     {
-        return;
+        return NO;
     }
     if (_didClosed)
     {
-        return;
+        return NO;
     }
     if (CMTIME_IS_INVALID(frame.timeStamp))
     {
         NSAssert(NO, @"timeStamp must a vaild CMTime value");
-        return;
+        return NO;
     }
     [frame lock];
     if (_paused)
     {
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterVdieoFrameDrop object:frame dropCallback:^(KTVVPMessage * message) {
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterFrameDrop object:frame dropCallback:^(KTVVPMessage * message) {
             KTVVPFrame * object = (KTVVPFrame *)message.object;
             [object unlock];
         }] delay:_videoEncodeDelayIntervalInternal];
     }
     else
     {
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterVdieoFrameInsert object:frame dropCallback:^(KTVVPMessage * message) {
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterFrameInsert object:frame dropCallback:^(KTVVPMessage * message) {
             KTVVPFrame * object = (KTVVPFrame *)message.object;
             [object unlock];
         }]];
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterVideoFrameAppending object:nil] delay:_videoEncodeDelayIntervalInternal];
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterFrameAppending object:nil] delay:_videoEncodeDelayIntervalInternal];
     }
+    return YES;
 }
-
 
 #pragma mark - KTVVPMessageLoopDelegate
 
@@ -222,37 +223,39 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             _startCallback(_error ? NO : YES);
         }
     }
-    else if (message.type == KTVVPMessageTypeWriterVdieoFrameDrop)
+    else if (message.type == KTVVPMessageTypeWriterFrameDrop)
     {
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         [_videoTimeComponents putDroppedTimeStamp:frame.timeStamp];
         [frame unlock];
     }
-    else if (message.type == KTVVPMessageTypeWriterVdieoFrameInsert)
+    else if (message.type == KTVVPMessageTypeWriterFrameInsert)
     {
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
         [self insertVideoFrameInOrder:frame];
     }
-    else if (message.type == KTVVPMessageTypeWriterVideoFrameAppending)
+    else if (message.type == KTVVPMessageTypeWriterFrameAppending)
     {
         [self processFristVideoFrame];
     }
-    else if (message.type == KTVVPMessageTypeWriterAudioSampleBufferDrop)
+    else if (message.type == KTVVPMessageTypeWriterSampleDrop)
     {
-        KTVVPAudioSampleBuffer * obj = (KTVVPAudioSampleBuffer *)message.object;
+        KTVVPSample * obj = (KTVVPSample *)message.object;
         [_audioTimeComponents putDroppedTimeStamp:obj.timeStamp];
     }
-    else if (message.type == KTVVPMessageTypeWriterAudioSampleBufferAppending)
+    else if (message.type == KTVVPMessageTypeWriterSampleAppending)
     {
-        KTVVPAudioSampleBuffer * obj = (KTVVPAudioSampleBuffer *)message.object;
-        [self processAudioSampleBuffer:obj];
+        KTVVPSample * obj = (KTVVPSample *)message.object;
+        [self processSample:obj];
     }
     else if (message.type == KTVVPMessageTypeWriterFinish)
     {
-        if (_assetWriter.status == AVAssetWriterStatusWriting)
+        [_assetWriterAudioInput markAsFinished];
+        [_assetWriterVideoInput markAsFinished];
+        if (_assetWriter.status == AVAssetWriterStatusWriting
+            && _numberOfFrames > 0
+            && (!_audioEnable || (_audioEnable && _numberOfSamples > 0)))
         {
-            [_assetWriterAudioInput markAsFinished];
-            [_assetWriterVideoInput markAsFinished];
             [_assetWriter finishWritingWithCompletionHandler:^{
                 if (_finishedCallback)
                 {
@@ -262,6 +265,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         }
         else
         {
+            [_assetWriter cancelWriting];
             if (_finishedCallback)
             {
                 _finishedCallback(NO);
@@ -289,7 +293,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         }
     }
 }
-
 
 #pragma mark - Setup AssetWriter
 
@@ -328,7 +331,16 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     if (!_videoOutputSettings)
     {
         NSMutableDictionary * outputSettings = [[NSMutableDictionary alloc] init];
-        [outputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
+        if (@available(iOS 11.0, *)) {
+            [outputSettings setObject:AVVideoCodecTypeH264 forKey:AVVideoCodecKey];
+        } else {
+            [outputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
+        }
+        if (_videoOutputBitRate > 0)
+        {
+            [outputSettings setObject:@{AVVideoAverageBitRateKey : @(_videoOutputBitRate)}
+                               forKey:AVVideoCompressionPropertiesKey];
+        }
         [outputSettings setObject:_videoOutputScalingMode forKey:AVVideoScalingModeKey];
         [outputSettings setObject:@(_videoOutputSize.width) forKey:AVVideoWidthKey];
         [outputSettings setObject:@(_videoOutputSize.height) forKey:AVVideoHeightKey];
@@ -380,10 +392,9 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     }
 }
 
-
 #pragma mark - Audio Process
 
-- (void)processAudioSampleBuffer:(KTVVPAudioSampleBuffer *)audioSampleBuufer
+- (void)processSample:(KTVVPSample *)sample
 {
     if (_assetWriter.status != AVAssetWriterStatusWriting)
     {
@@ -393,7 +404,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         return;
     }
-    [_audioTimeComponents putCurrentTimeStamp:audioSampleBuufer.timeStamp];
+    [_audioTimeComponents putCurrentTimeStamp:sample.timeStamp];
     CMTime timeStamp = _audioTimeComponents.timeStamp;
     if (CMTimeCompare(timeStamp, _audioTimeComponents.previousTimeStamp) < 0)
     {
@@ -402,22 +413,36 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     }
     if (CMTIME_IS_INVALID(_assetWriterStartTime))
     {
-        NSLog(@"Set start time by audio track");
-        [_assetWriter startSessionAtSourceTime:timeStamp];
-        _assetWriterStartTime = timeStamp;
+        NSLog(@"Video still not ready.");
+        return;
     }
-    CMSampleBufferRef sampleBuffer = audioSampleBuufer.sampleBuffer;
-    CMTime sourcePresentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(audioSampleBuufer.sampleBuffer);
-    CMTime adjustPresentationTimeStamp = _audioTimeComponents.timeStamp;
-    if (CMTimeCompare(sourcePresentationTimeStamp, adjustPresentationTimeStamp) != 0)
+    CMSampleBufferRef sampleBuffer = sample.sampleBuffer;
+    CFRetain(sampleBuffer);
+    CMTime sourcePresentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+    if (CMTimeCompare(sourcePresentationTimeStamp, timeStamp) != 0)
     {
         NSLog(@"pts not equal, %f, %f",
               CMTimeGetSeconds(sourcePresentationTimeStamp),
-              CMTimeGetSeconds(adjustPresentationTimeStamp));
+              CMTimeGetSeconds(timeStamp));
+        CMSampleBufferRef adjustSampleBuffer;
+        CMSampleTimingInfo timingInfo;
+        CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timingInfo);
+        CMSampleTimingInfo adjustTimingInfo;
+        adjustTimingInfo.duration = timingInfo.duration;
+        adjustTimingInfo.presentationTimeStamp = timeStamp;
+        adjustTimingInfo.decodeTimeStamp = kCMTimeInvalid;
+        CMSampleBufferCreateCopyWithNewTiming(kCFAllocatorDefault,
+                                              sampleBuffer,
+                                              1,
+                                              &adjustTimingInfo,
+                                              &adjustSampleBuffer);
+        CFRelease(sampleBuffer);
+        sampleBuffer = adjustSampleBuffer;
     }
     [_assetWriterAudioInput appendSampleBuffer:sampleBuffer];
+    _numberOfSamples += CMSampleBufferGetNumSamples(sampleBuffer);
+    CFRelease(sampleBuffer);
 }
-
 
 #pragma mark - Video Process
 
@@ -452,10 +477,14 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         [_assetWriter startSessionAtSourceTime:timeStamp];
         _assetWriterStartTime = timeStamp;
     }
-    CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    if (!_pixelBufferPool)
+    {
+        _pixelBufferPool = [[KTVVPPixelBufferPool alloc] init];
+    }
+    CVPixelBufferRef pixelBuffer = [_pixelBufferPool copyPixelBuffer:frame.corePixelBuffer];
     [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:timeStamp];
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    CVPixelBufferRelease(pixelBuffer);
+    _numberOfFrames += 1;
     [frame unlock];
 }
 
@@ -479,3 +508,4 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 }
 
 @end
+

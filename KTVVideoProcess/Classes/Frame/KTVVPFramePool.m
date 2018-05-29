@@ -1,15 +1,17 @@
 //
 //  KTVVPFramePool.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPFramePool.h"
+#import "KTVVPFramePrivate.h"
 
-@interface KTVVPFramePool () <KTVVPFrameLockingDelegate>
+@interface KTVVPFramePool () <NSLocking, KTVVPFrameLockingDelegate>
 
+@property (nonatomic, strong) NSLock * coreLock;
 @property (nonatomic, strong) NSMutableDictionary <NSString *, NSMutableSet <__kindof KTVVPFrame *> *> * framesContainer;
 
 @end
@@ -32,6 +34,7 @@
 
 - (__kindof KTVVPFrame *)frameWithKey:(NSString *)key factory:(__kindof KTVVPFrame *(^)(void))factory
 {
+    [self lock];
     NSMutableSet <__kindof KTVVPFrame *> * frames = [_framesContainer objectForKey:key];
     if (!frames)
     {
@@ -51,16 +54,32 @@
     frame.key = key;
     [frame clear];
     [frame lock];
+    [self unlock];
     return frame;
 }
-
 
 #pragma mark - KTVVPFrameLockingDelegate
 
 - (void)frameDidUnuse:(__kindof KTVVPFrame *)frame
 {
+    [self lock];
     NSMutableSet <__kindof KTVVPFrame *> * frames = [_framesContainer objectForKey:frame.key];
     [frames addObject:frame];
+    [self unlock];
+}
+
+- (void)lock
+{
+    if (!self.coreLock)
+    {
+        self.coreLock = [[NSLock alloc] init];
+    }
+    [self.coreLock lock];
+}
+
+- (void)unlock
+{
+    [self.coreLock unlock];
 }
 
 @end

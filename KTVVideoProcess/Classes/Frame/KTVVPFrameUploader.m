@@ -1,6 +1,6 @@
 //
 //  KTVVPFrameUploader.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/16.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -29,10 +29,9 @@
 - (void)dealloc
 {
     NSLog(@"%s", __func__);
-    
     if (_glTextureCache)
     {
-        [_glContext setCurrentIfNeeded];
+        KTVVPSetCurrentGLContextIfNeeded(_glContext);
         CVOpenGLESTextureCacheFlush(_glTextureCache, 0);
         CFRelease(_glTextureCache);
         _glTextureCache = NULL;

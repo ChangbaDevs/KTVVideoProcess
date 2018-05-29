@@ -1,6 +1,6 @@
 //
 //  KTVVPMessageLoop.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -29,18 +29,18 @@
 @property (nonatomic, strong, readonly) NSThread * thread;
 @property (nonatomic, assign, readonly) BOOL running;
 
-- (void)run;
+- (void)start;
 - (void)stop;
 
 - (void)putMessage:(KTVVPMessage *)message;
 - (void)putMessage:(KTVVPMessage *)message delay:(NSTimeInterval)delay;
 
-
 #pragma mark - Flow Control
 
 @property (nonatomic, copy) void (^startCallback)(KTVVPMessageLoop * messageLoop);
-@property (nonatomic, copy) void (^finishedCallback)(KTVVPMessageLoop * messageLoop);
+@property (nonatomic, copy) void (^stopCallback)(KTVVPMessageLoop * messageLoop);
 
 - (void)waitUntilFinished;
+- (void)waitUntilStoped;
 
 @end

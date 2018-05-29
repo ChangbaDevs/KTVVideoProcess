@@ -1,6 +1,6 @@
 //
 //  KTVVPConcurrentPipeline.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/26.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -10,6 +10,20 @@
 
 @interface KTVVPConcurrentPipeline : KTVVPPipeline
 
-@property (nonatomic, assign) NSInteger maxConcurrentCount;     // default is 3.
+/**
+ *  Default value is 3.
+ */
+@property (nonatomic, assign) NSInteger maxConcurrentCount;
+
+/**
+ *  Set this block to configuration the filter when the pipeline did create it.
+ */
+@property (nonatomic, copy) void (^filterConfigurationCallback)(__kindof KTVVPFilter * filter, NSInteger index, NSInteger serialPipelineIndex);
+
+/**
+ *  Filters for specify class.
+ */
+- (NSArray <__kindof KTVVPFilter *> *)filtersOfClass:(Class)queryClass;
+
 
 @end

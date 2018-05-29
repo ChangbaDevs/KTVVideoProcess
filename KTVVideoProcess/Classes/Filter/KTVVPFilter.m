@@ -1,16 +1,12 @@
 //
 //  KTVVPFilter.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/19.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPFilter.h"
-
-@interface KTVVPFilter ()
-
-@end
 
 @implementation KTVVPFilter
 
@@ -28,14 +24,10 @@
     return self;
 }
 
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
-    [self outputFrame:frame];
-}
-
-- (void)outputFrame:(KTVVPFrame *)frame
-{
-    [self.output inputFrame:frame fromSource:_parentFilter ? _parentFilter : self];
+    source = _parentFilter ? _parentFilter : self;
+    return [self.output inputFrame:frame fromSource:source];
 }
 
 @end

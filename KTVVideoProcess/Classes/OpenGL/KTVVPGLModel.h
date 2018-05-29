@@ -1,6 +1,6 @@
 //
 //  KTVVPGLModel.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -16,14 +16,23 @@
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext;
 
-- (void)reloadData;
-
+/**
+ *  Bind/Unbind VBO.
+ */
 - (void)bindPosition_location:(GLint)position_location textureCoordinate_location:(GLint)textureCoordinate_location;
-- (void)bindEmpty;
+- (void)unbind;
+
+/**
+ *  Draw elements.
+ */
 - (void)draw;
 
+/**
+ *  Destory and setup the VBO, call when data changes.
+ */
+- (void)reloadData;
 
-#pragma mark - Override
+#pragma mark - Subcalss Override
 
 - (GLushort *)indexes_data;
 - (GLfloat *)vertices_data;

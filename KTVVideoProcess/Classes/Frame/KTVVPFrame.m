@@ -1,18 +1,13 @@
 //
 //  KTVVPFrame.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPFrame.h"
-
-@interface KTVVPFrame ()
-
-@property (nonatomic, assign) NSInteger lockingCount;
-
-@end
+#import "KTVVPFramePrivate.h"
 
 @implementation KTVVPFrame
 
@@ -47,7 +42,7 @@
 
 - (KTVVPFrameType)type
 {
-    return KTVVPFrameTypeIdle;
+    return KTVVPFrameTypeUnknown;
 }
 
 - (void)fillWithFrame:(KTVVPFrame *)frame
@@ -59,7 +54,7 @@
     _extendedObject = frame.extendedObject;
 }
 
-- (void)fillWithoutTransformWithFrame:(KTVVPFrame *)frame
+- (void)fillWithFrameWithoutTransform:(KTVVPFrame *)frame
 {
     _timeStamp = frame.timeStamp;
     _layout.size = frame.layout.finalSize;
@@ -67,8 +62,6 @@
     _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = frame.extendedObject;
 }
-
-- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader {}
 
 - (void)clear
 {
@@ -78,15 +71,15 @@
     _extendedObject = nil;
 }
 
+- (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
+{
+    
+}
 
-#pragma mark - Data
-
-- (CVPixelBufferRef)corePixelBuffer {return nil;}
-- (void *)byteBuffer {return nil;}
-- (NSUInteger)bytesPerRow {return 0;}
-
-
-#pragma mark - Reuse Key
+- (CVPixelBufferRef)corePixelBuffer
+{
+    return nil;
+}
 
 + (NSString *)key
 {
@@ -97,9 +90,6 @@
 {
     return [[self key] stringByAppendingFormat:@"-%@", string];
 }
-
-
-#pragma mark - Locking
 
 - (void)lock
 {

@@ -1,6 +1,6 @@
 //
 //  KTVVPGLImageTexture.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/4/10.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -47,7 +47,6 @@
     {
         return;
     }
-    
     CGImageRef cgImage = _image.CGImage;
     GLubyte * imageData = NULL;
     CFDataRef dataFromImageDataProvider = NULL;

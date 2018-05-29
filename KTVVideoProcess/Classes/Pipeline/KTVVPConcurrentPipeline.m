@@ -1,16 +1,15 @@
 //
 //  KTVVPConcurrentPipeline.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/26.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import "KTVVPConcurrentPipeline.h"
-#import "KTVVPPipelinePrivate.h"
 #import "KTVVPSerialPipeline.h"
 
-@interface KTVVPConcurrentPipeline () <KTVVPPipelinePrivate>
+@interface KTVVPConcurrentPipeline ()
 
 @property (nonatomic, strong) NSArray <KTVVPSerialPipeline *> * pipelines;
 
@@ -18,14 +17,11 @@
 
 @implementation KTVVPConcurrentPipeline
 
-- (instancetype)initWithContext:(KTVVPContext *)context
-                  filterClasses:(NSArray <Class> *)filterClasses
+- (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses
 {
-    if (self = [super initWithContext:context
-                        filterClasses:filterClasses])
+    if (self = [super initWithContext:context filterClasses:filterClasses])
     {
         NSLog(@"%s", __func__);
-        
         _maxConcurrentCount = 3;
     }
     return self;
@@ -38,12 +34,21 @@
 
 - (void)setupInternal
 {
+    __weak typeof(self) weakSelf = self;
     NSMutableArray * pipelines = [NSMutableArray arrayWithCapacity:_maxConcurrentCount];
     for (NSInteger i = 0; i < _maxConcurrentCount; i++)
     {
         KTVVPSerialPipeline * obj = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                                    filterClasses:self.filterClasses];
-        obj.pipelineIndex = i;
+        [obj setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+            NSInteger serialPipelineIndex = i;
+            if (strongSelf.filterConfigurationCallback)
+            {
+                strongSelf.filterConfigurationCallback(filter, index, serialPipelineIndex);
+            }
+        }];
+        obj.needFlushBeforOutput = self.needFlushBeforOutput;
         [pipelines addObject:obj];
     }
     _pipelines = [pipelines copy];
@@ -51,31 +56,76 @@
     [_pipelines.firstObject setupIfNeeded];
 }
 
+- (NSArray <KTVVPFilter *> *)filtersOfClass:(Class)queryClass
+{
+    NSMutableArray <KTVVPFilter *> * ret = nil;
+    for (KTVVPSerialPipeline * pipeline in [_pipelines copy])
+    {
+        NSArray * filters = [pipeline filtersOfClass:queryClass];
+        if (filters.count > 0)
+        {
+            if (!ret)
+            {
+                ret = [NSMutableArray array];
+            }
+            [ret addObjectsFromArray:filters];
+        }
+    }
+    return ret;
+}
 
 #pragma mark - KTVVPFrameInput
 
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     [self setupIfNeeded];
-    
     [frame lock];
-    BOOL processing = NO;
+    BOOL ret = NO;
     for (KTVVPSerialPipeline * pipeline in _pipelines)
     {
         if (!pipeline.processing)
         {
             [pipeline inputFrame:frame fromSource:source];
-            processing = YES;
+            ret = YES;
             break;
         }
     }
-    if (!processing)
+    if (!ret)
     {
         NSLog(@"KTVVPConcurrentPipeline: Frame did drop...");
     }
     [frame unlock];
+    return ret;
 }
 
+#pragma mark - OpenGL
+
+- (void)setNeedFlushBeforOutput:(BOOL)needFlushBeforOutput
+{
+    [super setNeedFlushBeforOutput:needFlushBeforOutput];
+    for (KTVVPSerialPipeline * pipeline in _pipelines)
+    {
+        pipeline.needFlushBeforOutput = needFlushBeforOutput;
+    }
+}
+
+- (void)glFinish
+{
+    for (KTVVPSerialPipeline * pipeline in _pipelines)
+    {
+        [pipeline glFinish];
+    }
+}
+
+#pragma mark - Control
+
+- (void)waitUntilFinished
+{
+    for (KTVVPSerialPipeline * pipeline in _pipelines)
+    {
+        [pipeline waitUntilFinished];
+    }
+}
 
 #pragma mark - Output
 

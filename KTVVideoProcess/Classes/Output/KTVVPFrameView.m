@@ -1,6 +1,6 @@
 //
 //  KTVVPFrameView.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -13,22 +13,20 @@
 
 typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 {
-    KTVVPMessageTypeViewIdle = 1900,
+    KTVVPMessageTypeViewNone = 1900,
     KTVVPMessageTypeViewSnapshot,
 };
 
 @interface KTVVPFrameView () <KTVVPMessageLoopDelegate>
 
-{
-    GLuint _glFramebuffer;
-    GLuint _glRenderbuffer;
-}
-
 @property (nonatomic, assign) KTVVPSize displaySize;
+@property (nonatomic, assign) KTVVPRect layerFrame;
 
 @property (nonatomic, assign) CGFloat glScale;
 @property (nonatomic, strong) CAEAGLLayer * glLayer;
 @property (nonatomic, strong) EAGLContext * glContext;
+@property (nonatomic, assign) GLuint glFramebuffer;
+@property (nonatomic, assign) GLuint glRenderbuffer;
 @property (nonatomic, strong) KTVVPGLStandardProgram * glProgram;
 @property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
 @property (nonatomic, strong) KTVVPFrameUploader * frameUploader;
@@ -51,7 +49,8 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     if (self = [super initWithFrame:CGRectZero])
     {
         _context = context;
-        _scalingMode = KTVVPScalingModeResizeAspectFill;
+        _scalingMode = KTVVPScalingModeResizeAspect;
+        _forwardOnly = YES;
         
         if ([self respondsToSelector:@selector(setContentScaleFactor:)])
         {
@@ -65,7 +64,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
                                             kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
         
         _messageLoop = [[KTVVPMessageLoop alloc] initWithIdentify:@"FrameView" delegate:self];
-        [_messageLoop run];
+        [_messageLoop start];
         [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupContext object:nil]];
     }
     return self;
@@ -83,17 +82,12 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    int width = CGRectGetWidth(self.bounds);
-    int height = CGRectGetHeight(self.bounds);
-    if (width != _displaySize.width || height != _displaySize.width)
-    {
-        _displaySize = KTVVPSizeMake(width, height);
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupFramebuffer object:nil]];
-    }
+    _layerFrame = KTVVPRectMake(self.frame.origin.x,
+                                self.frame.origin.y,
+                                self.frame.size.width,
+                                self.frame.size.height);
+    [self resetupFrameBufferIfNeeded];
 }
-
-
-#pragma mark - Control
 
 - (void)snapshot:(void (^)(UIImage *))callback
 {
@@ -105,52 +99,51 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 {
     if (_snapshotCallback)
     {
+        KTVVPFrame * frame = _currentFrame;
+        [frame lock];
         UIImage * image = nil;
-        CVPixelBufferRef pixelBuffer = _currentFrame.corePixelBuffer;
+        CVPixelBufferRef pixelBuffer = frame.corePixelBuffer;
         if (pixelBuffer)
         {
-            if (@available(iOS 9.0, *))
-            {
-                CIImage * ciImage = [CIImage imageWithCVImageBuffer:pixelBuffer];
-                image = [UIImage imageWithCIImage:ciImage];
-            }
-            else
-            {
-                CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-                void * baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
-                size_t width = CVPixelBufferGetWidth(pixelBuffer);
-                size_t height = CVPixelBufferGetHeight(pixelBuffer);
-                size_t bufferSize = CVPixelBufferGetDataSize(pixelBuffer);
-                size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-            
-                CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
-                CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, baseAddress, bufferSize, NULL);
-                
-                CGImageRef cgImage = CGImageCreate(width,
-                                                   height,
-                                                   8,
-                                                   32,
-                                                   bytesPerRow,
-                                                   rgbColorSpace,
-                                                   kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little,
-                                                   provider,
-                                                   NULL,
-                                                   true,
-                                                   kCGRenderingIntentDefault);
-                
-                image = [UIImage imageWithCGImage:cgImage];
-                CGImageRelease(cgImage);
-                CGDataProviderRelease(provider);
-                CGColorSpaceRelease(rgbColorSpace);
-                CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-            }
+            CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+            size_t width = CVPixelBufferGetWidth(pixelBuffer);
+            size_t height = CVPixelBufferGetHeight(pixelBuffer);
+            size_t dataSize = CVPixelBufferGetDataSize(pixelBuffer);
+            size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
+            void * baseAddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+            CFDataRef data = CFDataCreate(NULL, baseAddress, dataSize);
+            CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
+            CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+            CGImageRef cgImage = CGImageCreate(width,
+                                               height,
+                                               8,
+                                               32,
+                                               bytesPerRow,
+                                               rgbColorSpace,
+                                               kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little,
+                                               provider,
+                                               NULL,
+                                               true,
+                                               kCGRenderingIntentDefault);
+            image = [UIImage imageWithCGImage:cgImage];
+            CGImageRelease(cgImage);
+            CGColorSpaceRelease(rgbColorSpace);
+            CGDataProviderRelease(provider);
+            CFRelease(data);
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
         }
+        [frame unlock];
         void (^snapshotCallback)(UIImage *) = _snapshotCallback;
         dispatch_async(dispatch_get_main_queue(), ^{
             snapshotCallback(image);
         });
         _snapshotCallback = nil;
     }
+}
+
+- (void)waitUntilFinished
+{
+    [_messageLoop waitUntilFinished];
 }
 
 - (void)updateCurrentFrame:(KTVVPFrame *)frame
@@ -160,25 +153,24 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     _currentFrame = frame;
 }
 
-
 #pragma mark - Input
 
-- (void)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
+- (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
     [frame lock];
     [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage * message) {
         KTVVPFrame * object = (KTVVPFrame *)message.object;
         [object unlock];
     }]];
+    return YES;
 }
-
 
 #pragma mark - OpenGL
 
 - (void)drawFrame:(KTVVPFrame *)frame
 {
     [self drawPrepare];
-    [self drawUpdateViewport:frame.layout.size];
+    [self drawUpdateViewport:frame.layout.finalSize];
     [_glProgram use];
     [frame uploadIfNeeded:_frameUploader];
     [_glProgram bindTexture:frame.texture];
@@ -188,7 +180,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     [_glModel bindPosition_location:_glProgram.position_location
          textureCoordinate_location:_glProgram.textureCoordinate_location];
     [_glModel draw];
-    [_glModel bindEmpty];
+    [_glModel unbind];
     [self drawFlush];
 }
 
@@ -200,7 +192,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 
 - (void)drawPrepare
 {
-    [_glContext setCurrentIfNeeded];
+    KTVVPSetCurrentGLContextIfNeeded(_glContext);
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
     glViewport(0, 0, (GLint)_displaySize.width * self.glScale, (GLint)_displaySize.height * self.glScale);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -246,7 +238,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 - (void)setupOpenGL
 {
     _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:_context.mainGLContext.sharegroup];
-    [_glContext setCurrentIfNeeded];
+    KTVVPSetCurrentGLContextIfNeeded(_glContext);
     _glModel = [[KTVVPGLPlaneModel alloc] initWithGLContext:_glContext];
     _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:_glContext];
     _frameUploader = [[KTVVPFrameUploader alloc] initWithGLContext:_glContext];
@@ -258,7 +250,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     {
         return;
     }
-    [_glContext setCurrentIfNeeded];
+    KTVVPSetCurrentGLContextIfNeeded(_glContext);
     glGenFramebuffers(1, &_glFramebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
     glGenRenderbuffers(1, &_glRenderbuffer);
@@ -269,7 +261,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 
 - (void)destroyFramebuffer
 {
-    [_glContext setCurrentIfNeeded];
+    KTVVPSetCurrentGLContextIfNeeded(_glContext);
     if (_glFramebuffer)
     {
         glDeleteFramebuffers(1, &_glFramebuffer);
@@ -287,14 +279,15 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     EAGLContext * glContext = _glContext;
     GLuint glFramebuffer = _glFramebuffer;
     GLuint glRenderbuffer = _glRenderbuffer;
+    CAEAGLLayer * glLayer = _glLayer;
     KTVVPFrame * currentFrame = _currentFrame;
-    [_messageLoop setFinishedCallback:^(KTVVPMessageLoop * messageLoop) {
-        [glContext setCurrentIfNeeded];
+    [_messageLoop setStopCallback:^(KTVVPMessageLoop * messageLoop) {
+        KTVVPSetCurrentGLContextIfNeeded(glContext);
         if (glFramebuffer)
         {
             glDeleteFramebuffers(1, &glFramebuffer);
         }
-        if (glRenderbuffer)
+        if (glRenderbuffer && glLayer)
         {
             glDeleteRenderbuffers(1, &glRenderbuffer);
         }
@@ -303,6 +296,16 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
             [currentFrame unlock];
         }
     }];
+}
+
+- (void)resetupFrameBufferIfNeeded
+{
+    if (_layerFrame.width != _displaySize.width
+        || _layerFrame.height != _displaySize.width)
+    {
+        _displaySize = KTVVPSizeMake(_layerFrame.width, _layerFrame.height);
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLSetupFramebuffer object:nil]];
+    }
 }
 
 
@@ -322,14 +325,17 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     else if (message.type == KTVVPMessageTypeOpenGLDrawing)
     {
         KTVVPFrame * frame = (KTVVPFrame *)message.object;
-        if (CMTIME_IS_VALID(frame.timeStamp)
-            && CMTIME_IS_VALID(_previousFrameTime))
+        if (_forwardOnly)
         {
-            if (CMTimeCompare(frame.timeStamp, _previousFrameTime) < 0)
+            if (CMTIME_IS_VALID(frame.timeStamp)
+                && CMTIME_IS_VALID(_previousFrameTime))
             {
-                NSLog(@"KTVVPFrameView Frame time is less than previous time.");
-                [frame unlock];
-                return;
+                if (CMTimeCompare(frame.timeStamp, _previousFrameTime) < 0)
+                {
+                    NSLog(@"KTVVPFrameView Frame time is less than previous time.");
+                    [frame unlock];
+                    return;
+                }
             }
         }
         _previousFrameTime = frame.timeStamp;
@@ -346,5 +352,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
         [self snapshotAndCallback];
     }
 }
+
 
 @end

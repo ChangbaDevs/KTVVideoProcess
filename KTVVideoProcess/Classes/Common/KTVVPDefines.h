@@ -1,13 +1,12 @@
 //
 //  KTVVPDefines.h
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/21.
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-
 
 #pragma mark - Enum
 
@@ -34,6 +33,13 @@ typedef NS_ENUM(NSUInteger, KTVVPScalingMode)
     KTVVPScalingModeResizeAspectFill,
 };
 
+typedef NS_OPTIONS(NSUInteger, KTVVPAVFlag)
+{
+    KTVVPAVFlagNone       = 0 << 0,
+    KTVVPAVFlagAudio      = 1 << 0,
+    KTVVPAVFlagVideo      = 1 << 1,
+    KTVVPAVFlagAudioVideo = (KTVVPAVFlagAudio | KTVVPAVFlagVideo),
+};
 
 #pragma mark - Struct
 
@@ -53,7 +59,6 @@ typedef struct KTVVPRect {
     int width;
     int height;
 } KTVVPRect;
-
 
 #pragma mark - Function
 

@@ -1,6 +1,6 @@
 //
 //  KTVVPMessageLoop.m
-//  KTVVideoProcessDemo
+//  KTVVideoProcess
 //
 //  Created by Single on 2018/3/15.
 //  Copyright © 2018年 Single. All rights reserved.
@@ -12,9 +12,12 @@
 @interface KTVVPMessageLoop ()
 
 @property (nonatomic, strong) NSThread * thread;
-@property (nonatomic, strong) NSCondition * waitingCondition;
+@property (nonatomic, strong) NSCondition * finishedWaitingCondition;
+@property (nonatomic, strong) NSCondition * stopedWaitingCondition;
 @property (nonatomic, strong) KTVVPObjectQueue * messageQueue;
+@property (nonatomic, assign) NSInteger numberOfMessages;
 @property (nonatomic, assign) BOOL didClosed;
+@property (nonatomic, assign) BOOL exited;
 
 @end
 
@@ -26,7 +29,8 @@
     {
         _identify = identify;
         _delegate = delegate;
-        _waitingCondition = [[NSCondition alloc] init];
+        _finishedWaitingCondition = [[NSCondition alloc] init];
+        _stopedWaitingCondition = [[NSCondition alloc] init];
         _messageQueue = [[KTVVPObjectQueue alloc] init];
         _thread = [[NSThread alloc] initWithTarget:self selector:@selector(messageLoopThread) object:nil];
         _thread.qualityOfService = NSQualityOfServiceDefault;
@@ -40,17 +44,14 @@
     NSLog(@"%s", __func__);
 }
 
-- (void)run
+- (void)start
 {
-    if (_didClosed)
+    if (_didClosed || _running)
     {
         return;
     }
-    if (!_running)
-    {
-        _running = YES;
-        [_thread start];
-    }
+    _running = YES;
+    [_thread start];
 }
 
 - (void)stop
@@ -60,34 +61,23 @@
         return;
     }
     _didClosed = YES;
-    if (_running)
-    {
-        [_messageQueue broadcastAllSyncRequest];
-    }
-}
-
-- (void)waitUntilFinished
-{
-    [_waitingCondition lock];
-    while (_running)
-    {
-        [_waitingCondition wait];
-    }
-    [_waitingCondition unlock];
+    [_messageQueue stop];
 }
 
 - (void)putMessage:(KTVVPMessage *)message
 {
-    if (!_running)
-    {
-        NSAssert(NO, @"Can't put message befor loop is running.");
-        return;
-    }
-    [_messageQueue putObject:message];
+    [self putMessage:message delay:0];
 }
 
 - (void)putMessage:(KTVVPMessage *)message delay:(NSTimeInterval)delay
 {
+    if (_didClosed)
+    {
+        return;
+    }
+    [_finishedWaitingCondition lock];
+    _numberOfMessages += 1;
+    [_finishedWaitingCondition unlock];
     if (delay > 0)
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -96,7 +86,7 @@
     }
     else
     {
-         [_messageQueue putObject:message];
+        [_messageQueue putObject:message];
     }
 }
 
@@ -116,6 +106,10 @@
                 if (message)
                 {
                     [message drop];
+                    [_finishedWaitingCondition lock];
+                    _numberOfMessages -= 1;
+                    [_finishedWaitingCondition broadcast];
+                    [_finishedWaitingCondition unlock];
                 }
                 else
                 {
@@ -126,25 +120,51 @@
             break;
         }
         KTVVPMessage * message = [_messageQueue getObjectSync];
-        if (!message)
+        if (message)
         {
-            continue;
-        }
-        if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
-        {
-            [self.delegate messageLoop:self processingMessage:message];
-        }
-        else
-        {
-            [message drop];
+            if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
+            {
+                [self.delegate messageLoop:self processingMessage:message];
+            }
+            else
+            {
+                [message drop];
+            }
+            [_finishedWaitingCondition lock];
+            _numberOfMessages -= 1;
+            [_finishedWaitingCondition broadcast];
+            [_finishedWaitingCondition unlock];
         }
     }
-    if (_finishedCallback)
+    if (_stopCallback)
     {
-        _finishedCallback(self);
+        _stopCallback(self);
     }
-    _running = NO;
-    [_waitingCondition broadcast];
+    _exited = YES;
+    [_stopedWaitingCondition lock];
+    [_stopedWaitingCondition broadcast];
+    [_stopedWaitingCondition unlock];
+}
+
+- (void)waitUntilFinished
+{
+    [_finishedWaitingCondition lock];
+    while (_numberOfMessages > 0)
+    {
+        [_finishedWaitingCondition wait];
+    }
+    [_finishedWaitingCondition unlock];
+}
+
+- (void)waitUntilStoped
+{
+    [_stopedWaitingCondition lock];
+    while (_running && !_exited)
+    {
+        [_stopedWaitingCondition wait];
+    }
+    [_stopedWaitingCondition unlock];
 }
 
 @end
+
