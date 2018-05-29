@@ -314,8 +314,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     }
     if ([[NSFileManager defaultManager] fileExistsAtPath:_outputFileURL.path])
     {
-        [[NSFileManager defaultManager] removeItemAtPath:_outputFileURL.path
-                                                   error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:_outputFileURL.path error:nil];
     }
     
     NSError * error = nil;
