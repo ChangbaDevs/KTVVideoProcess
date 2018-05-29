@@ -74,4 +74,7 @@ FOUNDATION_EXPORT const unsigned char KTVVideoProcessVersionString[];
 
 #pragma mark - Extension
 
+#import "KTVVPRGBFilter.h"
+#import "KTVVPExposureFilter.h"
+#import "KTVVPBrightnessFilter.h"
 #import "KTVVPBlackAndWhiteFilter.h"
