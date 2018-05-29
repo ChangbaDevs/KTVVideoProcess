@@ -72,6 +72,7 @@
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
+        filter.enable = NO;
         if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
             weakSelf.blackAndWhiteFilter = filter;
         }
@@ -197,6 +198,28 @@
 - (IBAction)recordCancelAction:(UIButton *)sender
 {
     [self.frameWriter cancel];
+}
+
+- (IBAction)chooseFilterAction:(UISegmentedControl *)sender
+{
+    switch (sender.selectedSegmentIndex)
+    {
+        case 0:
+            [self enableFilter:nil];
+            break;
+        case 1:
+            [self enableFilter:self.blackAndWhiteFilter];
+            break;
+    }
+}
+
+- (void)enableFilter:(__kindof KTVVPFilter *)filter
+{
+    NSArray <KTVVPFilter *> * filters = @[self.blackAndWhiteFilter];
+    for (KTVVPFilter * obj in filters)
+    {
+        obj.enable = obj == filter;
+    }
 }
 
 @end
