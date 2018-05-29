@@ -25,18 +25,38 @@
 
 @implementation ViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActiveNotification) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActiveNotification) name:UIApplicationDidBecomeActiveNotification object:nil];
     [self setup:nil];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    
     self.frameView.frame = self.view.bounds;
+}
+
+- (void)applicationWillResignActiveNotification
+{
+    self.captureSession.paused = YES;
+    [self.pipeline glFinish];
+    [self recordFinishAction:nil];
+    [self.pipeline waitUntilFinished];
+    [self.frameView waitUntilFinished];
+    [self.frameWriter waitUntilFinished];
+}
+
+- (void)applicationDidBecomeActiveNotification
+{
+    self.captureSession.paused = NO;
 }
 
 - (IBAction)setup:(UIButton *)sender
