@@ -133,6 +133,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeWriterCancel object:nil] delay:_videoEncodeDelayIntervalInternal];
 }
 
+- (void)waitUntilFinished
+{
+    [_messageLoop waitUntilFinished];
+}
+
 #pragma mark - Setter/Getter
 
 - (NSTimeInterval)duration
@@ -420,9 +425,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     CMTime sourcePresentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
     if (CMTimeCompare(sourcePresentationTimeStamp, timeStamp) != 0)
     {
-        NSLog(@"pts not equal, %f, %f",
-              CMTimeGetSeconds(sourcePresentationTimeStamp),
-              CMTimeGetSeconds(timeStamp));
         CMSampleBufferRef adjustSampleBuffer;
         CMSampleTimingInfo timingInfo;
         CMSampleBufferGetSampleTimingInfo(sampleBuffer, 0, &timingInfo);

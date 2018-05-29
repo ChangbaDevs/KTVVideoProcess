@@ -63,4 +63,9 @@
 
 @property (nonatomic, copy, readonly) NSError * error;
 
+/**
+ *  Block current thread until finished all operations.
+ */
+- (void)waitUntilFinished;
+
 @end
