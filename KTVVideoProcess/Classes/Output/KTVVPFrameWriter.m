@@ -263,9 +263,9 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             && (!_audioEnable || (_audioEnable && _numberOfSamples > 0)))
         {
             [_assetWriter finishWritingWithCompletionHandler:^{
-                if (_finishedCallback)
+                if (self.finishedCallback)
                 {
-                    _finishedCallback(YES);
+                    self.finishedCallback(YES);
                 }
             }];
         }

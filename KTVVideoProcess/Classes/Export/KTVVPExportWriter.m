@@ -123,10 +123,10 @@
     if (!(_appendFlag & KTVVPAVFlagAudio) && !(_appendFlag & KTVVPAVFlagVideo))
     {
         [_writer finishWritingWithCompletionHandler:^{
-            if (_finishCallback)
+            if (self.finishCallback)
             {
-                _finishCallback();
-                _finishCallback = nil;
+                self.finishCallback();
+                self.finishCallback = nil;
             }
         }];
     }
