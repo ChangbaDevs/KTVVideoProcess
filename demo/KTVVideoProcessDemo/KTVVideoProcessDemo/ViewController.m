@@ -66,10 +66,6 @@
 {
     self.context = [KTVVPContext sharedContext];
     
-    self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
-    self.frameView.frame = self.view.bounds;
-    [self.view insertSubview:self.frameView atIndex:0];
-    
     NSArray <Class> * filterClasses = @[[KTVVPRGBFilter class],
                                         [KTVVPExposureFilter class],
                                         [KTVVPBrightnessFilter class],
@@ -78,24 +74,31 @@
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
-        filter.enable = NO;
         if ([filter isKindOfClass:[KTVVPRGBFilter class]]) {
             weakSelf.RGBFilter = filter;
+            weakSelf.RGBFilter.enable = NO;
             weakSelf.RGBFilter.red = 1.0;
             weakSelf.RGBFilter.green = 0.6;
             weakSelf.RGBFilter.blue = 1.0;
         } else if ([filter isKindOfClass:[KTVVPExposureFilter class]]) {
             weakSelf.exposureFilter = filter;
+            weakSelf.exposureFilter.enable = NO;
             weakSelf.exposureFilter.exposure = 0.5;
         } else if ([filter isKindOfClass:[KTVVPBrightnessFilter class]]) {
             weakSelf.brightnessFilter = filter;
+            weakSelf.brightnessFilter.enable = NO;
             weakSelf.brightnessFilter.brightness = 0.2;
         } else if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
             weakSelf.blackAndWhiteFilter = filter;
+            weakSelf.blackAndWhiteFilter.enable = NO;
         }
     }];
-    [self.pipeline addOutput:self.frameView];
     [self.pipeline setupIfNeeded];
+    
+    self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
+    self.frameView.frame = self.view.bounds;
+    [self.view insertSubview:self.frameView atIndex:0];
+    [self.pipeline addOutput:self.frameView];
     
     self.captureSession = [[KTVVPCaptureSession alloc] init];
     self.captureSession.pipeline = self.pipeline;
