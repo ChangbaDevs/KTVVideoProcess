@@ -8,6 +8,7 @@
 
 #import "KTVVPConcurrentPipeline.h"
 #import "KTVVPSerialPipeline.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPConcurrentPipeline ()
 
@@ -21,7 +22,7 @@
 {
     if (self = [super initWithContext:context filterClasses:filterClasses])
     {
-        NSLog(@"%s", __func__);
+        KTVVPLog(@"%s", __func__);
         _maxConcurrentCount = 3;
     }
     return self;
@@ -29,7 +30,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (void)setupInternal
@@ -92,7 +93,7 @@
     }
     if (!ret)
     {
-        NSLog(@"KTVVPConcurrentPipeline: Frame did drop...");
+        KTVVPLog(@"KTVVPConcurrentPipeline: Frame did drop...");
     }
     [frame unlock];
     return ret;

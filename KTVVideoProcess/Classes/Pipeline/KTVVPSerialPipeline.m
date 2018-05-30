@@ -8,6 +8,7 @@
 
 #import "KTVVPSerialPipeline.h"
 #import "KTVVPMessageLoop.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPSerialPipeline () <KTVVPMessageLoopDelegate>
 
@@ -28,14 +29,14 @@
 {
     if (self = [super initWithContext:context filterClasses:filterClasses])
     {
-        NSLog(@"%s", __func__);
+        KTVVPLog(@"%s", __func__);
     }
     return self;
 }
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     [_messageLoop stop];
     _messageLoop = nil;
 }
@@ -100,7 +101,7 @@
         [self setupIfNeeded];
         if (_processing)
         {
-            NSLog(@"KTVVPSerialPipeline: Frame did drop...");
+            KTVVPLog(@"KTVVPSerialPipeline: Frame did drop...");
             return NO;
         }
         _processing = YES;

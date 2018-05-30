@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPPixelBufferPool.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPPixelBufferPool ()
 
@@ -44,14 +45,14 @@
         error = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef)attributes, &_pixelBufferPool);
         if (error != kCVReturnSuccess)
         {
-            NSLog(@"create CVPixelBufferPool failed");
+            KTVVPLog(@"create CVPixelBufferPool failed");
         }
     }
     CVPixelBufferRef ret = NULL;
     error = CVPixelBufferPoolCreatePixelBuffer(NULL, _pixelBufferPool, &ret);
     if(error != kCVReturnSuccess)
     {
-        NSLog(@"create CVPixelBuffer failed");
+        KTVVPLog(@"create CVPixelBuffer failed");
     }
     CVPixelBufferLockBaseAddress(ret, 0);
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);

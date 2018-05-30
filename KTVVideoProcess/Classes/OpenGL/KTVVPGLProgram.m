@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPGLProgram.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPGLProgram ()
 
@@ -51,7 +52,7 @@
                 glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &logLength);
                 GLchar * log = (GLchar *)malloc(logLength);
                 glGetProgramInfoLog(_program, logLength, &logLength, log);
-                NSLog(@"Failed to link program : %s", log);
+                KTVVPLog(@"Failed to link program : %s", log);
                 free(log);
             }
         }
@@ -69,7 +70,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     
     if (_program)
     {
@@ -112,7 +113,7 @@
     source = (GLchar *)[shaderString UTF8String];
     if (!source)
     {
-        NSLog(@"Failed to load shader string");
+        KTVVPLog(@"Failed to load shader string");
         return NO;
     }
     
@@ -130,7 +131,7 @@
         {
             GLchar * log = (GLchar *)malloc(logLength);
             glGetShaderInfoLog(* shader, logLength, &logLength, log);
-            NSLog(@"Failed to compile shader : %s", log);
+            KTVVPLog(@"Failed to compile shader : %s", log);
             free(log);
         }
     }

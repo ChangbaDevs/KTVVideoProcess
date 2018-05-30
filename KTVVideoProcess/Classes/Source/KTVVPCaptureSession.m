@@ -10,6 +10,7 @@
 #import "KTVVPFramePool.h"
 #import "KTVVPCMSmapleBufferFrame.h"
 #import "KTVVPTimeComponents.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPCaptureSession () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
 
@@ -60,7 +61,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (void)prepare
@@ -560,11 +561,11 @@
 {
     if (output == _videoDataOutput)
     {
-        NSLog(@"Video : %s", __func__);
+        KTVVPLog(@"Video : %s", __func__);
     }
     else if (output == _audioDataOutput)
     {
-        NSLog(@"Audio : %s", __func__);
+        KTVVPLog(@"Audio : %s", __func__);
     }
 }
 

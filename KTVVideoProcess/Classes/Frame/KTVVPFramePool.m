@@ -8,6 +8,7 @@
 
 #import "KTVVPFramePool.h"
 #import "KTVVPFramePrivate.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPFramePool () <NSLocking, KTVVPFrameLockingDelegate>
 
@@ -29,7 +30,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (__kindof KTVVPFrame *)frameWithKey:(NSString *)key factory:(__kindof KTVVPFrame *(^)(void))factory

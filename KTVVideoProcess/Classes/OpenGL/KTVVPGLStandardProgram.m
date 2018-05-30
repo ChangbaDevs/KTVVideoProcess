@@ -8,6 +8,7 @@
 
 #import "KTVVPGLStandardProgram.h"
 #import "KTVVPGLProgram.h"
+#import "KTVVPLog.h"
 
 static NSString * const kVertexShaderString = KTV_GLES_STRINGIZE
 (
@@ -70,7 +71,7 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (void)bindTexture:(GLuint)texture

@@ -10,6 +10,7 @@
 #import "KTVVPMessageLoop.h"
 #import "KTVVPGLStandardProgram.h"
 #import "KTVVPGLPlaneModel.h"
+#import "KTVVPLog.h"
 
 typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 {
@@ -72,7 +73,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     
     [self destroyOnMessageLoopThread];
     [_messageLoop stop];
@@ -332,7 +333,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
             {
                 if (CMTimeCompare(frame.timeStamp, _previousFrameTime) < 0)
                 {
-                    NSLog(@"KTVVPFrameView Frame time is less than previous time.");
+                    KTVVPLog(@"KTVVPFrameView Frame time is less than previous time.");
                     [frame unlock];
                     return;
                 }

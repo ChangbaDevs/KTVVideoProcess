@@ -10,6 +10,7 @@
 #import "KTVVPMessageLoop.h"
 #import "KTVVPTimeComponents.h"
 #import "KTVVPPixelBufferPool.h"
+#import "KTVVPLog.h"
 
 typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 {
@@ -67,7 +68,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     
     if (_didCallStartRecording)
     {
@@ -412,12 +413,12 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     CMTime timeStamp = _audioTimeComponents.timeStamp;
     if (CMTimeCompare(timeStamp, _audioTimeComponents.previousTimeStamp) < 0)
     {
-        NSLog(@"KTVVPFrameWriter AduioSampleBuffer time is less than previous time.");
+        KTVVPLog(@"KTVVPFrameWriter AduioSampleBuffer time is less than previous time.");
         return;
     }
     if (CMTIME_IS_INVALID(_assetWriterStartTime))
     {
-        NSLog(@"Video still not ready.");
+        KTVVPLog(@"Video still not ready.");
         return;
     }
     CMSampleBufferRef sampleBuffer = sample.sampleBuffer;
@@ -468,13 +469,13 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     CMTime timeStamp = _videoTimeComponents.timeStamp;
     if (CMTimeCompare(timeStamp, _videoTimeComponents.previousTimeStamp) < 0)
     {
-        NSLog(@"KTVVPFrameWriter Frame time is less than previous time.");
+        KTVVPLog(@"KTVVPFrameWriter Frame time is less than previous time.");
         [frame unlock];
         return;
     }
     if (CMTIME_IS_INVALID(_assetWriterStartTime))
     {
-        NSLog(@"Set start time by video track");
+        KTVVPLog(@"Set start time by video track");
         [_assetWriter startSessionAtSourceTime:timeStamp];
         _assetWriterStartTime = timeStamp;
     }

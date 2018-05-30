@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPGLModel.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPGLModel ()
 
@@ -41,7 +42,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     KTVVPSetCurrentGLContextIfNeeded(_glContext);
     [self destoryData];
 }

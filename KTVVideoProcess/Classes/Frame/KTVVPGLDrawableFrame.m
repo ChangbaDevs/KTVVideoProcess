@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPGLDrawableFrame.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPGLDrawableFrame ()
 
@@ -27,14 +28,14 @@
 {
     if (self = [super init])
     {
-        NSLog(@"%s", __func__);
+        KTVVPLog(@"%s", __func__);
     }
     return self;
 }
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
     if (_glFramebuffer)
     {

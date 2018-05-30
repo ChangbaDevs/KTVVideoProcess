@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPMessage.h"
+#import "KTVVPLog.h"
 
 @implementation KTVVPMessage
 
@@ -33,7 +34,7 @@
 
 - (void)drop
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     if (_dropCallback)
     {
         _dropCallback(self);

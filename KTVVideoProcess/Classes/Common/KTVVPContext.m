@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPContext.h"
+#import "KTVVPLog.h"
 
 @implementation KTVVPContext
 
@@ -31,7 +32,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 @end

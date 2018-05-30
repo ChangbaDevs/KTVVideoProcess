@@ -9,6 +9,7 @@
 #import "KTVVPExportSession.h"
 #import "KTVVPExportReader.h"
 #import "KTVVPExportWriter.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPExportSession () <KTVVPFrameInput>
 
@@ -25,7 +26,7 @@
 {
     if (self = [super init])
     {
-        NSLog(@"%s", __func__);
+        KTVVPLog(@"%s", __func__);
         _preferredFlag = KTVVPAVFlagAudioVideo;
         _writerFileType = AVFileTypeMPEG4;
     }
@@ -34,7 +35,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (void)start
@@ -67,7 +68,7 @@
     } sampleCallback:^{
         [weakSelf appendNextSample];
     } finishCallback:^{
-        NSLog(@"KTVVPExportSession Finished");
+        KTVVPLog(@"KTVVPExportSession Finished");
         [weakSelf callbackForFinished];
     }];
 }

@@ -8,6 +8,7 @@
 
 #import "KTVVPMessageLoop.h"
 #import "KTVVPObjectQueue.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPMessageLoop ()
 
@@ -41,7 +42,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (void)start

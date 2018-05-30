@@ -182,6 +182,7 @@
 		9C640F9D20BD482C004DCE20 /* KTVVPPixelBufferPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPPixelBufferPool.m; sourceTree = "<group>"; };
 		9C640F9E20BD482C004DCE20 /* KTVVPTimeComponents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPTimeComponents.h; sourceTree = "<group>"; };
 		9C640F9F20BD482C004DCE20 /* KTVVPTimeComponents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPTimeComponents.m; sourceTree = "<group>"; };
+		9CA1272F20BE7A21004A51DF /* KTVVPLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KTVVPLog.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,7 +231,7 @@
 				9C640EF520BD413B004DCE20 /* Export */,
 				9C640EFC20BD413B004DCE20 /* Filter */,
 				9C640F0320BD413B004DCE20 /* Frame */,
-				9C640F9920BD482C004DCE20 /* Internal */,
+				9C640F9920BD482C004DCE20 /* Utils */,
 				9C640F9420BD482C004DCE20 /* Message */,
 				9C640F2220BD413B004DCE20 /* OpenGL */,
 				9C640F3020BD413B004DCE20 /* Output */,
@@ -391,21 +392,22 @@
 				9C640F9620BD482C004DCE20 /* KTVVPMessage.m */,
 				9C640F9720BD482C004DCE20 /* KTVVPMessageLoop.h */,
 				9C640F9820BD482C004DCE20 /* KTVVPMessageLoop.m */,
+				9C640F9A20BD482C004DCE20 /* KTVVPObjectQueue.h */,
+				9C640F9B20BD482C004DCE20 /* KTVVPObjectQueue.m */,
 			);
 			path = Message;
 			sourceTree = "<group>";
 		};
-		9C640F9920BD482C004DCE20 /* Internal */ = {
+		9C640F9920BD482C004DCE20 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				9C640F9A20BD482C004DCE20 /* KTVVPObjectQueue.h */,
-				9C640F9B20BD482C004DCE20 /* KTVVPObjectQueue.m */,
+				9CA1272F20BE7A21004A51DF /* KTVVPLog.h */,
 				9C640F9C20BD482C004DCE20 /* KTVVPPixelBufferPool.h */,
 				9C640F9D20BD482C004DCE20 /* KTVVPPixelBufferPool.m */,
 				9C640F9E20BD482C004DCE20 /* KTVVPTimeComponents.h */,
 				9C640F9F20BD482C004DCE20 /* KTVVPTimeComponents.m */,
 			);
-			path = Internal;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

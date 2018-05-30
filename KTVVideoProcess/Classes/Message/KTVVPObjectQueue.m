@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPObjectQueue.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPObjectQueue ()
 
@@ -23,7 +24,7 @@
 {
     if (self = [super init])
     {
-        NSLog(@"%p, %s", self, __func__);
+        KTVVPLog(@"%p, %s", self, __func__);
         _condition = [[NSCondition alloc] init];
         _objects = [NSMutableArray array];
     }
@@ -32,7 +33,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%p, %s", self, __func__);
+    KTVVPLog(@"%p, %s", self, __func__);
     [self destory];
 }
 

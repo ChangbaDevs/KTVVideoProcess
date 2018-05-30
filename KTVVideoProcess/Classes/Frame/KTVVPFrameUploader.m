@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPFrameUploader.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPFrameUploader ()
 
@@ -28,7 +29,7 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
     if (_glTextureCache)
     {
         KTVVPSetCurrentGLContextIfNeeded(_glContext);
@@ -45,7 +46,7 @@
         CVReturn error = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _glContext, NULL, &_glTextureCache);
         if (error)
         {
-            NSLog(@"KTVVPFrameUploader failed to create OpenGL texture cache.");
+            KTVVPLog(@"KTVVPFrameUploader failed to create OpenGL texture cache.");
         }
     }
     return _glTextureCache;

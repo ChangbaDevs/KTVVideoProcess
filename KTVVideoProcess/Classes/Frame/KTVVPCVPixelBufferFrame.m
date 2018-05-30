@@ -7,6 +7,7 @@
 //
 
 #import "KTVVPCVPixelBufferFrame.h"
+#import "KTVVPLog.h"
 
 @interface KTVVPCVPixelBufferFrame ()
 
@@ -25,14 +26,14 @@
 {
     if (self = [super init])
     {
-        NSLog(@"%s", __func__);
+        KTVVPLog(@"%s", __func__);
     }
     return self;
 }
 
 - (void)dealloc
 {
-    NSLog(@"%s", __func__);
+    KTVVPLog(@"%s", __func__);
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
@@ -62,7 +63,7 @@
                                                          &_openGLESTexture);
     if (error)
     {
-        NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", error);
+        KTVVPLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", error);
     }
     self.texture = CVOpenGLESTextureGetName(_openGLESTexture);
     glBindTexture(GL_TEXTURE_2D, self.texture);
