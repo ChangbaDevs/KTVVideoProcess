@@ -11,7 +11,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define KTVVPLogEnable 1
+#define KTVVPLogEnable 0
 
 #if KTVVPLogEnable
 #define KTVVPLog(...) NSLog(__VA_ARGS__)
