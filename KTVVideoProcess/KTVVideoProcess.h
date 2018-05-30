@@ -6,7 +6,7 @@
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import <UIKit/UIKit.h"
+#import <UIKit/UIKit.h>
 
 FOUNDATION_EXPORT double KTVVideoProcessVersionNumber;
 FOUNDATION_EXPORT const unsigned char KTVVideoProcessVersionString[];
