@@ -6,7 +6,7 @@
 //  Copyright © 2018年 Single. All rights reserved.
 //
 
-#import <KTVVideoProcess/KTVVideoProcess.h>
+#import "KTVVPPassthroughFilter.h"
 
 @interface KTVVPRGBFilter : KTVVPPassthroughFilter
 
