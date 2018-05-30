@@ -51,7 +51,9 @@ if (needAudio) {
 
 ### Pipeline
 
-- The pipeline is the real processor. It contains multiple filters inside. There are serial and concurrent two pipelines. The serial pipeline run on a separate thread, and it's only can process one task at the same time. The concurrent contains multiple serial pipeline, this means that it's can process multiple tasks at the same time. But when using concurrent pipeline, the timestamp of the output frame may not be continuous. You can create a serial pipeline like following:
+- The pipeline is the real processor. It contains multiple filters inside.
+- There are serial and concurrent two pipelines. The serial pipeline run on a separate thread, and it's only can process one task at the same time. The concurrent contains multiple serial pipeline, this means that it's can process multiple tasks at the same time. But when using concurrent pipeline, the timestamp of the output frame may not be continuous.
+- You can create a serial pipeline like following:
 
 ```objc
 NSArray <Class> * filterClasses = @[[KTVVPRGBFilter class], [KTVVPExposureFilter class], [KTVVPBrightnessFilter class], [KTVVPBlackAndWhiteFilter class], [KTVVPTransformFilter class]];
