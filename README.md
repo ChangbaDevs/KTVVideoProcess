@@ -37,7 +37,8 @@ Run `carthage update` to build the framework and drag the built `KTVVideoProcess
 
 ### Source
 
-- The responsibility of the source is the input data, like camera or media file. You can create a camera source like following:
+- The responsibility of the source is the input data, like camera or media file.
+- You can create a camera source like following:
 
 ```objc
 self.captureSession = [[KTVVPCaptureSession alloc] init];
@@ -84,7 +85,8 @@ __weak typeof(self) weakSelf = self;
 
 ### Output
 
-- It's used to receive the results of pipeline. You can create a preview view or file writer like following:
+- It's used to receive the results of pipeline.
+- You can create a preview view or file writer like following:
 
 ```objc
 // Preview View
@@ -120,7 +122,8 @@ if (needAudio) {
 
 ### Export
 
-- It's used to process existing video. You can create a export session like following:
+- It's used to process existing video.
+- You can create a export session like following:
 
 ```objc
 KTVVPExportSession * exportSession = [[KTVVPExportSession alloc] init];
