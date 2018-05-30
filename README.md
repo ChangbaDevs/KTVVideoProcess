@@ -35,7 +35,7 @@ Run `carthage update` to build the framework and drag the built `KTVVideoProcess
 
 - The Complete process needs three nodes: Source/Pipeline/Output.
 
-#### Source
+### Source
 
 - The responsibility of the source is the input data, like camera or media file. You can create a camera source like following:
 
@@ -49,7 +49,7 @@ if (needAudio) {
 [self.captureSession start];
 ```
 
-#### Pipeline
+### Pipeline
 
 - The pipeline is the real processor. It contains multiple filters inside. There are serial and concurrent two pipelines. The serial pipeline run on a separate thread, and it's only can process one task at the same time. The concurrent contains multiple serial pipeline, this means that it's can process multiple tasks at the same time. But when using concurrent pipeline, the timestamp of the output frame may not be continuous. You can create a serial pipeline like following:
 
@@ -80,7 +80,7 @@ __weak typeof(self) weakSelf = self;
 [self.pipeline setupIfNeeded];
 ```
 
-#### Output
+### Output
 
 - It's used to receive the results of pipeline. You can create a preview view or file writer like following:
 
@@ -116,7 +116,7 @@ if (needAudio) {
 [self.pipeline addOutput:self.frameWriter];
 ```
 
-#### Export
+### Export
 
 - It's used to process existing video. You can create a export session like following:
 
