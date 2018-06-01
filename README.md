@@ -65,7 +65,7 @@ NSArray <Class> * filterClasses = @[[KTVVPRGBFilter class],
 self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
 __weak typeof(self) weakSelf = self;
 [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
-    __weak typeof(weakSelf) self = weakSelf;
+    __strong typeof(weakSelf) self = weakSelf;
     if ([filter isKindOfClass:[KTVVPRGBFilter class]]) {
         self.RGBFilter = filter;
         self.RGBFilter.enable = NO;
