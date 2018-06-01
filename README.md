@@ -168,3 +168,8 @@ KTVVideoProcess is released under the MIT license.
 - Email : libobjc@gmail.com
 - Twitter : CoderSingle
 - Weibo : 程序员Single
+
+## You want more?
+
+- [SGPlayer](https://github.com/libobjc/SGPlayer) - A powerful media player framework for iOS, macOS, and tvOS.
+- [KTVHTTPCache](https://github.com/ChangbaDevs/KTVHTTPCache) - A smart media cache framework.
