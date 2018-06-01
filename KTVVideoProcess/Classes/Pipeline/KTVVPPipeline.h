@@ -15,6 +15,9 @@
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
 
+/**
+ *  Filter to create needs in a particular thread, and number of creating is determined by pipeline concurrency, so the input parameter is a array of Class, and reference/configuration instance in the filter configuration callback.
+ */
 - (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses;
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;

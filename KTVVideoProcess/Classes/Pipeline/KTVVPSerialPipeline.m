@@ -145,6 +145,7 @@
         }
         lastFilter.output = self;
         _filters = filters;
+        _filterConfigurationCallback = nil;
     }
     else if (message.type == KTVVPMessageTypeOpenGLDrawing)
     {
