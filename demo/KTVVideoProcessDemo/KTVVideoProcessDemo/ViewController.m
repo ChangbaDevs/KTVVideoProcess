@@ -74,23 +74,24 @@
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
     [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
+        __weak typeof(weakSelf) self = weakSelf;
         if ([filter isKindOfClass:[KTVVPRGBFilter class]]) {
-            weakSelf.RGBFilter = filter;
-            weakSelf.RGBFilter.enable = NO;
-            weakSelf.RGBFilter.red = 1.0;
-            weakSelf.RGBFilter.green = 0.6;
-            weakSelf.RGBFilter.blue = 1.0;
+            self.RGBFilter = filter;
+            self.RGBFilter.enable = NO;
+            self.RGBFilter.red = 1.0;
+            self.RGBFilter.green = 0.6;
+            self.RGBFilter.blue = 1.0;
         } else if ([filter isKindOfClass:[KTVVPExposureFilter class]]) {
-            weakSelf.exposureFilter = filter;
-            weakSelf.exposureFilter.enable = NO;
-            weakSelf.exposureFilter.exposure = 0.5;
+            self.exposureFilter = filter;
+            self.exposureFilter.enable = NO;
+            self.exposureFilter.exposure = 0.5;
         } else if ([filter isKindOfClass:[KTVVPBrightnessFilter class]]) {
-            weakSelf.brightnessFilter = filter;
-            weakSelf.brightnessFilter.enable = NO;
-            weakSelf.brightnessFilter.brightness = 0.2;
+            self.brightnessFilter = filter;
+            self.brightnessFilter.enable = NO;
+            self.brightnessFilter.brightness = 0.2;
         } else if ([filter isKindOfClass:[KTVVPBlackAndWhiteFilter class]]) {
-            weakSelf.blackAndWhiteFilter = filter;
-            weakSelf.blackAndWhiteFilter.enable = NO;
+            self.blackAndWhiteFilter = filter;
+            self.blackAndWhiteFilter.enable = NO;
         }
     }];
     [self.pipeline setupIfNeeded];
