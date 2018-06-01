@@ -155,6 +155,10 @@ self.captureSession.paused = YES;
 [self.frameWriter waitUntilFinished];
 ```
 
+### Transform
+
+- If the video frame contains transformation(Rotation/Flip/...). But the output can't handle transform. You can add a KTVVPTransformFilter at the end of the Pipeline. It will handle transform if needed.
+
 ## License
 
 KTVVideoProcess is released under the MIT license.
