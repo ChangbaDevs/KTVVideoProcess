@@ -159,17 +159,21 @@ self.captureSession.paused = YES;
 
 - If the video frame contains transformation(Rotation/Flip/...). But the output can't handle transform. You can add a KTVVPTransformFilter at the end of the Pipeline. It will handle transform if needed.
 
+
 ## License
 
 KTVVideoProcess is released under the MIT license.
 
+
 ## Feedback
 
+- GitHub : [Single](https://github.com/libobjc)
 - Email : libobjc@gmail.com
 - Twitter : CoderSingle
 - Weibo : 程序员Single
 
-## You want more?
+
+## Developed by Single
 
 - [SGPlayer](https://github.com/libobjc/SGPlayer) - A powerful media player framework for iOS, macOS, and tvOS.
 - [KTVHTTPCache](https://github.com/ChangbaDevs/KTVHTTPCache) - A smart media cache framework.
