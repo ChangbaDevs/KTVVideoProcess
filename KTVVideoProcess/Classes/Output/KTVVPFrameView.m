@@ -52,6 +52,8 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
         _context = context;
         _scalingMode = KTVVPScalingModeResizeAspect;
         _forwardOnly = YES;
+        _glFramebuffer = 0;
+        _glRenderbuffer = 0;
         
         if ([self respondsToSelector:@selector(setContentScaleFactor:)])
         {
@@ -170,6 +172,10 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 
 - (void)drawFrame:(KTVVPFrame *)frame
 {
+    if (_glFramebuffer == 0 || _glRenderbuffer == 0)
+    {
+        return;
+    }
     [self drawPrepare];
     [self drawUpdateViewport:frame.layout.finalSize];
     [_glProgram use];
@@ -187,6 +193,10 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
 
 - (void)drawClear
 {
+    if (_glFramebuffer == 0 || _glRenderbuffer == 0)
+    {
+        return;
+    }
     [self drawPrepare];
     [self drawFlush];
 }
