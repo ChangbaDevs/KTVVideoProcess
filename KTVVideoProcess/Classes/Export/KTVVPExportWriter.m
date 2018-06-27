@@ -190,9 +190,12 @@
 - (void)cancel
 {
     _appendFlag = KTVVPAVFlagNone;
-    [_audioInput markAsFinished];
-    [_videoInput markAsFinished];
-    [_writer cancelWriting];
+    if (_writer.status == AVAssetWriterStatusWriting)
+    {
+        [_audioInput markAsFinished];
+        [_videoInput markAsFinished];
+        [_writer cancelWriting];
+    }
 }
 
 - (NSError *)error
