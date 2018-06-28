@@ -15,7 +15,7 @@ KTVVideoProcess is a High-Performance video effects processing framework. It's b
 To integrate KTVVideoProcess into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod 'KTVVideoProcess', '~> 1.0.1'
+pod 'KTVVideoProcess', '~> 1.0.2'
 ```
 
 Run `pod install`
@@ -25,7 +25,7 @@ Run `pod install`
 To integrate KTVVideoProcess into your Xcode project using Carthage, specify it in your Cartfile:
 
 ```ogdl
-github "ChangbaDevs/KTVVideoProcess" ~> 1.0.1
+github "ChangbaDevs/KTVVideoProcess" ~> 1.0.2
 ```
 
 Run `carthage update` to build the framework and drag the built `KTVVideoProcess.framework` into your Xcode project.
