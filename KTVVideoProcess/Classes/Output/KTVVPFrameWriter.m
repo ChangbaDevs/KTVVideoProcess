@@ -262,10 +262,13 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             && _numberOfFrames > 0
             && (!_audioEnable || (_audioEnable && _numberOfSamples > 0)))
         {
+            __weak typeof(self) weakSelf = self;
             [_assetWriter finishWritingWithCompletionHandler:^{
-                if (self.finishedCallback)
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                if (strongSelf.finishedCallback)
                 {
-                    self.finishedCallback(YES);
+                    strongSelf.finishedCallback(YES);
+                    strongSelf.finishedCallback = nil;
                 }
             }];
         }
@@ -275,6 +278,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             if (_finishedCallback)
             {
                 _finishedCallback(NO);
+                _finishedCallback = nil;
             }
         }
     }
