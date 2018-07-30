@@ -96,8 +96,7 @@
     }];
     [self.pipeline setupIfNeeded];
     
-    self.frameView = [[KTVVPFrameView alloc] initWithContext:self.context];
-    self.frameView.frame = self.view.bounds;
+    self.frameView = [[KTVVPFrameView alloc] initWithFrame:self.view.bounds context:self.context];
     [self.view insertSubview:self.frameView atIndex:0];
     [self.pipeline addOutput:self.frameView];
     
