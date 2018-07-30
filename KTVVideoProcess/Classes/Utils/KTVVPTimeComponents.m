@@ -24,6 +24,7 @@
         _timeStamp = kCMTimeZero;
         _previousTimeStamp = kCMTimeZero;
         _firstTimeStamp = kCMTimeInvalid;
+        _duration = kCMTimeZero;
         _deltaInterval = kCMTimeZero;
         _firstDroppedTimeStamp = kCMTimeInvalid;
     }
