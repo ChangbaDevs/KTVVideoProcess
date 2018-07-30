@@ -57,6 +57,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         _outputFileType = AVFileTypeMPEG4;
         _videoOutputScalingMode = AVVideoScalingModeResizeAspect;
+        _videoOutputTransform = CGAffineTransformIdentity;
         _videoOutputBitRate = 0;
         _assetWriterStartTime = kCMTimeInvalid;
         _videoTimeComponents = [[KTVVPTimeComponents alloc] init];
@@ -141,14 +142,14 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
 
 #pragma mark - Setter/Getter
 
-- (NSTimeInterval)duration
+- (CMTime)duration
 {
     CMTime duration = _videoTimeComponents.duration;
     if (CMTIME_IS_INVALID(duration))
     {
-        return 0;
+        return kCMTimeZero;
     }
-    return CMTimeGetSeconds(duration);
+    return duration;
 }
 
 #pragma mark - KTVVPSampleInput
@@ -227,6 +228,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         if (_startCallback)
         {
             _startCallback(_error ? NO : YES);
+            _startCallback = nil;
         }
     }
     else if (message.type == KTVVPMessageTypeWriterFrameDrop)
@@ -262,15 +264,25 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             && _numberOfFrames > 0
             && (!_audioEnable || (_audioEnable && _numberOfSamples > 0)))
         {
-            __weak typeof(self) weakSelf = self;
+            __block BOOL finished = NO;
+            NSCondition * condition = [[NSCondition alloc] init];
             [_assetWriter finishWritingWithCompletionHandler:^{
-                __strong typeof(weakSelf) strongSelf = weakSelf;
-                if (strongSelf.finishedCallback)
-                {
-                    strongSelf.finishedCallback(YES);
-                    strongSelf.finishedCallback = nil;
-                }
+                [condition lock];
+                finished = YES;
+                [condition broadcast];
+                [condition unlock];
             }];
+            [condition lock];
+            if (!finished)
+            {
+                [condition wait];
+            }
+            [condition unlock];
+            if (_finishedCallback)
+            {
+                _finishedCallback(YES);
+                _finishedCallback = nil;
+            }
         }
         else
         {
@@ -281,6 +293,8 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
                 _finishedCallback = nil;
             }
         }
+        _appendedFrameCallback = nil;
+        _appendedSampleCallback = nil;
     }
     else if (message.type == KTVVPMessageTypeWriterCancel)
     {
@@ -292,6 +306,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             if (_cancelCallback)
             {
                 _cancelCallback(YES);
+                _cancelCallback = nil;
             }
         }
         else
@@ -299,8 +314,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
             if (_cancelCallback)
             {
                 _cancelCallback(NO);
+                _cancelCallback = nil;
             }
         }
+        _appendedFrameCallback = nil;
+        _appendedSampleCallback = nil;
     }
 }
 
@@ -368,8 +386,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         [outputSettings setObject:@(_videoOutputSize.height) forKey:(id)kCVPixelBufferHeightKey];
         _videoSourcePixelBufferAttributes = outputSettings;
     }
-    _assetWriterInputPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_assetWriterVideoInput
-                                                                                                           sourcePixelBufferAttributes:_videoSourcePixelBufferAttributes];
+    _assetWriterInputPixelBufferAdaptor = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_assetWriterVideoInput sourcePixelBufferAttributes:_videoSourcePixelBufferAttributes];
     [_assetWriter addInput:_assetWriterVideoInput];
     
     if (_audioEnable)
@@ -425,6 +442,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         KTVVPLog(@"Video still not ready.");
         return;
     }
+    if (CMTimeCompare(timeStamp, _assetWriterStartTime) < 0)
+    {
+        KTVVPLog(@"Invaild audio pts.");
+        return;
+    }
     CMSampleBufferRef sampleBuffer = sample.sampleBuffer;
     CFRetain(sampleBuffer);
     CMTime sourcePresentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
@@ -445,8 +467,66 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         CFRelease(sampleBuffer);
         sampleBuffer = adjustSampleBuffer;
     }
-    [_assetWriterAudioInput appendSampleBuffer:sampleBuffer];
-    _numberOfSamples += CMSampleBufferGetNumSamples(sampleBuffer);
+    BOOL alignmentEnable = YES;
+    if (alignmentEnable)
+    {
+        long long sampleRate = [[self.audioOutputSettings objectForKey:AVSampleRateKey] longLongValue];
+        CMTime expectDuration = CMTimeSubtract(timeStamp, _assetWriterStartTime);
+        CMTime currentDuration = CMTimeMake(_numberOfSamples, (int32_t)sampleRate);
+        CMTime deltaDuration = CMTimeSubtract(expectDuration, currentDuration);
+        CMTime singleDuration = CMTimeMake(1, (int32_t)sampleRate);
+        if (CMTimeCompare(deltaDuration, singleDuration) > 0)
+        {
+            CMFormatDescriptionRef fd = CMSampleBufferGetFormatDescription(sampleBuffer);
+            const AudioStreamBasicDescription * asbd = CMAudioFormatDescriptionGetStreamBasicDescription(fd);
+            CMTime placeholderPresentationTimeStamp = CMTimeAdd(_assetWriterStartTime, currentDuration);
+            long long placeholderNumberOfSamples = sampleRate * deltaDuration.value / deltaDuration.timescale;
+            long long dataSize = placeholderNumberOfSamples * asbd->mBytesPerFrame;
+            void * dataPointer = malloc((size_t)dataSize);
+            memset(dataPointer, 0, dataSize);
+            CMSampleTimingInfo timingInfo =
+            {
+                singleDuration,
+                placeholderPresentationTimeStamp,
+                kCMTimeInvalid
+            };
+            AudioBufferList audioBufferList;
+            audioBufferList.mNumberBuffers = 1;
+            audioBufferList.mBuffers[0].mNumberChannels = asbd->mChannelsPerFrame;
+            audioBufferList.mBuffers[0].mDataByteSize = (UInt32)dataSize;
+            audioBufferList.mBuffers[0].mData = dataPointer;
+            CMSampleBufferRef placeholderSampleBuffer;
+            CMSampleBufferCreate(kCFAllocatorDefault,
+                                 NULL, false, NULL, NULL,
+                                 fd,
+                                 (long)placeholderNumberOfSamples,
+                                 1, &timingInfo, 0, NULL,
+                                 &placeholderSampleBuffer);
+            CMSampleBufferSetDataBufferFromAudioBufferList(placeholderSampleBuffer,
+                                                           kCFAllocatorDefault,
+                                                           kCFAllocatorDefault,
+                                                           0,
+                                                           &audioBufferList);
+            if ([_assetWriterAudioInput appendSampleBuffer:placeholderSampleBuffer])
+            {
+                if (_appendedSampleCallback)
+                {
+                    _appendedSampleCallback(placeholderPresentationTimeStamp);
+                }
+                _numberOfSamples += placeholderNumberOfSamples;
+            }
+            CFRelease(placeholderSampleBuffer);
+            free(dataPointer);
+        }
+    }
+    if ([_assetWriterAudioInput appendSampleBuffer:sampleBuffer])
+    {
+        if (_appendedSampleCallback)
+        {
+            _appendedSampleCallback(CMSampleBufferGetPresentationTimeStamp(sampleBuffer));
+        }
+        _numberOfSamples += CMSampleBufferGetNumSamples(sampleBuffer);
+    }
     CFRelease(sampleBuffer);
 }
 
@@ -488,9 +568,18 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         _pixelBufferPool = [[KTVVPPixelBufferPool alloc] init];
     }
     CVPixelBufferRef pixelBuffer = [_pixelBufferPool copyPixelBuffer:frame.corePixelBuffer];
-    [_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:timeStamp];
+    CVBufferSetAttachment(pixelBuffer, kCVImageBufferColorPrimariesKey, kCVImageBufferColorPrimaries_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
+    CVBufferSetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, kCVImageBufferYCbCrMatrix_ITU_R_601_4, kCVAttachmentMode_ShouldPropagate);
+    CVBufferSetAttachment(pixelBuffer, kCVImageBufferTransferFunctionKey, kCVImageBufferTransferFunction_ITU_R_709_2, kCVAttachmentMode_ShouldPropagate);
+    if ([_assetWriterInputPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:timeStamp])
+    {
+        if (_appendedFrameCallback)
+        {
+            _appendedFrameCallback(timeStamp);
+        }
+        _numberOfFrames += 1;
+    }
     CVPixelBufferRelease(pixelBuffer);
-    _numberOfFrames += 1;
     [frame unlock];
 }
 

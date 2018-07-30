@@ -47,11 +47,13 @@
 @property (atomic, copy) void (^startCallback)(BOOL success);
 @property (atomic, copy) void (^finishedCallback)(BOOL success);
 @property (atomic, copy) void (^cancelCallback)(BOOL success);
+@property (atomic, copy) void (^appendedFrameCallback)(CMTime timeStamp);
+@property (atomic, copy) void (^appendedSampleCallback)(CMTime timeStamp);
 
 /**
  *  Duration of video track.
  */
-@property (nonatomic, assign, readonly) NSTimeInterval duration;
+@property (nonatomic, assign, readonly) CMTime duration;
 
 #pragma mark - Trigger
 
