@@ -27,6 +27,12 @@
 @property (nonatomic, assign) BOOL horizontalFlipForFront;
 
 /**
+ *  Frame Duration.
+ */
+@property (nonatomic, assign) CMTime minFrameDuration;
+@property (nonatomic, assign) CMTime maxFrameDuration;
+
+/**
  *  Torch mode.
  */
 @property (nonatomic, assign, readonly) BOOL torchSupported;

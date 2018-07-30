@@ -373,6 +373,38 @@
 
 #pragma mark - Configuration
 
+- (void)setMinFrameDuration:(CMTime)minFrameDuration
+{
+    [self beginConfiguration];
+    if ([_videoDevice lockForConfiguration:nil])
+    {
+        [_videoDevice setActiveVideoMinFrameDuration:minFrameDuration];
+        [_videoDevice unlockForConfiguration];
+    }
+    [self commitConfiguration];
+}
+
+- (CMTime)minFrameDuration
+{
+    return _videoDevice.activeVideoMinFrameDuration;
+}
+
+- (void)setMaxFrameDuration:(CMTime)maxFrameDuration
+{
+    [self beginConfiguration];
+    if ([_videoDevice lockForConfiguration:nil])
+    {
+        [_videoDevice setActiveVideoMaxFrameDuration:maxFrameDuration];
+        [_videoDevice unlockForConfiguration];
+    }
+    [self commitConfiguration];
+}
+
+- (CMTime)maxFrameDuration
+{
+    return _videoDevice.activeVideoMaxFrameDuration;
+}
+
 - (BOOL)torchSupported
 {
     return _videoDevice.torchAvailable;
