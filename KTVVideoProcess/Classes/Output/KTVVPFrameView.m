@@ -136,10 +136,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
             CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
         }
         [frame unlock];
-        void (^snapshotCallback)(UIImage *) = _snapshotCallback;
-        dispatch_async(dispatch_get_main_queue(), ^{
-            snapshotCallback(image);
-        });
+        _snapshotCallback(image);
         _snapshotCallback = nil;
     }
 }
