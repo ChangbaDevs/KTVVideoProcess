@@ -14,8 +14,9 @@
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithFrame:(CGRect)frame NS_UNAVAILABLE;
 
-- (instancetype)initWithContext:(KTVVPContext *)context;
+- (instancetype)initWithFrame:(CGRect)frame context:(KTVVPContext *)context;
 
 @property (nonatomic, strong, readonly) KTVVPContext * context;
 

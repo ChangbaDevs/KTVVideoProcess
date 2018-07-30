@@ -45,9 +45,9 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     return [CAEAGLLayer class];
 }
 
-- (instancetype)initWithContext:(KTVVPContext *)context
+- (instancetype)initWithFrame:(CGRect)frame context:(KTVVPContext *)context
 {
-    if (self = [super initWithFrame:CGRectZero])
+    if (self = [super initWithFrame:frame])
     {
         _context = context;
         _scalingMode = KTVVPScalingModeResizeAspect;
