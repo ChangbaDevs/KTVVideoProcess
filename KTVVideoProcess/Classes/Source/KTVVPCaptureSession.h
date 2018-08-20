@@ -70,7 +70,7 @@
 /**
  *  Audio config.
  */
-@property (nonatomic, assign) BOOL audioEnable;
-@property (atomic, strong) id <KTVVPSampleInput> audioOutput;
+@property (nonatomic, assign) BOOL audioEnable;                     // This property must be set befor the source starts.
+@property (atomic, strong) id <KTVVPSampleInput> audioOutput;       // This property can be set at any time.
 
 @end

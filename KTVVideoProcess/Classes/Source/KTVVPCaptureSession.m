@@ -192,16 +192,7 @@
 - (void)reloadPosition
 {
     _videoDevice = nil;
-    NSArray * devices = nil;
-    if (@available(iOS 10.0, *))
-    {
-        AVCaptureDeviceDiscoverySession * discoverySession = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:AVCaptureDevicePositionUnspecified];
-        devices = discoverySession.devices;
-    }
-    else
-    {
-        devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    }
+    NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     for (AVCaptureDevice * device in devices)
     {
         if (device.position == _position)
@@ -293,6 +284,10 @@
 
 - (void)setAudioEnable:(BOOL)audioEnable
 {
+    if (_didCallStart)
+    {
+        return;
+    }
     if (_audioEnable != audioEnable)
     {
         _audioEnable = audioEnable;
@@ -562,6 +557,7 @@
                 }];
                 frame.sampleBuffer = sampleBuffer;
                 frame.timeStamp = _videoTimeComponents.timeStamp;
+                frame.hostTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
                 frame.layout.rotationMode = [self rotationMode];
                 frame.layout.flipMode = [self flipMode];
                 [self.pipeline inputFrame:frame fromSource:self];
@@ -583,6 +579,7 @@
                 KTVVPSample * sample = [[KTVVPSample alloc] init];
                 sample.sampleBuffer = sampleBuffer;
                 sample.timeStamp = _audioTimeComponents.timeStamp;
+                sample.hostTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
                 [_audioOutput inputSample:sample fromSource:self];
             }
         }
