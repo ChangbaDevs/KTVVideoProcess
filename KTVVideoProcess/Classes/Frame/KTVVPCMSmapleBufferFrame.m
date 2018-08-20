@@ -80,6 +80,11 @@
 {
     if (sampleBuffer)
     {
+        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+        if (pixelBuffer)
+        {
+            CFRetain(pixelBuffer);
+        }
         CFRetain(sampleBuffer);
     }
     [self clear];
@@ -104,6 +109,11 @@
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
     if (_sampleBuffer)
     {
+        CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
+        if (pixelBuffer)
+        {
+            CFRelease(pixelBuffer);
+        }
         CFRelease(_sampleBuffer);
         _sampleBuffer = NULL;
     }
