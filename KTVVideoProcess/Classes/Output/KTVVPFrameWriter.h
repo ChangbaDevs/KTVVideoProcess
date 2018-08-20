@@ -47,8 +47,8 @@
 @property (atomic, copy) void (^startCallback)(BOOL success);
 @property (atomic, copy) void (^finishedCallback)(BOOL success);
 @property (atomic, copy) void (^cancelCallback)(BOOL success);
-@property (atomic, copy) void (^appendedFrameCallback)(CMTime timeStamp);
-@property (atomic, copy) void (^appendedSampleCallback)(CMTime timeStamp);
+@property (atomic, copy) void (^appendedFrameCallback)(KTVVPFrame * frame);
+@property (atomic, copy) void (^appendedSampleCallback)(KTVVPSample * sample);
 
 /**
  *  Duration of video track.

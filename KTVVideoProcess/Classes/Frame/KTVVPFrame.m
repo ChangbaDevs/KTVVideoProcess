@@ -48,6 +48,7 @@
 - (void)fillWithFrame:(KTVVPFrame *)frame
 {
     _timeStamp = frame.timeStamp;
+    _hostTimeStamp = frame.hostTimeStamp;
     _layout.size = frame.layout.size;
     _layout.rotationMode = frame.layout.rotationMode;
     _layout.flipMode = frame.layout.flipMode;
@@ -57,6 +58,7 @@
 - (void)fillWithFrameWithoutTransform:(KTVVPFrame *)frame
 {
     _timeStamp = frame.timeStamp;
+    _hostTimeStamp = frame.hostTimeStamp;
     _layout.size = frame.layout.finalSize;
     _layout.rotationMode = KTVVPRotationMode0;
     _layout.flipMode = KTVVPFlipModeNone;
@@ -66,6 +68,7 @@
 - (void)clear
 {
     _timeStamp = kCMTimeZero;
+    _hostTimeStamp = kCMTimeZero;
     _layout.rotationMode = KTVVPRotationMode0;
     _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = nil;

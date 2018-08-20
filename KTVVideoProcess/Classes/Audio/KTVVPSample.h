@@ -15,6 +15,7 @@
  *  Basic information.
  */
 @property (nonatomic, assign) CMTime timeStamp;
+@property (nonatomic, assign) CMTime hostTimeStamp;
 @property (nonatomic, assign) CMTime duration;
 
 /**

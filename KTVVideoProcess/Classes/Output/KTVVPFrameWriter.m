@@ -509,10 +509,6 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
                                                            &audioBufferList);
             if ([_assetWriterAudioInput appendSampleBuffer:placeholderSampleBuffer])
             {
-                if (_appendedSampleCallback)
-                {
-                    _appendedSampleCallback(placeholderPresentationTimeStamp);
-                }
                 _numberOfSamples += placeholderNumberOfSamples;
             }
             CFRelease(placeholderSampleBuffer);
@@ -523,7 +519,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         if (_appendedSampleCallback)
         {
-            _appendedSampleCallback(CMSampleBufferGetPresentationTimeStamp(sampleBuffer));
+            _appendedSampleCallback(sample);
         }
         _numberOfSamples += CMSampleBufferGetNumSamples(sampleBuffer);
     }
@@ -575,7 +571,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     {
         if (_appendedFrameCallback)
         {
-            _appendedFrameCallback(timeStamp);
+            _appendedFrameCallback(frame);
         }
         _numberOfFrames += 1;
     }

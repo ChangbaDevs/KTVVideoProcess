@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
  *  Basic information.
  */
 @property (nonatomic, assign) CMTime timeStamp;
+@property (nonatomic, assign) CMTime hostTimeStamp;
 @property (nonatomic, strong) KTVVPFrameLayout * layout;
 
 /**

@@ -93,6 +93,7 @@
             }];
             frame.pixelBuffer = pixelBuffer;
             frame.timeStamp = outItemTimeForDisplay;
+            frame.hostTimeStamp = CMTimeMakeWithSeconds(CACurrentMediaTime(), 1000000);
             [self.pipeline inputFrame:frame fromSource:self];
             [frame unlock];
             CVPixelBufferRelease(pixelBuffer);

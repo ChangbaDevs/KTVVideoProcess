@@ -35,6 +35,7 @@
     if (_sampleBuffer)
     {
         _timeStamp = CMSampleBufferGetPresentationTimeStamp(_sampleBuffer);
+        _hostTimeStamp = CMTimeMakeWithSeconds(CACurrentMediaTime(), INT32_MAX);
         _duration = CMSampleBufferGetDuration(_sampleBuffer);
     }
 }
@@ -47,6 +48,7 @@
         _sampleBuffer = NULL;
     }
     _timeStamp = kCMTimeInvalid;
+    _hostTimeStamp = kCMTimeInvalid;
     _duration = kCMTimeInvalid;
 }
 

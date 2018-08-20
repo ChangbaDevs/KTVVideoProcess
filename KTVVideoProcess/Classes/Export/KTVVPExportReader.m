@@ -57,6 +57,7 @@
             }];
             frame.sampleBuffer = sampleBuffer;
             frame.timeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+            frame.hostTimeStamp = CMTimeMakeWithSeconds(CACurrentMediaTime(), INT32_MAX);
             CFRelease(sampleBuffer);
             return frame;
         }
