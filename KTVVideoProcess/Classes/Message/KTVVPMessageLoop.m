@@ -125,7 +125,10 @@
         {
             if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
             {
-                [self.delegate messageLoop:self processingMessage:message];
+                @autoreleasepool
+                {
+                    [self.delegate messageLoop:self processingMessage:message];
+                }
             }
             else
             {
