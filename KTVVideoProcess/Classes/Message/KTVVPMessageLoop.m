@@ -99,45 +99,45 @@
     }
     while (YES)
     {
-        if (_didClosed)
+        @autoreleasepool
         {
-            while (YES)
+            if (_didClosed)
             {
-                KTVVPMessage * message = [_messageQueue getObjectAsync];
-                if (message)
+                while (YES)
                 {
-                    [message drop];
-                    [_finishedWaitingCondition lock];
-                    _numberOfMessages -= 1;
-                    [_finishedWaitingCondition broadcast];
-                    [_finishedWaitingCondition unlock];
+                    KTVVPMessage * message = [_messageQueue getObjectAsync];
+                    if (message)
+                    {
+                        [message drop];
+                        [_finishedWaitingCondition lock];
+                        _numberOfMessages -= 1;
+                        [_finishedWaitingCondition broadcast];
+                        [_finishedWaitingCondition unlock];
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
-                {
-                    break;
-                }
+                [_messageQueue destory];
+                break;
             }
-            [_messageQueue destory];
-            break;
-        }
-        KTVVPMessage * message = [_messageQueue getObjectSync];
-        if (message)
-        {
-            if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
+            KTVVPMessage * message = [_messageQueue getObjectSync];
+            if (message)
             {
-                @autoreleasepool
+                if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
                 {
                     [self.delegate messageLoop:self processingMessage:message];
                 }
+                else
+                {
+                    [message drop];
+                }
+                [_finishedWaitingCondition lock];
+                _numberOfMessages -= 1;
+                [_finishedWaitingCondition broadcast];
+                [_finishedWaitingCondition unlock];
             }
-            else
-            {
-                [message drop];
-            }
-            [_finishedWaitingCondition lock];
-            _numberOfMessages -= 1;
-            [_finishedWaitingCondition broadcast];
-            [_finishedWaitingCondition unlock];
         }
     }
     if (_stopCallback)
