@@ -33,10 +33,7 @@
     {
         return;
     }
-    if (!_uploadTextureCallback)
-    {
-        return;
-    }
+    NSAssert(_uploadTextureCallback && _releaseTextureCallback, @"Can't be nil.");
     if (!self.texture)
     {
         self.uploader = uploader;
@@ -55,8 +52,17 @@
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
     glBindTexture(GL_TEXTURE_2D, self.texture);
     _uploadTextureCallback(self);
+    _releaseTextureCallback(self);
+    _uploadTextureCallback = nil;
+    _releaseTextureCallback = nil;
     glBindTexture(GL_TEXTURE_2D, 0);
     self.didUpload = YES;
+}
+
+- (void)setUploadTextureCallback:(void (^)(KTVVPGLTextureFrame *))uploadTextureCallback releaseTextureCallback:(void (^)(KTVVPGLTextureFrame *))releaseTextureCallback
+{
+    _uploadTextureCallback = uploadTextureCallback;
+    _releaseTextureCallback = releaseTextureCallback;
 }
 
 - (void)clear
@@ -64,6 +70,11 @@
     [super clear];
     self.didUpload = NO;
     _uploadTextureCallback = nil;
+    if (_releaseTextureCallback)
+    {
+        _releaseTextureCallback(self);
+    }
+    _releaseTextureCallback = nil;
 }
 
 @end
