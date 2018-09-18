@@ -141,6 +141,11 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeView)
     }
 }
 
+- (void)clear
+{
+    [self.messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLClear object:nil]];
+}
+
 - (void)waitUntilFinished
 {
     [_messageLoop waitUntilFinished];

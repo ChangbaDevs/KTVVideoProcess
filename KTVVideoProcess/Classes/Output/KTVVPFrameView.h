@@ -36,6 +36,11 @@
 - (void)snapshot:(void (^)(UIImage * image))callback;
 
 /**
+ *  Clear the rendered content.
+ */
+- (void)clear;
+
+/**
  *  Block current thread until finished all operations.
  */
 - (void)waitUntilFinished;
