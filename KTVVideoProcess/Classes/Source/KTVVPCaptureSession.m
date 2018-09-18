@@ -191,6 +191,12 @@
 
 - (void)reloadPosition
 {
+    [self beginConfiguration];
+    if (_videoInput)
+    {
+        [_captureSession removeInput:_videoInput];
+        _videoInput = nil;
+    }
     _videoDevice = nil;
     NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     for (AVCaptureDevice * device in devices)
@@ -200,25 +206,17 @@
             _videoDevice = device;
         }
     }
-    if (!_videoDevice)
+    if (_videoDevice)
     {
-        _videoDevice = devices.firstObject;
-        if (!_videoDevice)
+        _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:_videoDevice error:nil];
+        if ([_captureSession canAddInput:_videoInput])
         {
-            _error = [NSError errorWithDomain:@"No vaild camera device." code:-1 userInfo:nil];
-            return;
+            [_captureSession addInput:_videoInput];
         }
     }
-    [self beginConfiguration];
-    if (_videoInput)
+    else
     {
-        [_captureSession removeInput:_videoInput];
-        _videoInput = nil;
-    }
-    _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:_videoDevice error:nil];
-    if ([_captureSession canAddInput:_videoInput])
-    {
-        [_captureSession addInput:_videoInput];
+        _error = [NSError errorWithDomain:@"No vaild camera device." code:-1 userInfo:nil];
     }
     [self commitConfiguration];
 }
