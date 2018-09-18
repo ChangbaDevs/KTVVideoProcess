@@ -21,16 +21,29 @@
 @property (nonatomic, copy) AVFileType outputFileType;
 
 /**
+ *  Data Limit.
+ *
+ *  @property minimumNumberOfFrames   Default value is 1.
+ *  @property minimumNumberOfSamples  Default value is 1.
+ */
+@property (nonatomic, assign) NSInteger minimumNumberOfFrames;
+@property (nonatomic, assign) NSInteger minimumNumberOfSamples;
+
+/**
  *  Video config.
  *
- *  @property videoEncodeDelayInterval  Default value is AVFileTypeMPEG4.
- *  @property videoOutputBitRate        Default value is 0.
- *  @property videoOutputScalingMode    Default value is AVVideoScalingModeResizeAspectFill.
+ *  @property videoEncodeDelayInterval                      Default value is AVFileTypeMPEG4.
+ *  @property videoOutputBitRate                            Default value is 0.
+ *  @property videoOutputMaxKeyFrameInterval                Default value is 0.
+ *  @property videoOutputMaxKeyFrameIntervalDuration        Default value is (0, 1)).
+ *  @property videoOutputScalingMode                        Default value is AVVideoScalingModeResizeAspectFill.
  */
 @property (nonatomic, assign) KTVVPSize videoOutputSize;
 @property (nonatomic, assign) NSTimeInterval videoEncodeDelayInterval;
 @property (nonatomic, assign) CGAffineTransform videoOutputTransform;
 @property (nonatomic, assign) NSInteger videoOutputBitRate;
+@property (nonatomic, assign) NSInteger videoOutputMaxKeyFrameInterval;
+@property (nonatomic, assign) CMTime videoOutputMaxKeyFrameIntervalDuration;
 @property (nonatomic, copy) NSString * videoOutputScalingMode;
 @property (nonatomic, copy) NSDictionary * videoOutputSettings;
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;

@@ -56,9 +56,13 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
     if (self = [super init])
     {
         _outputFileType = AVFileTypeMPEG4;
+        _minimumNumberOfFrames = 1;
+        _minimumNumberOfSamples = 1;
         _videoOutputScalingMode = AVVideoScalingModeResizeAspect;
         _videoOutputTransform = CGAffineTransformIdentity;
         _videoOutputBitRate = 0;
+        _videoOutputMaxKeyFrameInterval = 0;
+        _videoOutputMaxKeyFrameIntervalDuration = kCMTimeZero;
         _assetWriterStartTime = kCMTimeInvalid;
         _videoTimeComponents = [[KTVVPTimeComponents alloc] init];
         _audioTimeComponents = [[KTVVPTimeComponents alloc] init];
@@ -261,8 +265,8 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         [_assetWriterAudioInput markAsFinished];
         [_assetWriterVideoInput markAsFinished];
         if (_assetWriter.status == AVAssetWriterStatusWriting
-            && _numberOfFrames > 0
-            && (!_audioEnable || (_audioEnable && _numberOfSamples > 0)))
+            && _numberOfFrames >= _minimumNumberOfFrames
+            && (!_audioEnable || (_audioEnable && _numberOfSamples >= _minimumNumberOfSamples)))
         {
             __block BOOL finished = NO;
             NSCondition * condition = [[NSCondition alloc] init];
@@ -363,10 +367,22 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         } else {
             [outputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
         }
+        NSMutableDictionary * compressionProperties = [NSMutableDictionary dictionary];
         if (_videoOutputBitRate > 0)
         {
-            [outputSettings setObject:@{AVVideoAverageBitRateKey : @(_videoOutputBitRate)}
-                               forKey:AVVideoCompressionPropertiesKey];
+            [compressionProperties setObject:@(_videoOutputBitRate) forKey:AVVideoAverageBitRateKey];
+        }
+        if (_videoOutputMaxKeyFrameInterval > 0)
+        {
+            [compressionProperties setObject:@(_videoOutputMaxKeyFrameInterval) forKey:AVVideoMaxKeyFrameIntervalKey];
+        }
+        if (CMTimeCompare(_videoOutputMaxKeyFrameIntervalDuration, kCMTimeZero) > 0)
+        {
+            [compressionProperties setObject:@(CMTimeGetSeconds(_videoOutputMaxKeyFrameIntervalDuration)) forKey:AVVideoMaxKeyFrameIntervalDurationKey];
+        }
+        if (compressionProperties.count > 0)
+        {
+            [outputSettings setObject:compressionProperties forKey:AVVideoCompressionPropertiesKey];
         }
         [outputSettings setObject:_videoOutputScalingMode forKey:AVVideoScalingModeKey];
         [outputSettings setObject:@(_videoOutputSize.width) forKey:AVVideoWidthKey];
