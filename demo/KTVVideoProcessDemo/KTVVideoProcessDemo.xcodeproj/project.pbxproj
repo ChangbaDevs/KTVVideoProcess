@@ -226,12 +226,12 @@
 		36DCF8B52B528C00008A246C /* Pipeline */ = {
 			isa = PBXGroup;
 			children = (
+				36DCF8BA2B528C00008A246C /* KTVVPConcurrentPipeline.h */,
+				36DCF8B62B528C00008A246C /* KTVVPConcurrentPipeline.m */,
 				36DCF8B72B528C00008A246C /* KTVVPPipeline.h */,
 				36DCF8B92B528C00008A246C /* KTVVPPipeline.m */,
 				36DCF8B82B528C00008A246C /* KTVVPSerialPipeline.h */,
 				36DCF8BB2B528C00008A246C /* KTVVPSerialPipeline.m */,
-				36DCF8BA2B528C00008A246C /* KTVVPConcurrentPipeline.h */,
-				36DCF8B62B528C00008A246C /* KTVVPConcurrentPipeline.m */,
 			);
 			path = Pipeline;
 			sourceTree = "<group>";
@@ -239,12 +239,12 @@
 		36DCF8BC2B528C00008A246C /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				36DCF8C12B528C00008A246C /* KTVVPSource.h */,
-				36DCF8BD2B528C00008A246C /* KTVVPSource.m */,
-				36DCF8C22B528C00008A246C /* KTVVPCaptureSession.h */,
-				36DCF8BF2B528C00008A246C /* KTVVPCaptureSession.m */,
 				36DCF8BE2B528C00008A246C /* KTVVPAVPlayerItemVideoOutput.h */,
 				36DCF8C02B528C00008A246C /* KTVVPAVPlayerItemVideoOutput.m */,
+				36DCF8C22B528C00008A246C /* KTVVPCaptureSession.h */,
+				36DCF8BF2B528C00008A246C /* KTVVPCaptureSession.m */,
+				36DCF8C12B528C00008A246C /* KTVVPSource.h */,
+				36DCF8BD2B528C00008A246C /* KTVVPSource.m */,
 			);
 			path = Source;
 			sourceTree = "<group>";

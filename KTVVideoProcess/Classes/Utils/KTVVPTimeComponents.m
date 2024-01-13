@@ -19,7 +19,8 @@
 
 - (instancetype)init
 {
-    if (self = [super init]) {
+    if (self = [super init])
+    {
         _timeStamp = kCMTimeZero;
         _previousTimeStamp = kCMTimeZero;
         _firstTimeStamp = kCMTimeInvalid;
@@ -32,21 +33,24 @@
 
 - (void)putDroppedTimeStamp:(CMTime)timeStamp
 {
-    if (CMTIME_IS_INVALID(_firstDroppedTimeStamp)) {
+    if (CMTIME_IS_INVALID(_firstDroppedTimeStamp))
+    {
         _firstDroppedTimeStamp = timeStamp;
     }
 }
 
 - (void)putCurrentTimeStamp:(CMTime)timeStamp
 {
-    if (CMTIME_IS_VALID(_firstDroppedTimeStamp)) {
+    if (CMTIME_IS_VALID(_firstDroppedTimeStamp))
+    {
         CMTime currentDeltaInterval = CMTimeSubtract(timeStamp, _firstDroppedTimeStamp);
         _deltaInterval = CMTimeAdd(_deltaInterval, currentDeltaInterval);
         _firstDroppedTimeStamp = kCMTimeInvalid;
     }
     _previousTimeStamp = _timeStamp;
     _timeStamp = CMTimeSubtract(timeStamp, _deltaInterval);
-    if (CMTIME_IS_INVALID(_firstTimeStamp)) {
+    if (CMTIME_IS_INVALID(_firstTimeStamp))
+    {
         _firstTimeStamp = _timeStamp;
     }
     _duration = CMTimeSubtract(_timeStamp, _firstTimeStamp);
