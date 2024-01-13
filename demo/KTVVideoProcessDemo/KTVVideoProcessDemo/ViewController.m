@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import <KTVVideoProcess/KTVVideoProcess.h>
+#import "KTVVideoProcess.h"
 
 @interface ViewController ()
 

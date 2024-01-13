@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-FOUNDATION_EXPORT double KTVVideoProcessVersionNumber;
-FOUNDATION_EXPORT const unsigned char KTVVideoProcessVersionString[];
-
 #pragma mark - Common
 
 #import "KTVVPContext.h"
