@@ -18,7 +18,7 @@
 /**
  *  Set this block to configuration the filter when the pipeline did create it.
  */
-@property (nonatomic, copy) void (^filterConfigurationCallback)(__kindof KTVVPFilter * filter, NSInteger index);
+@property (nonatomic, copy) void (^filterConfigurationCallback)(__kindof KTVVPFilter *filter, NSInteger index);
 
 /**
  *  Filters for specify class.

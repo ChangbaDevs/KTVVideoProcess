@@ -12,7 +12,7 @@
 
 @interface KTVVPConcurrentPipeline ()
 
-@property (nonatomic, strong) NSArray <KTVVPSerialPipeline *> * pipelines;
+@property (nonatomic, strong) NSArray <KTVVPSerialPipeline *> *pipelines;
 
 @end
 
@@ -20,8 +20,7 @@
 
 - (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses
 {
-    if (self = [super initWithContext:context filterClasses:filterClasses])
-    {
+    if (self = [super initWithContext:context filterClasses:filterClasses]) {
         KTVVPLog(@"%s", __func__);
         _maxConcurrentCount = 3;
     }
@@ -36,16 +35,14 @@
 - (void)setupInternal
 {
     __weak typeof(self) weakSelf = self;
-    NSMutableArray * pipelines = [NSMutableArray arrayWithCapacity:_maxConcurrentCount];
-    for (NSInteger i = 0; i < _maxConcurrentCount; i++)
-    {
-        KTVVPSerialPipeline * obj = [[KTVVPSerialPipeline alloc] initWithContext:self.context
+    NSMutableArray *pipelines = [NSMutableArray arrayWithCapacity:_maxConcurrentCount];
+    for (NSInteger i = 0; i < _maxConcurrentCount; i++) {
+        KTVVPSerialPipeline *obj = [[KTVVPSerialPipeline alloc] initWithContext:self.context
                                                                    filterClasses:self.filterClasses];
-        [obj setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
+        [obj setFilterConfigurationCallback:^(__kindof KTVVPFilter *filter, NSInteger index) {
             __strong typeof(weakSelf) strongSelf = weakSelf;
             NSInteger serialPipelineIndex = i;
-            if (strongSelf.filterConfigurationCallback)
-            {
+            if (strongSelf.filterConfigurationCallback) {
                 strongSelf.filterConfigurationCallback(filter, index, serialPipelineIndex);
             }
         }];
@@ -59,14 +56,11 @@
 
 - (NSArray <KTVVPFilter *> *)filtersOfClass:(Class)queryClass
 {
-    NSMutableArray <KTVVPFilter *> * ret = nil;
-    for (KTVVPSerialPipeline * pipeline in [_pipelines copy])
-    {
-        NSArray * filters = [pipeline filtersOfClass:queryClass];
-        if (filters.count > 0)
-        {
-            if (!ret)
-            {
+    NSMutableArray <KTVVPFilter *> *ret = nil;
+    for (KTVVPSerialPipeline *pipeline in [_pipelines copy]) {
+        NSArray *filters = [pipeline filtersOfClass:queryClass];
+        if (filters.count > 0) {
+            if (!ret) {
                 ret = [NSMutableArray array];
             }
             [ret addObjectsFromArray:filters];
@@ -82,17 +76,14 @@
     [self setupIfNeeded];
     [frame lock];
     BOOL ret = NO;
-    for (KTVVPSerialPipeline * pipeline in _pipelines)
-    {
-        if (!pipeline.processing)
-        {
+    for (KTVVPSerialPipeline *pipeline in _pipelines) {
+        if (!pipeline.processing) {
             [pipeline inputFrame:frame fromSource:source];
             ret = YES;
             break;
         }
     }
-    if (!ret)
-    {
+    if (!ret) {
         KTVVPLog(@"KTVVPConcurrentPipeline: Frame did drop...");
     }
     [frame unlock];
@@ -104,16 +95,14 @@
 - (void)setNeedFlushBeforOutput:(BOOL)needFlushBeforOutput
 {
     [super setNeedFlushBeforOutput:needFlushBeforOutput];
-    for (KTVVPSerialPipeline * pipeline in _pipelines)
-    {
+    for (KTVVPSerialPipeline *pipeline in _pipelines) {
         pipeline.needFlushBeforOutput = needFlushBeforOutput;
     }
 }
 
 - (void)glFinish
 {
-    for (KTVVPSerialPipeline * pipeline in _pipelines)
-    {
+    for (KTVVPSerialPipeline *pipeline in _pipelines) {
         [pipeline glFinish];
     }
 }
@@ -122,8 +111,7 @@
 
 - (void)waitUntilFinished
 {
-    for (KTVVPSerialPipeline * pipeline in _pipelines)
-    {
+    for (KTVVPSerialPipeline *pipeline in _pipelines) {
         [pipeline waitUntilFinished];
     }
 }
@@ -162,9 +150,8 @@
 
 - (void)resetPipelineOutputs
 {
-    NSArray <id <KTVVPFrameInput>> * ouputs = self.outputs;
-    for (KTVVPSerialPipeline * obj in _pipelines)
-    {
+    NSArray <id <KTVVPFrameInput>> *ouputs = self.outputs;
+    for (KTVVPSerialPipeline *obj in _pipelines) {
         [obj removeAllOutputs];
         [obj addOutputs:ouputs];
     }

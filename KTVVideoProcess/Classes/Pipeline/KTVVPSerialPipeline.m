@@ -14,12 +14,12 @@
 
 @property (nonatomic, assign) BOOL processing;
 
-@property (nonatomic, strong) EAGLContext * glContext;
-@property (nonatomic, strong) KTVVPFramePool * framePool;
-@property (nonatomic, strong) KTVVPFrameUploader * frameUploader;
+@property (nonatomic, strong) EAGLContext *glContext;
+@property (nonatomic, strong) KTVVPFramePool *framePool;
+@property (nonatomic, strong) KTVVPFrameUploader *frameUploader;
 
-@property (nonatomic, strong) NSArray <KTVVPFilter *> * filters;
-@property (nonatomic, strong) KTVVPMessageLoop * messageLoop;
+@property (nonatomic, strong) NSArray <KTVVPFilter *> *filters;
+@property (nonatomic, strong) KTVVPMessageLoop *messageLoop;
 
 @end
 
@@ -27,8 +27,7 @@
 
 - (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses
 {
-    if (self = [super initWithContext:context filterClasses:filterClasses])
-    {
+    if (self = [super initWithContext:context filterClasses:filterClasses]) {
         KTVVPLog(@"%s", __func__);
     }
     return self;
@@ -50,13 +49,10 @@
 
 - (NSArray <KTVVPFilter *> *)filtersOfClass:(Class)queryClass
 {
-    NSMutableArray <KTVVPFilter *> * ret = nil;
-    for (KTVVPFilter * obj in [_filters copy])
-    {
-        if ([obj isKindOfClass:queryClass])
-        {
-            if (!ret)
-            {
+    NSMutableArray <KTVVPFilter *> *ret = nil;
+    for (KTVVPFilter *obj in [_filters copy]) {
+        if ([obj isKindOfClass:queryClass]) {
+            if (!ret) {
                 ret = [NSMutableArray array];
             }
             [ret addObject:obj];
@@ -83,31 +79,25 @@
 
 - (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
-    if (source == _filters.lastObject)
-    {
-        if (self.needFlushBeforOutput)
-        {
+    if (source == _filters.lastObject) {
+        if (self.needFlushBeforOutput) {
             glFlush();
         }
         [frame lock];
-        for (id <KTVVPFrameInput> obj in self.outputs)
-        {
+        for (id <KTVVPFrameInput> obj in self.outputs) {
             [obj inputFrame:frame fromSource:self];
         }
         [frame unlock];
-    }
-    else
-    {
+    } else {
         [self setupIfNeeded];
-        if (_processing)
-        {
+        if (_processing) {
             KTVVPLog(@"KTVVPSerialPipeline: Frame did drop...");
             return NO;
         }
         _processing = YES;
         [frame lock];
-        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage * message) {
-            KTVVPFrame * object = (KTVVPFrame *)message.object;
+        [_messageLoop putMessage:[KTVVPMessage messageWithType:KTVVPMessageTypeOpenGLDrawing object:frame dropCallback:^(KTVVPMessage *message) {
+            KTVVPFrame *object = (KTVVPFrame *)message.object;
             [object unlock];
         }]];
     }
@@ -118,25 +108,22 @@
 
 - (void)messageLoop:(KTVVPMessageLoop *)messageLoop processingMessage:(KTVVPMessage *)message
 {
-    if (message.type == KTVVPMessageTypeOpenGLSetupContext)
-    {
+    if (message.type == KTVVPMessageTypeOpenGLSetupContext) {
         _glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2
                                            sharegroup:self.context.mainGLContext.sharegroup];
         KTVVPSetCurrentGLContextIfNeeded(_glContext);
         _framePool = [[KTVVPFramePool alloc] init];
         _frameUploader = [[KTVVPFrameUploader alloc] initWithGLContext:_glContext];
         
-        NSMutableArray <__kindof KTVVPFilter *> * filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
-        __kindof KTVVPFilter * lastFilter = nil;
-        for (NSInteger i = 0; i < self.filterClasses.count; i++)
-        {
+        NSMutableArray <__kindof KTVVPFilter *> *filters = [NSMutableArray arrayWithCapacity:self.filterClasses.count];
+        __kindof KTVVPFilter *lastFilter = nil;
+        for (NSInteger i = 0; i < self.filterClasses.count; i++) {
             Class filterClass = [self.filterClasses objectAtIndex:i];
-            __kindof KTVVPFilter * obj = [filterClass alloc];
+            __kindof KTVVPFilter *obj = [filterClass alloc];
             obj = [obj initWithGLContext:_glContext
                                framePool:_framePool
                            frameUploader:_frameUploader];
-            if (_filterConfigurationCallback)
-            {
+            if (_filterConfigurationCallback) {
                 _filterConfigurationCallback(obj, i);
             }
             lastFilter.output = obj;
@@ -146,20 +133,15 @@
         lastFilter.output = self;
         _filters = filters;
         _filterConfigurationCallback = nil;
-    }
-    else if (message.type == KTVVPMessageTypeOpenGLDrawing)
-    {
-        KTVVPFrame * frame = (KTVVPFrame *)message.object;
-        if (frame)
-        {
+    } else if (message.type == KTVVPMessageTypeOpenGLDrawing) {
+        KTVVPFrame *frame = (KTVVPFrame *)message.object;
+        if (frame) {
             KTVVPSetCurrentGLContextIfNeeded(_glContext);
             [_filters.firstObject inputFrame:frame fromSource:self];
             [frame unlock];
             _processing = NO;
         }
-    }
-    else if (message.type == KTVVPMessageTypeOpenGLFinish)
-    {
+    } else if (message.type == KTVVPMessageTypeOpenGLFinish) {
         glFinish();
     }
 }

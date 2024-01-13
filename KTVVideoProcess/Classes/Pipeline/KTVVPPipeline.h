@@ -20,8 +20,8 @@
  */
 - (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses;
 
-@property (nonatomic, strong, readonly) KTVVPContext * context;
-@property (nonatomic, strong, readonly) NSArray <Class> * filterClasses;
+@property (nonatomic, strong, readonly) KTVVPContext *context;
+@property (nonatomic, strong, readonly) NSArray <Class> *filterClasses;
 
 /**
  *  Setup
@@ -44,7 +44,7 @@
 
 #pragma mark - Output
 
-@property (nonatomic, strong, readonly) NSArray <id <KTVVPFrameInput>> * outputs;
+@property (nonatomic, strong, readonly) NSArray <id <KTVVPFrameInput>> *outputs;
 
 - (void)addOutput:(id <KTVVPFrameInput>)output;
 - (void)addOutputs:(NSArray <id <KTVVPFrameInput>> *)outputs;

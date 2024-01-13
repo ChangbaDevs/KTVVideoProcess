@@ -10,8 +10,8 @@
 
 @interface KTVVPPipeline ()
 
-@property (nonatomic, strong) NSLock * outputsLock;
-@property (nonatomic, strong) NSMutableArray <id <KTVVPFrameInput>> * outputsInternal;
+@property (nonatomic, strong) NSLock *outputsLock;
+@property (nonatomic, strong) NSMutableArray <id <KTVVPFrameInput>> *outputsInternal;
 
 @end
 
@@ -19,8 +19,7 @@
 
 - (instancetype)initWithContext:(KTVVPContext *)context filterClasses:(NSArray <Class> *)filterClasses
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         NSAssert(filterClasses.count > 0, @"filterClasses can't be nil.");
         _context = context;
         _filterClasses = filterClasses;
@@ -32,8 +31,7 @@
 
 - (void)setupIfNeeded
 {
-    if (!_didSetup)
-    {
+    if (!_didSetup) {
         [self setupInternal];
         _didSetup = YES;
     }
@@ -55,7 +53,7 @@
 - (NSArray <id <KTVVPFrameInput>> *)outputs
 {
     [_outputsLock lock];
-    NSArray * obj = [_outputsInternal copy];
+    NSArray *obj = [_outputsInternal copy];
     [_outputsLock unlock];
     return obj;
 }
@@ -63,12 +61,10 @@
 - (void)addOutput:(id <KTVVPFrameInput>)output
 {
     [_outputsLock lock];
-    if (!_outputsInternal)
-    {
+    if (!_outputsInternal) {
         _outputsInternal = [NSMutableArray array];
     }
-    if (![_outputsInternal containsObject:output])
-    {
+    if (![_outputsInternal containsObject:output]) {
         [_outputsInternal addObject:output];
     }
     [_outputsLock unlock];
@@ -76,8 +72,7 @@
 
 - (void)addOutputs:(NSArray <id<KTVVPFrameInput>> *)outputs
 {
-    for (id<KTVVPFrameInput> obj in outputs)
-    {
+    for (id<KTVVPFrameInput> obj in outputs) {
         [self addOutput:obj];
     }
 }
@@ -91,8 +86,7 @@
 
 - (void)removeOutputs:(NSArray <id<KTVVPFrameInput>> *)outputs
 {
-    for (id<KTVVPFrameInput> obj in outputs)
-    {
+    for (id<KTVVPFrameInput> obj in outputs) {
         [self removeOutput:obj];
     }
 }
