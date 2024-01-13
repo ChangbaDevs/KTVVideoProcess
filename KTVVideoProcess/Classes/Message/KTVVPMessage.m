@@ -23,8 +23,7 @@
 
 - (instancetype)initWithType:(NSUInteger)type object:(id)object dropCallback:(void (^)(KTVVPMessage *))dropCallback
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _type = type;
         _object = object;
         _dropCallback = dropCallback;
@@ -35,8 +34,7 @@
 - (void)drop
 {
     KTVVPLog(@"%s", __func__);
-    if (_dropCallback)
-    {
+    if (_dropCallback) {
         _dropCallback(self);
     }
 }

@@ -12,10 +12,10 @@
 
 @interface KTVVPMessageLoop ()
 
-@property (nonatomic, strong) NSThread * thread;
-@property (nonatomic, strong) NSCondition * finishedWaitingCondition;
-@property (nonatomic, strong) NSCondition * stopedWaitingCondition;
-@property (nonatomic, strong) KTVVPObjectQueue * messageQueue;
+@property (nonatomic, strong) NSThread *thread;
+@property (nonatomic, strong) NSCondition *finishedWaitingCondition;
+@property (nonatomic, strong) NSCondition *stopedWaitingCondition;
+@property (nonatomic, strong) KTVVPObjectQueue *messageQueue;
 @property (nonatomic, assign) NSInteger numberOfMessages;
 @property (nonatomic, assign) BOOL didClosed;
 @property (nonatomic, assign) BOOL exited;
@@ -26,8 +26,7 @@
 
 - (instancetype)initWithIdentify:(NSString *)identify delegate:(id <KTVVPMessageLoopDelegate>)delegate
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _identify = identify;
         _delegate = delegate;
         _finishedWaitingCondition = [[NSCondition alloc] init];
@@ -47,8 +46,7 @@
 
 - (void)start
 {
-    if (_didClosed || _running)
-    {
+    if (_didClosed || _running) {
         return;
     }
     _running = YES;
@@ -57,8 +55,7 @@
 
 - (void)stop
 {
-    if (_didClosed)
-    {
+    if (_didClosed) {
         return;
     }
     _didClosed = YES;
@@ -72,65 +69,49 @@
 
 - (void)putMessage:(KTVVPMessage *)message delay:(NSTimeInterval)delay
 {
-    if (_didClosed)
-    {
+    if (_didClosed) {
         return;
     }
     [_finishedWaitingCondition lock];
     _numberOfMessages += 1;
     [_finishedWaitingCondition unlock];
-    if (delay > 0)
-    {
+    if (delay > 0) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.messageQueue putObject:message];
         });
-    }
-    else
-    {
+    } else {
         [_messageQueue putObject:message];
     }
 }
 
 - (void)messageLoopThread
 {
-    if (_startCallback)
-    {
+    if (_startCallback) {
         _startCallback(self);
     }
-    while (YES)
-    {
-        @autoreleasepool
-        {
-            if (_didClosed)
-            {
-                while (YES)
-                {
-                    KTVVPMessage * message = [_messageQueue getObjectAsync];
-                    if (message)
-                    {
+    while (YES) {
+        @autoreleasepool {
+            if (_didClosed) {
+                while (YES) {
+                    KTVVPMessage *message = [_messageQueue getObjectAsync];
+                    if (message) {
                         [message drop];
                         [_finishedWaitingCondition lock];
                         _numberOfMessages -= 1;
                         [_finishedWaitingCondition broadcast];
                         [_finishedWaitingCondition unlock];
-                    }
-                    else
-                    {
+                    } else {
                         break;
                     }
                 }
                 [_messageQueue destory];
                 break;
             }
-            KTVVPMessage * message = [_messageQueue getObjectSync];
-            if (message)
-            {
-                if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)])
-                {
+            KTVVPMessage *message = [_messageQueue getObjectSync];
+            if (message) {
+                if ([self.delegate respondsToSelector:@selector(messageLoop:processingMessage:)]) {
                     [self.delegate messageLoop:self processingMessage:message];
-                }
-                else
-                {
+                } else {
                     [message drop];
                 }
                 [_finishedWaitingCondition lock];
@@ -140,8 +121,7 @@
             }
         }
     }
-    if (_stopCallback)
-    {
+    if (_stopCallback) {
         _stopCallback(self);
     }
     _exited = YES;
@@ -153,8 +133,7 @@
 - (void)waitUntilFinished
 {
     [_finishedWaitingCondition lock];
-    while (_numberOfMessages > 0)
-    {
+    while (_numberOfMessages > 0) {
         [_finishedWaitingCondition wait];
     }
     [_finishedWaitingCondition unlock];
@@ -163,8 +142,7 @@
 - (void)waitUntilStoped
 {
     [_stopedWaitingCondition lock];
-    while (_running && !_exited)
-    {
+    while (_running && !_exited) {
         [_stopedWaitingCondition wait];
     }
     [_stopedWaitingCondition unlock];

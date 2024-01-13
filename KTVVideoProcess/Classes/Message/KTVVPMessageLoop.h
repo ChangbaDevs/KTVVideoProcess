@@ -24,9 +24,9 @@
 
 - (instancetype)initWithIdentify:(NSString *)identify delegate:(id <KTVVPMessageLoopDelegate>)delegate;
 
-@property (nonatomic, copy, readonly) NSString * identify;
+@property (nonatomic, copy, readonly) NSString *identify;
 @property (nonatomic, weak, readonly) id <KTVVPMessageLoopDelegate> delegate;
-@property (nonatomic, strong, readonly) NSThread * thread;
+@property (nonatomic, strong, readonly) NSThread *thread;
 @property (nonatomic, assign, readonly) BOOL running;
 
 - (void)start;
@@ -37,8 +37,8 @@
 
 #pragma mark - Flow Control
 
-@property (nonatomic, copy) void (^startCallback)(KTVVPMessageLoop * messageLoop);
-@property (nonatomic, copy) void (^stopCallback)(KTVVPMessageLoop * messageLoop);
+@property (nonatomic, copy) void (^startCallback)(KTVVPMessageLoop *messageLoop);
+@property (nonatomic, copy) void (^stopCallback)(KTVVPMessageLoop *messageLoop);
 
 - (void)waitUntilFinished;
 - (void)waitUntilStoped;

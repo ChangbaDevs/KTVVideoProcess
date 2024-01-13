@@ -11,8 +11,8 @@
 
 @interface KTVVPObjectQueue ()
 
-@property (nonatomic, strong) NSCondition * condition;
-@property (nonatomic, strong) NSMutableArray * objects;
+@property (nonatomic, strong) NSCondition *condition;
+@property (nonatomic, strong) NSMutableArray *objects;
 @property (nonatomic, assign) BOOL didDestoryed;
 @property (nonatomic, assign) BOOL didStoped;
 
@@ -22,8 +22,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         KTVVPLog(@"%p, %s", self, __func__);
         _condition = [[NSCondition alloc] init];
         _objects = [NSMutableArray array];
@@ -40,8 +39,7 @@
 - (void)putObject:(id)object
 {
     [_condition lock];
-    if (_didDestoryed || _didStoped)
-    {
+    if (_didDestoryed || _didStoped) {
         [_condition unlock];
         return;
     }
@@ -53,23 +51,19 @@
 - (id)getObjectSync
 {
     [_condition lock];
-    if (_didDestoryed)
-    {
+    if (_didDestoryed) {
         [_condition unlock];
         return nil;
     }
-    while (_objects.count <= 0 && !_didStoped)
-    {
+    while (_objects.count <= 0 && !_didStoped) {
         [_condition wait];
-        if (_didDestoryed)
-        {
+        if (_didDestoryed) {
             [_condition unlock];
             return nil;
         }
     }
     id object = _objects.firstObject;
-    if (object)
-    {
+    if (object) {
         [_objects removeObjectAtIndex:0];
     }
     [_condition unlock];
@@ -79,14 +73,12 @@
 - (id)getObjectAsync
 {
     [_condition lock];
-    if (_didDestoryed)
-    {
+    if (_didDestoryed) {
         [_condition unlock];
         return nil;
     }
     id object = _objects.firstObject;
-    if (object)
-    {
+    if (object) {
         [_objects removeObjectAtIndex:0];
     }
     [_condition unlock];
@@ -104,8 +96,7 @@
 - (void)stop
 {
     [_condition lock];
-    if (_didDestoryed)
-    {
+    if (_didDestoryed) {
         [_condition unlock];
         return;
     }
@@ -117,8 +108,7 @@
 - (void)flush
 {
     [_condition lock];
-    if (_didDestoryed)
-    {
+    if (_didDestoryed) {
         [_condition unlock];
         return;
     }
@@ -130,8 +120,7 @@
 - (void)destory
 {
     [_condition lock];
-    if (_didDestoryed)
-    {
+    if (_didDestoryed) {
         [_condition unlock];
         return;
     }
