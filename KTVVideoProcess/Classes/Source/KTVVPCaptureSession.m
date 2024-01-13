@@ -7,9 +7,9 @@
 //
 
 #import "KTVVPCaptureSession.h"
+#import "KTVVPFramePool.h"
 #import "KTVVPCMSmapleBufferFrame.h"
 #import "KTVVPTimeComponents.h"
-#import "KTVVPFramePool.h"
 #import "KTVVPLog.h"
 
 @interface KTVVPCaptureSession () <AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureAudioDataOutputSampleBufferDelegate>
@@ -19,22 +19,22 @@
 @property (nonatomic, assign) AVCaptureDevicePosition positionInternal;
 @property (nonatomic, assign) BOOL horizontalFlipForFrontInternal;
 
-@property (nonatomic, strong) AVCaptureDevice *audioDevice;
-@property (nonatomic, strong) AVCaptureDevice *videoDevice;
+@property (nonatomic, strong) AVCaptureDevice * audioDevice;
+@property (nonatomic, strong) AVCaptureDevice * videoDevice;
 
-@property (nonatomic, strong) AVCaptureDeviceInput *audioInput;
-@property (nonatomic, strong) AVCaptureDeviceInput *videoInput;
+@property (nonatomic, strong) AVCaptureDeviceInput * audioInput;
+@property (nonatomic, strong) AVCaptureDeviceInput * videoInput;
 
-@property (nonatomic, strong) AVCaptureAudioDataOutput *audioDataOutput;
-@property (nonatomic, strong) AVCaptureVideoDataOutput *videoDataOutput;
+@property (nonatomic, strong) AVCaptureAudioDataOutput * audioDataOutput;
+@property (nonatomic, strong) AVCaptureVideoDataOutput * videoDataOutput;
 
 @property (nonatomic, strong) dispatch_queue_t audioProcessingQueue;
 @property (nonatomic, strong) dispatch_queue_t videoProcessingQueue;
 
-@property (nonatomic, strong) KTVVPTimeComponents *audioTimeComponents;
-@property (nonatomic, strong) KTVVPTimeComponents *videoTimeComponents;
+@property (nonatomic, strong) KTVVPTimeComponents * audioTimeComponents;
+@property (nonatomic, strong) KTVVPTimeComponents * videoTimeComponents;
 
-@property (nonatomic, strong) KTVVPFramePool *framePool;
+@property (nonatomic, strong) KTVVPFramePool * framePool;
 @property (nonatomic, assign) NSInteger configurationCount;
 @property (nonatomic, assign) BOOL didCallPrepare;
 @property (nonatomic, assign) BOOL didCallStart;
@@ -45,7 +45,8 @@
 
 - (instancetype)init
 {
-    if (self = [super init]) {
+    if (self = [super init])
+    {
         _captureSession = [[AVCaptureSession alloc] init];
         _audioTimeComponents = [[KTVVPTimeComponents alloc] init];
         _videoTimeComponents = [[KTVVPTimeComponents alloc] init];
@@ -65,7 +66,8 @@
 
 - (void)prepare
 {
-    if (_didCallPrepare) {
+    if (_didCallPrepare)
+    {
         return;
     }
     _didCallPrepare = YES;
@@ -77,7 +79,8 @@
 
 - (void)start
 {
-    if (_didCallStart) {
+    if (_didCallStart)
+    {
         return;
     }
     _didCallStart = YES;
@@ -100,7 +103,8 @@
 {
     [_captureSession commitConfiguration];
     _configurationCount--;
-    if (_configurationCount <= 0) {
+    if (_configurationCount <= 0)
+    {
         _configurationCount = 0;
         [self reloadInternal];
     }
@@ -111,17 +115,20 @@
 - (void)reloadVideoOutput
 {
     [self beginConfiguration];
-    if (_videoDataOutput) {
+    if (_videoDataOutput)
+    {
         [_captureSession removeOutput:_videoDataOutput];
         _videoDataOutput = nil;
     }
-    if (!_videoProcessingQueue) {
+    if (!_videoProcessingQueue)
+    {
         _videoProcessingQueue = dispatch_queue_create("KTVVPCaptureSession-Video", DISPATCH_QUEUE_SERIAL);
     }
     _videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
     _videoDataOutput.videoSettings = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
     [_videoDataOutput setSampleBufferDelegate:self queue:dispatch_get_global_queue(0, 0)];
-    if ([_captureSession canAddOutput:_videoDataOutput]) {
+    if ([_captureSession canAddOutput:_videoDataOutput])
+    {
         [_captureSession addOutput:_videoDataOutput];
     }
     [self commitConfiguration];
@@ -130,32 +137,43 @@
 - (void)reloadAudioOutput
 {
     [self beginConfiguration];
-    if (_audioEnable) {
-        if (!_audioDevice) {
+    if (_audioEnable)
+    {
+        if (!_audioDevice)
+        {
             _audioDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeAudio];
         }
-        if (!_audioInput) {
+        if (!_audioInput)
+        {
             _audioInput = [AVCaptureDeviceInput deviceInputWithDevice:_audioDevice error:nil];
-            if ([_captureSession canAddInput:_audioInput]) {
+            if ([_captureSession canAddInput:_audioInput])
+            {
                 [_captureSession addInput:_audioInput];
             }
         }
-        if (!_audioDataOutput) {
-            if (!_audioProcessingQueue) {
+        if (!_audioDataOutput)
+        {
+            if (!_audioProcessingQueue)
+            {
                 _audioProcessingQueue = dispatch_queue_create("KTVVPCaptureSession-Audio", DISPATCH_QUEUE_SERIAL);
             }
             _audioDataOutput = [[AVCaptureAudioDataOutput alloc] init];
             [_audioDataOutput setSampleBufferDelegate:self queue:_audioProcessingQueue];
-            if ([_captureSession canAddOutput:_audioDataOutput]) {
+            if ([_captureSession canAddOutput:_audioDataOutput])
+            {
                 [_captureSession addOutput:_audioDataOutput];
             }
         }
-    } else {
-        if (_audioInput) {
+    }
+    else
+    {
+        if (_audioInput)
+        {
             [_captureSession removeInput:_audioInput];
             _audioInput = nil;
         }
-        if (_audioDataOutput) {
+        if (_audioDataOutput)
+        {
             [_captureSession removeOutput:_audioDataOutput];
             _audioDataOutput = nil;
         }
@@ -174,24 +192,31 @@
 - (void)reloadPosition
 {
     [self beginConfiguration];
-    if (_videoInput) {
+    if (_videoInput)
+    {
         [_captureSession removeInput:_videoInput];
         _videoInput = nil;
     }
     _videoDevice = nil;
-    
-    NSArray *devices = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:_position].devices;
-    for (AVCaptureDevice *device in devices) {
-        if (device.position == _position) {
+    ;
+    NSArray * devices = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:_position].devices;
+    for (AVCaptureDevice * device in devices)
+    {
+        if (device.position == _position)
+        {
             _videoDevice = device;
         }
     }
-    if (_videoDevice) {
+    if (_videoDevice)
+    {
         _videoInput = [[AVCaptureDeviceInput alloc] initWithDevice:_videoDevice error:nil];
-        if ([_captureSession canAddInput:_videoInput]) {
+        if ([_captureSession canAddInput:_videoInput])
+        {
             [_captureSession addInput:_videoInput];
         }
-    } else {
+    }
+    else
+    {
         _error = [NSError errorWithDomain:@"No vaild camera device." code:-1 userInfo:nil];
     }
     [self commitConfiguration];
@@ -222,7 +247,8 @@
 
 - (void)setPosition:(AVCaptureDevicePosition)position
 {
-    if (_position != position) {
+    if (_position != position)
+    {
         _position = position;
         [self reloadPosition];
     }
@@ -230,7 +256,8 @@
 
 - (void)setSessionPreset:(AVCaptureSessionPreset)sessionPreset
 {
-    if (![_sessionPreset isEqualToString:sessionPreset]) {
+    if (![_sessionPreset isEqualToString:sessionPreset])
+    {
         _sessionPreset = sessionPreset;
         [self reloadSessionPreset];
     }
@@ -238,7 +265,8 @@
 
 - (void)setOrientation:(UIInterfaceOrientation)orientation
 {
-    if (_orientation != orientation) {
+    if (_orientation != orientation)
+    {
         _orientation = orientation;
         [self reloadOrientation];
     }
@@ -246,7 +274,8 @@
 
 - (void)setHorizontalFlipForFront:(BOOL)horizontalFlipForFront
 {
-    if (_horizontalFlipForFront != horizontalFlipForFront) {
+    if (_horizontalFlipForFront != horizontalFlipForFront)
+    {
         _horizontalFlipForFront = horizontalFlipForFront;
         [self reloadHorizontalFlipForFront];
     }
@@ -254,10 +283,12 @@
 
 - (void)setAudioEnable:(BOOL)audioEnable
 {
-    if (_didCallStart) {
+    if (_didCallStart)
+    {
         return;
     }
-    if (_audioEnable != audioEnable) {
+    if (_audioEnable != audioEnable)
+    {
         _audioEnable = audioEnable;
         [self reloadAudioOutput];
     }
@@ -265,7 +296,7 @@
 
 - (KTVVPRotationMode)rotationMode
 {
-    switch (_orientationInternal) 
+    switch (_orientationInternal)
     {
         case UIInterfaceOrientationUnknown:
         case UIInterfaceOrientationPortrait:
@@ -291,7 +322,8 @@
 - (KTVVPFlipMode)flipMode
 {
     if (_positionInternal == AVCaptureDevicePositionFront
-        && _horizontalFlipForFrontInternal) {
+        && _horizontalFlipForFrontInternal)
+    {
         return KTVVPFlipModeHorizonal;
     }
     return KTVVPFlipModeNone;
@@ -338,7 +370,8 @@
 - (void)setMinFrameDuration:(CMTime)minFrameDuration
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         [_videoDevice setActiveVideoMinFrameDuration:minFrameDuration];
         [_videoDevice unlockForConfiguration];
     }
@@ -353,7 +386,8 @@
 - (void)setMaxFrameDuration:(CMTime)maxFrameDuration
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         [_videoDevice setActiveVideoMaxFrameDuration:maxFrameDuration];
         [_videoDevice unlockForConfiguration];
     }
@@ -373,7 +407,8 @@
 - (void)setTorchMode:(AVCaptureTorchMode)torchMode
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         _videoDevice.torchMode = torchMode;
         [_videoDevice unlockForConfiguration];
     }
@@ -393,7 +428,8 @@
 - (void)setFocusMode:(AVCaptureFocusMode)focusMode
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         _videoDevice.focusMode = focusMode;
         [_videoDevice unlockForConfiguration];
     }
@@ -413,7 +449,8 @@
 - (void)setFocusPointOfInterest:(CGPoint)focusPointOfInterest
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         _videoDevice.focusPointOfInterest = [self convertPointToCurrentTranform:focusPointOfInterest];
         _videoDevice.focusMode = [self focusMode];
         [_videoDevice unlockForConfiguration];
@@ -434,7 +471,8 @@
 - (void)setExposureMode:(AVCaptureExposureMode)exposureMode
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         _videoDevice.exposureMode = exposureMode;
         [_videoDevice unlockForConfiguration];
     }
@@ -454,7 +492,8 @@
 - (void)setExposurePointOfInterest:(CGPoint)exposurePointOfInterest
 {
     [self beginConfiguration];
-    if ([_videoDevice lockForConfiguration:nil]) {
+    if ([_videoDevice lockForConfiguration:nil])
+    {
         _videoDevice.exposurePointOfInterest = [self convertPointToCurrentTranform:exposurePointOfInterest];
         _videoDevice.exposureMode = [self exposureMode];
         [_videoDevice unlockForConfiguration];
@@ -469,25 +508,25 @@
 
 - (BOOL)videoStabilizationSupported
 {
-    AVCaptureConnection *connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    AVCaptureConnection * connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
     return connection.supportsVideoStabilization;
 }
 
 - (AVCaptureVideoStabilizationMode)activeVideoStabilizationMode
 {
-    AVCaptureConnection *connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    AVCaptureConnection * connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
     return connection.activeVideoStabilizationMode;
 }
 
 - (void)setPreferredVideoStabilizationMode:(AVCaptureVideoStabilizationMode)preferredVideoStabilizationMode
 {
-    AVCaptureConnection *connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    AVCaptureConnection * connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
     connection.preferredVideoStabilizationMode = preferredVideoStabilizationMode;
 }
 
 - (AVCaptureVideoStabilizationMode)preferredVideoStabilizationMode
 {
-    AVCaptureConnection *connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    AVCaptureConnection * connection = [_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
     return connection.preferredVideoStabilizationMode;
 }
 
@@ -496,17 +535,23 @@
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     CMTime presentationTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-    if (output == _videoDataOutput) {
-        if (self.paused) {
+    if (output == _videoDataOutput)
+    {
+        if (self.paused)
+        {
             [_videoTimeComponents putDroppedTimeStamp:presentationTimeStamp];
-        } else {
+        }
+        else
+        {
             [_videoTimeComponents putCurrentTimeStamp:presentationTimeStamp];
-            if (self.pipeline) {
-                if (!_framePool) {
+            if (self.pipeline)
+            {
+                if (!_framePool)
+                {
                     _framePool = [[KTVVPFramePool alloc] init];
                 }
-                KTVVPCMSmapleBufferFrame *frame = [_framePool frameWithKey:[KTVVPCMSmapleBufferFrame key] factory:^__kindof KTVVPFrame *{
-                    KTVVPCMSmapleBufferFrame *result = [[KTVVPCMSmapleBufferFrame alloc] init];
+                KTVVPCMSmapleBufferFrame * frame = [_framePool frameWithKey:[KTVVPCMSmapleBufferFrame key] factory:^__kindof KTVVPFrame *{
+                    KTVVPCMSmapleBufferFrame * result = [[KTVVPCMSmapleBufferFrame alloc] init];
                     return result;
                 }];
                 frame.sampleBuffer = sampleBuffer;
@@ -518,13 +563,19 @@
                 [frame unlock];
             }
         }
-    } else if (output == _audioDataOutput) {
-        if (self.paused)  {
+    }
+    else if (output == _audioDataOutput)
+    {
+        if (self.paused)
+        {
             [_audioTimeComponents putDroppedTimeStamp:presentationTimeStamp];
-        } else {
+        }
+        else
+        {
             [_audioTimeComponents putCurrentTimeStamp:presentationTimeStamp];
-            if (_audioOutput) {
-                KTVVPSample *sample = [[KTVVPSample alloc] init];
+            if (_audioOutput)
+            {
+                KTVVPSample * sample = [[KTVVPSample alloc] init];
                 sample.sampleBuffer = sampleBuffer;
                 sample.timeStamp = _audioTimeComponents.timeStamp;
                 sample.hostTimeStamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
@@ -536,9 +587,12 @@
 
 - (void)captureOutput:(AVCaptureOutput *)output didDropSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    if (output == _videoDataOutput) {
+    if (output == _videoDataOutput)
+    {
         KTVVPLog(@"Video : %s", __func__);
-    } else if (output == _audioDataOutput) {
+    }
+    else if (output == _audioDataOutput)
+    {
         KTVVPLog(@"Audio : %s", __func__);
     }
 }

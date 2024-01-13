@@ -12,8 +12,8 @@
 
 @interface KTVVPCaptureSession : KTVVPSource
 
-@property (nonatomic, copy, readonly) NSError *error;
-@property (nonatomic, strong, readonly) AVCaptureSession *captureSession;
+@property (nonatomic, copy, readonly) NSError * error;
+@property (nonatomic, strong, readonly) AVCaptureSession * captureSession;
 
 /**
  *  @property sessionPreset           Default value is AVCaptureSessionPreset1280x720.

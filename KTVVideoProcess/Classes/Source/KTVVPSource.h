@@ -21,6 +21,6 @@
 
 #pragma mark - Output
 
-@property (atomic, strong) KTVVPPipeline *pipeline;
+@property (atomic, strong) KTVVPPipeline * pipeline;
 
 @end
