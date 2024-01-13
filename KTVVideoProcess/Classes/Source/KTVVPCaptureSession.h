@@ -12,8 +12,8 @@
 
 @interface KTVVPCaptureSession : KTVVPSource
 
-@property (nonatomic, copy, readonly) NSError * error;
-@property (nonatomic, strong, readonly) AVCaptureSession * captureSession;
+@property (nonatomic, copy, readonly) NSError *error;
+@property (nonatomic, strong, readonly) AVCaptureSession *captureSession;
 
 /**
  *  @property horizontalFlipForFront Default value is YES.
@@ -32,7 +32,7 @@
  *  @property deviceType Default value is nil.
  *  @property position   Default value is AVCaptureDevicePositionFront.
  */
-@property (nonatomic, copy, readonly) NSString * deviceType;
+@property (nonatomic, copy, readonly) NSString *deviceType;
 @property (nonatomic, readonly) AVCaptureDevicePosition position;
 - (BOOL)setDeviceType:(NSString *)deviceType;
 - (BOOL)setPosition:(AVCaptureDevicePosition)position;

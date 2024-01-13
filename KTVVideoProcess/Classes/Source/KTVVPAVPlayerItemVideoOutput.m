@@ -12,11 +12,11 @@
 
 @interface KTVVPAVPlayerItemVideoOutput () <AVPlayerItemOutputPullDelegate>
 
-@property (nonatomic, strong) AVPlayerItem * playerItem;
-@property (nonatomic, strong) AVPlayerItemVideoOutput * playerItemVideoOutput;
-@property (nonatomic, strong) CADisplayLink * displayLink;
+@property (nonatomic, strong) AVPlayerItem *playerItem;
+@property (nonatomic, strong) AVPlayerItemVideoOutput *playerItemVideoOutput;
+@property (nonatomic, strong) CADisplayLink *displayLink;
 @property (nonatomic, assign) NSTimeInterval lastFrameTime;
-@property (nonatomic, strong) KTVVPFramePool * framePool;
+@property (nonatomic, strong) KTVVPFramePool *framePool;
 @property (nonatomic, assign) BOOL didCallStart;
 
 @end
@@ -25,8 +25,7 @@
 
 - (instancetype)initWithPlayerItem:(AVPlayerItem *)playerItem
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _playerItem = playerItem;
     }
     return self;
@@ -34,15 +33,14 @@
 
 - (void)start
 {
-    if (_didCallStart)
-    {
+    if (_didCallStart) {
         return;
     }
     _didCallStart = YES;
     _displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkCallback)];
     [_displayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
     _displayLink.paused = YES;
-    NSDictionary * pixelBuffer = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
+    NSDictionary *pixelBuffer = @{(id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA)};
     _playerItemVideoOutput = [[AVPlayerItemVideoOutput alloc] initWithPixelBufferAttributes:pixelBuffer];
     [_playerItemVideoOutput setDelegate:self queue:dispatch_get_main_queue()];
     _playerItemVideoOutput.suppressesPlayerRendering = YES;
@@ -52,14 +50,12 @@
 
 - (void)stop
 {
-    if (_displayLink)
-    {
+    if (_displayLink) {
         _displayLink.paused = YES;
         [_displayLink invalidate];
         _displayLink = nil;
     }
-    if (_playerItem && _playerItemVideoOutput)
-    {
+    if (_playerItem && _playerItemVideoOutput) {
         [_playerItem removeOutput:_playerItemVideoOutput];
         _playerItem = nil;
         _playerItemVideoOutput = nil;
@@ -68,27 +64,23 @@
 
 - (void)displayLinkCallback
 {
-    if (self.paused)
-    {
+    if (self.paused) {
         return;
     }
     CFTimeInterval nextVSync = _displayLink.timestamp + _displayLink.duration;
     CMTime outputItemTime = [_playerItemVideoOutput itemTimeForHostTime:nextVSync];
     BOOL hasNewPixelBuffer = [_playerItemVideoOutput hasNewPixelBufferForItemTime:outputItemTime];
-    if (hasNewPixelBuffer)
-    {
+    if (hasNewPixelBuffer) {
         CMTime outItemTimeForDisplay;
         CVPixelBufferRef pixelBuffer = [_playerItemVideoOutput copyPixelBufferForItemTime:outputItemTime
-                                                                           itemTimeForDisplay:&outItemTimeForDisplay];
-        if (pixelBuffer)
-        {
+                                                                       itemTimeForDisplay:&outItemTimeForDisplay];
+        if (pixelBuffer) {
             _lastFrameTime = [NSDate date].timeIntervalSince1970;
-            if (!_framePool)
-            {
+            if (!_framePool) {
                 _framePool = [[KTVVPFramePool alloc] init];
             }
-            KTVVPCVPixelBufferFrame * frame = [_framePool frameWithKey:[KTVVPCVPixelBufferFrame key] factory:^__kindof KTVVPFrame *{
-                KTVVPCVPixelBufferFrame * result = [[KTVVPCVPixelBufferFrame alloc] init];
+            KTVVPCVPixelBufferFrame *frame = [_framePool frameWithKey:[KTVVPCVPixelBufferFrame key] factory:^__kindof KTVVPFrame *{
+                KTVVPCVPixelBufferFrame *result = [[KTVVPCVPixelBufferFrame alloc] init];
                 return result;
             }];
             frame.pixelBuffer = pixelBuffer;
@@ -98,9 +90,7 @@
             [frame unlock];
             CVPixelBufferRelease(pixelBuffer);
         }
-    }
-    else if ([NSDate date].timeIntervalSince1970 - _lastFrameTime > 5)
-    {
+    } else if ([NSDate date].timeIntervalSince1970 - _lastFrameTime > 5) {
         _displayLink.paused = YES;
         [_playerItemVideoOutput requestNotificationOfMediaDataChangeWithAdvanceInterval:0.03];
     }
