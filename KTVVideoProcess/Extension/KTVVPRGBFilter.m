@@ -37,8 +37,7 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext framePool:(KTVVPFramePool *)framePool frameUploader:(KTVVPFrameUploader *)frameUploader
 {
-    if (self = [super initWithGLContext:glContext framePool:framePool frameUploader:frameUploader])
-    {
+    if (self = [super initWithGLContext:glContext framePool:framePool frameUploader:frameUploader]) {
         _red = 1.0;
         _green = 1.0;
         _blue = 1.0;

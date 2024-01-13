@@ -33,8 +33,7 @@ static NSString * const kFragmentShaderString = KTV_GLES_STRINGIZE
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext framePool:(KTVVPFramePool *)framePool frameUploader:(KTVVPFrameUploader *)frameUploader
 {
-    if (self = [super initWithGLContext:glContext framePool:framePool frameUploader:frameUploader])
-    {
+    if (self = [super initWithGLContext:glContext framePool:framePool frameUploader:frameUploader]) {
         _brightness = 0.0;
     }
     return self;
