@@ -18,8 +18,7 @@
 
 - (void)reloadDataIfNeeded
 {
-    if (_needReloadData)
-    {
+    if (_needReloadData) {
         [self reloadData];
         _needReloadData = NO;
     }
@@ -27,8 +26,7 @@
 
 - (void)setRotationMode:(KTVVPRotationMode)rotationMode
 {
-    if (_rotationMode != rotationMode)
-    {
+    if (_rotationMode != rotationMode) {
         _rotationMode = rotationMode;
         _needReloadData = YES;
     }
@@ -36,8 +34,7 @@
 
 - (void)setFlipMode:(KTVVPFlipMode)flipMode
 {
-    if (_flipMode != flipMode)
-    {
+    if (_flipMode != flipMode) {
         _flipMode = flipMode;
         _needReloadData = YES;
     }

@@ -16,15 +16,15 @@
     GLuint _vertices_buffer_id;
     GLuint _textureCoordinates_buffer_id;
     
-    GLushort * _indexes_buffer_data;
-    GLfloat * _vertices_buffer_data;
-    GLfloat * _textureCoordinates_buffer_data;
+    GLushort *_indexes_buffer_data;
+    GLfloat *_vertices_buffer_data;
+    GLfloat *_textureCoordinates_buffer_data;
     
     int _indexes_count;
     int _vertices_count;
 }
 
-@property (nonatomic, strong) EAGLContext * glContext;
+@property (nonatomic, strong) EAGLContext *glContext;
 
 @end
 
@@ -32,8 +32,7 @@
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _glContext = glContext;
         [self setupDdata];
     }
@@ -79,18 +78,15 @@
 
 - (void)destoryData
 {
-    if (_indexes_buffer_id)
-    {
+    if (_indexes_buffer_id) {
         glDeleteBuffers(1, &_indexes_buffer_id);
         _indexes_buffer_id = 0;
     }
-    if (_vertices_buffer_id)
-    {
+    if (_vertices_buffer_id) {
         glDeleteBuffers(1, &_vertices_buffer_id);
         _vertices_buffer_id = 0;
     }
-    if (_textureCoordinates_buffer_id)
-    {
+    if (_textureCoordinates_buffer_id) {
         glDeleteBuffers(1, &_textureCoordinates_buffer_id);
         _textureCoordinates_buffer_id = 0;
     }

@@ -50,7 +50,8 @@
 
 - (KTVVPFlipMode)textureFlipMode
 {
-    switch (_flipMode) {
+    switch (_flipMode) 
+    {
         case KTVVPFlipModeNone:
             return KTVVPFlipModeVertical;
         case KTVVPFlipModeHorizonal:

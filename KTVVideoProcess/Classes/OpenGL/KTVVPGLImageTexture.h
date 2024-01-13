@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVVPDefines.h"
 #import "KTVVPGLDefines.h"
+#import "KTVVPDefines.h"
 
 @interface KTVVPGLImageTexture : NSObject
 

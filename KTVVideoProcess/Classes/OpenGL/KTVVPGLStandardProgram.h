@@ -20,7 +20,7 @@
 /**
  *  Core program.
  */
-@property (nonatomic, strong, readonly) KTVVPGLProgram * program;
+@property (nonatomic, strong, readonly) KTVVPGLProgram *program;
 
 /**
  *  Locations.

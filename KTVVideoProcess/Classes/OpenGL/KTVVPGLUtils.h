@@ -12,4 +12,4 @@
 /**
  *  Try to set the context to current thread.
  */
-void KTVVPSetCurrentGLContextIfNeeded(EAGLContext * glContext);
+void KTVVPSetCurrentGLContextIfNeeded(EAGLContext *glContext);

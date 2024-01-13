@@ -10,7 +10,7 @@
 
 @interface KTVVPGLImageTexture ()
 
-@property (nonatomic, strong) UIImage * image;
+@property (nonatomic, strong) UIImage *image;
 
 @end
 
@@ -18,8 +18,7 @@
 
 - (instancetype)initWithPath:(NSString *)path
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _image = [UIImage imageWithContentsOfFile:path];
         _size = KTVVPSizeMake(_image.size.width, _image.size.height);
     }
@@ -28,8 +27,7 @@
 
 - (instancetype)initWithImage:(UIImage *)image
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _image = image;
         _size = KTVVPSizeMake(_image.size.width, _image.size.height);
     }
@@ -43,60 +41,45 @@
 
 - (void)uploadIfNeeded
 {
-    if (_texture)
-    {
+    if (_texture) {
         return;
     }
     CGImageRef cgImage = _image.CGImage;
-    GLubyte * imageData = NULL;
+    GLubyte *imageData = NULL;
     CFDataRef dataFromImageDataProvider = NULL;
     GLenum format = GL_BGRA;
     BOOL shouldRedrawUsingCoreGraphics = NO;
     if (CGImageGetBytesPerRow(cgImage) != _size.width * 4
         || CGImageGetBitsPerPixel(cgImage) != 32
-        || CGImageGetBitsPerComponent(cgImage) != 8)
-    {
+        || CGImageGetBitsPerComponent(cgImage) != 8) {
         shouldRedrawUsingCoreGraphics = YES;
-    }
-    else
-    {
+    } else {
         CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(cgImage);
-        if ((bitmapInfo & kCGBitmapFloatComponents) != 0)
-        {
+        if ((bitmapInfo & kCGBitmapFloatComponents) != 0) {
             shouldRedrawUsingCoreGraphics = YES;
-        }
-        else
-        {
+        } else {
             CGBitmapInfo byteOrderInfo = bitmapInfo & kCGBitmapByteOrderMask;
-            if (byteOrderInfo == kCGBitmapByteOrder32Little)
-            {
+            if (byteOrderInfo == kCGBitmapByteOrder32Little) {
                 CGImageAlphaInfo alphaInfo = bitmapInfo & kCGBitmapAlphaInfoMask;
                 if (alphaInfo != kCGImageAlphaPremultipliedFirst
                     && alphaInfo != kCGImageAlphaFirst
-                    && alphaInfo != kCGImageAlphaNoneSkipFirst)
-                {
+                    && alphaInfo != kCGImageAlphaNoneSkipFirst) {
                     shouldRedrawUsingCoreGraphics = YES;
                 }
-            }
-            else if (byteOrderInfo == kCGBitmapByteOrderDefault
-                     || byteOrderInfo == kCGBitmapByteOrder32Big)
-            {
+            } else if (byteOrderInfo == kCGBitmapByteOrderDefault
+                     || byteOrderInfo == kCGBitmapByteOrder32Big) {
                 CGImageAlphaInfo alphaInfo = bitmapInfo & kCGBitmapAlphaInfoMask;
                 if (alphaInfo != kCGImageAlphaPremultipliedLast
                     && alphaInfo != kCGImageAlphaLast
-                    && alphaInfo != kCGImageAlphaNoneSkipLast)
-                {
+                    && alphaInfo != kCGImageAlphaNoneSkipLast) {
                     shouldRedrawUsingCoreGraphics = YES;
-                }
-                else
-                {
+                } else {
                     format = GL_RGBA;
                 }
             }
         }
     }
-    if (shouldRedrawUsingCoreGraphics)
-    {
+    if (shouldRedrawUsingCoreGraphics) {
         imageData = (GLubyte *)calloc(1, _size.width * _size.height * 4);
         CGColorSpaceRef genericRGBColorspace = CGColorSpaceCreateDeviceRGB();
         CGContextRef imageContext = CGBitmapContextCreate(imageData,
@@ -111,9 +94,7 @@
                            cgImage);
         CGContextRelease(imageContext);
         CGColorSpaceRelease(genericRGBColorspace);
-    }
-    else
-    {
+    } else {
         dataFromImageDataProvider = CGDataProviderCopyData(CGImageGetDataProvider(cgImage));
         imageData = (GLubyte *)CFDataGetBytePtr(dataFromImageDataProvider);
     }
@@ -127,14 +108,10 @@
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.width, _size.height, 0, format, GL_UNSIGNED_BYTE, imageData);
     glBindTexture(GL_TEXTURE_2D, 0);
     
-    if (shouldRedrawUsingCoreGraphics)
-    {
+    if (shouldRedrawUsingCoreGraphics) {
         free(imageData);
-    }
-    else
-    {
-        if (dataFromImageDataProvider)
-        {
+    } else {
+        if (dataFromImageDataProvider) {
             CFRelease(dataFromImageDataProvider);
         }
     }
@@ -142,8 +119,7 @@
 
 - (void)destory
 {
-    if (_texture)
-    {
+    if (_texture) {
         glDeleteTextures(1, &_texture);
         _texture = 0;
     }

@@ -8,10 +8,9 @@
 
 #import "KTVVPGLUtils.h"
 
-void KTVVPSetCurrentGLContextIfNeeded(EAGLContext * glContext)
+void KTVVPSetCurrentGLContextIfNeeded(EAGLContext *glContext)
 {
-    if ([EAGLContext currentContext] != glContext)
-    {
+    if ([EAGLContext currentContext] != glContext) {
         [EAGLContext setCurrentContext:glContext];
     }
 }
