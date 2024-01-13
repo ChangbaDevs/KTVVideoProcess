@@ -16,15 +16,27 @@
 @property (nonatomic, strong, readonly) AVCaptureSession * captureSession;
 
 /**
- *  @property sessionPreset           Default value is AVCaptureSessionPreset1280x720.
- *  @property orientation             Default value is UIInterfaceOrientationPortrait.
- *  @property position                Default value is AVCaptureDevicePositionFront.
- *  @property horizontalFlipForFront  Default value is YES.
+ *  @property horizontalFlipForFront Default value is YES.
+ *  @property orientation            Default value is UIInterfaceOrientationPortrait.
  */
-@property (nonatomic, copy) AVCaptureSessionPreset sessionPreset;
-@property (nonatomic, assign) UIInterfaceOrientation orientation;
-@property (nonatomic, assign) AVCaptureDevicePosition position;
-@property (nonatomic, assign) BOOL horizontalFlipForFront;
+@property (nonatomic) BOOL horizontalFlipForFront;
+@property (nonatomic) UIInterfaceOrientation orientation;
+
+/**
+ *  @property sessionPreset           Default value is AVCaptureSessionPreset1280x720.
+ */
+@property (nonatomic, copy, readonly) AVCaptureSessionPreset sessionPreset;
+- (BOOL)setSessionPreset:(AVCaptureSessionPreset)sessionPreset;
+
+/**
+ *  @property deviceType Default value is nil.
+ *  @property position   Default value is AVCaptureDevicePositionFront.
+ */
+@property (nonatomic, copy, readonly) NSString * deviceType;
+@property (nonatomic, readonly) AVCaptureDevicePosition position;
+- (BOOL)setDeviceType:(NSString *)deviceType;
+- (BOOL)setPosition:(AVCaptureDevicePosition)position;
+- (BOOL)setPosition:(AVCaptureDevicePosition)position deviceType:(NSString *)deviceType;
 
 /**
  *  Frame Duration.

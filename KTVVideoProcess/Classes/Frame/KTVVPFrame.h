@@ -58,6 +58,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
  *  Containing data.
  */
 - (CVPixelBufferRef)corePixelBuffer;
+@property (nonatomic, strong) AVDepthData * depthData NS_AVAILABLE_IOS(11_1);
 @property (nonatomic, strong) id extendedObject;
 
 /**

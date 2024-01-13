@@ -53,6 +53,10 @@
     _layout.rotationMode = frame.layout.rotationMode;
     _layout.flipMode = frame.layout.flipMode;
     _extendedObject = frame.extendedObject;
+    if (@available(iOS 11_1, *))
+    {
+        _depthData = frame.depthData;
+    }
 }
 
 - (void)fillWithFrameWithoutTransform:(KTVVPFrame *)frame
@@ -63,6 +67,10 @@
     _layout.rotationMode = KTVVPRotationMode0;
     _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = frame.extendedObject;
+    if (@available(iOS 11.1, *))
+    {
+        _depthData = frame.depthData;
+    }
 }
 
 - (void)clear
@@ -72,6 +80,10 @@
     _layout.rotationMode = KTVVPRotationMode0;
     _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = nil;
+    if (@available(iOS 11.1, *))
+    {
+        _depthData = nil;
+    }
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader

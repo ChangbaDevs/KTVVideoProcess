@@ -31,6 +31,7 @@ FOUNDATION_EXPORT const unsigned char KTVVideoProcessVersionString[];
 #pragma mark - Basic Filter
 
 #import "KTVVPFilter.h"
+#import "KTVVPDrawableFilter.h"
 #import "KTVVPTransformFilter.h"
 #import "KTVVPPassthroughFilter.h"
 

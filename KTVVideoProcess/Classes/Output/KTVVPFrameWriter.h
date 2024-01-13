@@ -21,7 +21,7 @@
 @property (nonatomic, copy) AVFileType outputFileType;
 
 /**
- *  Data Limit.
+ *  File config.
  *
  *  @property minimumNumberOfFrames   Default value is 1.
  *  @property minimumNumberOfSamples  Default value is 1.
@@ -36,6 +36,7 @@
  *  @property videoOutputBitRate                            Default value is 0.
  *  @property videoOutputMaxKeyFrameInterval                Default value is 0.
  *  @property videoOutputMaxKeyFrameIntervalDuration        Default value is (0, 1)).
+ *  @property videoOutputAllowFrameReordering               Default value is NO.
  *  @property videoOutputScalingMode                        Default value is AVVideoScalingModeResizeAspectFill.
  */
 @property (nonatomic, assign) KTVVPSize videoOutputSize;
@@ -44,6 +45,7 @@
 @property (nonatomic, assign) NSInteger videoOutputBitRate;
 @property (nonatomic, assign) NSInteger videoOutputMaxKeyFrameInterval;
 @property (nonatomic, assign) CMTime videoOutputMaxKeyFrameIntervalDuration;
+@property (nonatomic, assign) BOOL videoOutputAllowFrameReordering;
 @property (nonatomic, copy) NSString * videoOutputScalingMode;
 @property (nonatomic, copy) NSDictionary * videoOutputSettings;
 @property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
