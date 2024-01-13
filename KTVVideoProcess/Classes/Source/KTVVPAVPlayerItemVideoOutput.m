@@ -79,7 +79,7 @@
                 _framePool = [[KTVVPFramePool alloc] init];
             }
             KTVVPCVPixelBufferFrame *frame = [_framePool frameWithKey:[KTVVPCVPixelBufferFrame key] factory:^__kindof KTVVPFrame *{
-                KTVVPCVPixelBufferFrame * result = [[KTVVPCVPixelBufferFrame alloc] init];
+                KTVVPCVPixelBufferFrame *result = [[KTVVPCVPixelBufferFrame alloc] init];
                 return result;
             }];
             frame.pixelBuffer = pixelBuffer;
