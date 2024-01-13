@@ -424,7 +424,7 @@
     }
     else
     {
-        NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+        NSArray * devices = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:_position].devices;
         for (AVCaptureDevice * obj in devices)
         {
             if (obj.position == _position)

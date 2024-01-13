@@ -368,7 +368,7 @@ typedef NS_ENUM(NSUInteger, KTVVPMessageTypeWriter)
         if (@available(iOS 11.0, *)) {
             [outputSettings setObject:AVVideoCodecTypeH264 forKey:AVVideoCodecKey];
         } else {
-            [outputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
+            [outputSettings setObject:AVVideoCodecTypeH264 forKey:AVVideoCodecKey];
         }
         NSMutableDictionary * compressionProperties = [NSMutableDictionary dictionary];
         if (_videoOutputBitRate > 0)

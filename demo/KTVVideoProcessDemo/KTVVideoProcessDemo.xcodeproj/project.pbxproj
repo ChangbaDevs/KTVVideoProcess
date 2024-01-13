@@ -47,6 +47,7 @@
 		36DCF9332B528C00008A246C /* KTVVPGLStandardProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCF9062B528C00008A246C /* KTVVPGLStandardProgram.m */; };
 		36DCF9342B528C00008A246C /* KTVVPGLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCF9082B528C00008A246C /* KTVVPGLProgram.m */; };
 		36DCF9352B528C00008A246C /* KTVVPGLUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 36DCF90A2B528C00008A246C /* KTVVPGLUtils.m */; };
+		4E5DA22F2B52ADE200D2A953 /* KTVVPDrawableFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E5DA22D2B52ADE200D2A953 /* KTVVPDrawableFilter.m */; };
 		9C990597205A194800D7CF3A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C990596205A194800D7CF3A /* AppDelegate.m */; };
 		9C99059A205A194800D7CF3A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C990599205A194800D7CF3A /* ViewController.m */; };
 		9C99059D205A194800D7CF3A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C99059B205A194800D7CF3A /* Main.storyboard */; };
@@ -155,6 +156,8 @@
 		36DCF90B2B528C00008A246C /* KTVVPGLPlaneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPGLPlaneModel.h; sourceTree = "<group>"; };
 		36DCF90C2B528C00008A246C /* KTVVPGLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPGLModel.h; sourceTree = "<group>"; };
 		36DCF90D2B528C00008A246C /* KTVVideoProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVideoProcess.h; sourceTree = "<group>"; };
+		4E5DA22D2B52ADE200D2A953 /* KTVVPDrawableFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPDrawableFilter.m; sourceTree = "<group>"; };
+		4E5DA22E2B52ADE200D2A953 /* KTVVPDrawableFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPDrawableFilter.h; sourceTree = "<group>"; };
 		9C2714AB2093696F00052130 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9C990592205A194800D7CF3A /* KTVVideoProcessDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KTVVideoProcessDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C990595205A194800D7CF3A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -336,10 +339,12 @@
 			children = (
 				36DCF8F42B528C00008A246C /* KTVVPFilter.h */,
 				36DCF8F72B528C00008A246C /* KTVVPFilter.m */,
-				36DCF8F52B528C00008A246C /* KTVVPPassthroughFilter.h */,
-				36DCF8F32B528C00008A246C /* KTVVPPassthroughFilter.m */,
+				4E5DA22E2B52ADE200D2A953 /* KTVVPDrawableFilter.h */,
+				4E5DA22D2B52ADE200D2A953 /* KTVVPDrawableFilter.m */,
 				36DCF8F22B528C00008A246C /* KTVVPTransformFilter.h */,
 				36DCF8F62B528C00008A246C /* KTVVPTransformFilter.m */,
+				36DCF8F52B528C00008A246C /* KTVVPPassthroughFilter.h */,
+				36DCF8F32B528C00008A246C /* KTVVPPassthroughFilter.m */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -503,6 +508,7 @@
 				36DCF9352B528C00008A246C /* KTVVPGLUtils.m in Sources */,
 				36DCF9332B528C00008A246C /* KTVVPGLStandardProgram.m in Sources */,
 				36DCF9112B528C00008A246C /* KTVVPBlackAndWhiteFilter.m in Sources */,
+				4E5DA22F2B52ADE200D2A953 /* KTVVPDrawableFilter.m in Sources */,
 				36DCF9192B528C00008A246C /* KTVVPFrameView.m in Sources */,
 				36DCF90E2B528C00008A246C /* KTVVPExposureFilter.m in Sources */,
 				36DCF9162B528C00008A246C /* KTVVPCaptureSession.m in Sources */,
@@ -679,6 +685,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SWXNKT9754;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"GLES_SILENCE_DEPRECATION=1",
+				);
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -699,6 +710,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SWXNKT9754;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = "GLES_SILENCE_DEPRECATION=1";
 				INFOPLIST_FILE = KTVVideoProcessDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
