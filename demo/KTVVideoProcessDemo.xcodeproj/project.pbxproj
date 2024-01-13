@@ -156,6 +156,9 @@
 		36DCF90B2B528C00008A246C /* KTVVPGLPlaneModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPGLPlaneModel.h; sourceTree = "<group>"; };
 		36DCF90C2B528C00008A246C /* KTVVPGLModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPGLModel.h; sourceTree = "<group>"; };
 		36DCF90D2B528C00008A246C /* KTVVideoProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVideoProcess.h; sourceTree = "<group>"; };
+		4E25CCBE2B52DC5D004F975B /* KTVVideoProcess.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = KTVVideoProcess.podspec; path = ../KTVVideoProcess.podspec; sourceTree = "<group>"; };
+		4E25CCBF2B52DC5D004F975B /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		4E25CCC02B52DC5D004F975B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4E5DA22D2B52ADE200D2A953 /* KTVVPDrawableFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTVVPDrawableFilter.m; sourceTree = "<group>"; };
 		4E5DA22E2B52ADE200D2A953 /* KTVVPDrawableFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTVVPDrawableFilter.h; sourceTree = "<group>"; };
 		9C2714AB2093696F00052130 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -393,6 +396,9 @@
 		9C990589205A194800D7CF3A = {
 			isa = PBXGroup;
 			children = (
+				4E25CCBF2B52DC5D004F975B /* LICENSE */,
+				4E25CCC02B52DC5D004F975B /* README.md */,
+				4E25CCBE2B52DC5D004F975B /* KTVVideoProcess.podspec */,
 				36DCF8AA2B528C00008A246C /* KTVVideoProcess */,
 				9C990594205A194800D7CF3A /* KTVVideoProcessDemo */,
 				9C990593205A194800D7CF3A /* Products */,

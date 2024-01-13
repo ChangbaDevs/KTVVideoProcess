@@ -1,11 +1,13 @@
 # KTVVideoProcess
 
+![Cocoapods Version](https://img.shields.io/cocoapods/v/KTVVideoProcess) ![Cocoapods License](https://img.shields.io/cocoapods/l/KTVVideoProcess?color=red) ![Cocoapods platforms](https://img.shields.io/cocoapods/p/KTVVideoProcess?color=green)
+
 KTVVideoProcess is a High-Performance video effects processing framework. It's base on OpenGL ES, support asynchronous and multithread processing.
 
 
 ## Flow Chart
 
-![KTVVideoProcess-Flow-Chart](http://oxl6mxy2t.bkt.clouddn.com/changba/KTVVideoProcess-flow-chart.jpg)
+![KTVVideoProcess-Flow-Chart](https://libobjc-libs.oss-cn-beijing.aliyuncs.com/Resource/KTVVideoProcess-flow-chart.jpg)
 
 
 ## Installation
@@ -15,7 +17,7 @@ KTVVideoProcess is a High-Performance video effects processing framework. It's b
 To integrate KTVVideoProcess into your Xcode project using CocoaPods, specify it in your Podfile:
 
 ```ruby
-pod 'KTVVideoProcess', '~> 1.1.0'
+pod 'KTVVideoProcess', '~> 1.2.0'
 ```
 
 Run `pod install`
@@ -25,7 +27,7 @@ Run `pod install`
 To integrate KTVVideoProcess into your Xcode project using Carthage, specify it in your Cartfile:
 
 ```ogdl
-github "ChangbaDevs/KTVVideoProcess" ~> 1.1.0
+github "ChangbaDevs/KTVVideoProcess" ~> 1.2.0
 ```
 
 Run `carthage update` to build the framework and drag the built `KTVVideoProcess.framework` into your Xcode project.
@@ -165,15 +167,13 @@ self.captureSession.paused = YES;
 KTVVideoProcess is released under the MIT license.
 
 
-## Feedback
+## Author
 
 - GitHub : [Single](https://github.com/libobjc)
 - Email : libobjc@gmail.com
-- Twitter : CoderSingle
-- Weibo : 程序员Single
 
 
 ## Developed by Single
 
 - [SGPlayer](https://github.com/libobjc/SGPlayer) - A powerful media player framework for iOS, macOS, and tvOS.
-- [KTVHTTPCache](https://github.com/ChangbaDevs/KTVHTTPCache) - A smart media cache framework.
+- [KTVHTTPCache](https://github.com/ChangbaDevs/KTVHTTPCache) - A powerful HTTP caching framework.
