@@ -23,8 +23,8 @@
  *  @property fileType  Default value is AVFileTypeMPEG4.
  */
 @property (nonatomic, copy) AVFileType fileType;
-@property (nonatomic, copy) NSDictionary * audioOutputSettings;
-@property (nonatomic, copy) NSDictionary * videoOutputSettings;
+@property (nonatomic, copy) NSDictionary *audioOutputSettings;
+@property (nonatomic, copy) NSDictionary *videoOutputSettings;
 
 /**
  *  Input data.
@@ -45,6 +45,6 @@
 - (void)start;
 - (void)cancel;
 
-@property (nonatomic, copy, readonly) NSError * error;
+@property (nonatomic, copy, readonly) NSError *error;
 
 @end

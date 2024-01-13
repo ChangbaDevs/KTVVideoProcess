@@ -10,31 +10,27 @@
 
 #pragma mark - Enum
 
-typedef NS_ENUM(NSUInteger, KTVVPRotationMode)
-{
+typedef NS_ENUM(NSUInteger, KTVVPRotationMode) {
     KTVVPRotationMode0,
     KTVVPRotationMode90,
     KTVVPRotationMode180,
     KTVVPRotationMode270,
 };
 
-typedef NS_ENUM(NSUInteger, KTVVPFlipMode)
-{
+typedef NS_ENUM(NSUInteger, KTVVPFlipMode) {
     KTVVPFlipModeNone,
     KTVVPFlipModeHorizonal,
     KTVVPFlipModeVertical,
     KTVVPFlipModeHorizonalAndVertical,
 };
 
-typedef NS_ENUM(NSUInteger, KTVVPScalingMode)
-{
+typedef NS_ENUM(NSUInteger, KTVVPScalingMode) {
     KTVVPScalingModeResize,
     KTVVPScalingModeResizeAspect,
     KTVVPScalingModeResizeAspectFill,
 };
 
-typedef NS_OPTIONS(NSUInteger, KTVVPAVFlag)
-{
+typedef NS_OPTIONS(NSUInteger, KTVVPAVFlag) {
     KTVVPAVFlagNone       = 0 << 0,
     KTVVPAVFlagAudio      = 1 << 0,
     KTVVPAVFlagVideo      = 1 << 1,

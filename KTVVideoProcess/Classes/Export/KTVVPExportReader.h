@@ -21,7 +21,7 @@
 /**
  *  Readonly properties.
  */
-@property (nonatomic, copy, readonly) NSURL * URL;
+@property (nonatomic, copy, readonly) NSURL *URL;
 @property (nonatomic, assign, readonly) KTVVPAVFlag preferredFlag;
 @property (nonatomic, assign, readonly) KTVVPAVFlag actualFlag;
 @property (nonatomic, assign, readonly) KTVVPSize size;
@@ -32,8 +32,8 @@
 /**
  *  Output Config.
  */
-@property (nonatomic, copy) NSDictionary * audioOutputSettings;
-@property (nonatomic, copy) NSDictionary * videoOutputSettings;
+@property (nonatomic, copy) NSDictionary *audioOutputSettings;
+@property (nonatomic, copy) NSDictionary *videoOutputSettings;
 
 /**
  *  Output data.
@@ -45,6 +45,6 @@
 
 - (void)start;
 
-@property (nonatomic, copy, readonly) NSError * error;
+@property (nonatomic, copy, readonly) NSError *error;
 
 @end

@@ -12,8 +12,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         [self clear];
     }
     return self;
@@ -26,14 +25,12 @@
 
 - (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
-    if (sampleBuffer)
-    {
+    if (sampleBuffer) {
         CFRetain(sampleBuffer);
     }
     [self clear];
     _sampleBuffer = sampleBuffer;
-    if (_sampleBuffer)
-    {
+    if (_sampleBuffer) {
         _timeStamp = CMSampleBufferGetPresentationTimeStamp(_sampleBuffer);
         _hostTimeStamp = CMTimeMakeWithSeconds(CACurrentMediaTime(), INT32_MAX);
         _duration = CMSampleBufferGetDuration(_sampleBuffer);
@@ -42,8 +39,7 @@
 
 - (void)clear
 {
-    if (_sampleBuffer)
-    {
+    if (_sampleBuffer) {
         CFRelease(_sampleBuffer);
         _sampleBuffer = NULL;
     }

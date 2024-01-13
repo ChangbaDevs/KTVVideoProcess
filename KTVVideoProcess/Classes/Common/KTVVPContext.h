@@ -22,6 +22,6 @@
 /**
  *  Provide sharegroup.
  */
-@property (nonatomic, strong, readonly) EAGLContext * mainGLContext;
+@property (nonatomic, strong, readonly) EAGLContext *mainGLContext;
 
 @end
