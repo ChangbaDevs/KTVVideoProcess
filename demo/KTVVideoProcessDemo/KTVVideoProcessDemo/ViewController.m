@@ -11,18 +11,18 @@
 
 @interface ViewController ()
 
-@property (nonatomic, strong) KTVVPContext * context;
-@property (nonatomic, strong) KTVVPCaptureSession * captureSession;
-@property (nonatomic, strong) KTVVPSerialPipeline * pipeline;
-@property (nonatomic, strong) KTVVPFrameView * frameView;
-@property (nonatomic, strong) KTVVPFrameWriter * frameWriter;
+@property (nonatomic, strong) KTVVPContext *context;
+@property (nonatomic, strong) KTVVPCaptureSession *captureSession;
+@property (nonatomic, strong) KTVVPSerialPipeline *pipeline;
+@property (nonatomic, strong) KTVVPFrameView *frameView;
+@property (nonatomic, strong) KTVVPFrameWriter *frameWriter;
 
-@property (nonatomic, strong) KTVVPRGBFilter * RGBFilter;
-@property (nonatomic, strong) KTVVPExposureFilter * exposureFilter;
-@property (nonatomic, strong) KTVVPBrightnessFilter * brightnessFilter;
-@property (nonatomic, strong) KTVVPBlackAndWhiteFilter * blackAndWhiteFilter;
+@property (nonatomic, strong) KTVVPRGBFilter *RGBFilter;
+@property (nonatomic, strong) KTVVPExposureFilter *exposureFilter;
+@property (nonatomic, strong) KTVVPBrightnessFilter *brightnessFilter;
+@property (nonatomic, strong) KTVVPBlackAndWhiteFilter *blackAndWhiteFilter;
 
-@property (nonatomic, weak) IBOutlet UIImageView * snapshotImageView;
+@property (nonatomic, weak) IBOutlet UIImageView *snapshotImageView;
 
 @end
 
@@ -66,14 +66,14 @@
 {
     self.context = [KTVVPContext sharedContext];
     
-    NSArray <Class> * filterClasses = @[[KTVVPRGBFilter class],
-                                        [KTVVPExposureFilter class],
-                                        [KTVVPBrightnessFilter class],
-                                        [KTVVPBlackAndWhiteFilter class],
-                                        [KTVVPTransformFilter class]];
+    NSArray <Class> *filterClasses = @[[KTVVPRGBFilter class],
+                                       [KTVVPExposureFilter class],
+                                       [KTVVPBrightnessFilter class],
+                                       [KTVVPBlackAndWhiteFilter class],
+                                       [KTVVPTransformFilter class]];
     self.pipeline = [[KTVVPSerialPipeline alloc] initWithContext:self.context filterClasses:filterClasses];
     __weak typeof(self) weakSelf = self;
-    [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter * filter, NSInteger index) {
+    [self.pipeline setFilterConfigurationCallback:^(__kindof KTVVPFilter *filter, NSInteger index) {
         __strong typeof(weakSelf) self = weakSelf;
         if ([filter isKindOfClass:[KTVVPRGBFilter class]]) {
             self.RGBFilter = filter;
@@ -104,7 +104,9 @@
     self.captureSession = [[KTVVPCaptureSession alloc] init];
     self.captureSession.pipeline = self.pipeline;
     self.captureSession.audioEnable = YES;
-    [self.captureSession start];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.captureSession start];
+    });
 }
 
 - (IBAction)destory:(UIButton *)sender
@@ -124,7 +126,7 @@
 - (IBAction)snapshot:(UIButton *)sender
 {
     __weak typeof(self) weakSelf = self;
-    [self.frameView snapshot:^(UIImage * image) {
+    [self.frameView snapshot:^(UIImage *image) {
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.snapshotImageView.image = image;
         });
@@ -183,7 +185,7 @@
 
 - (IBAction)recordStartAction:(UIButton *)sender
 {
-    NSString * filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"KTVVideoProcess-temp.mov"];
+    NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"KTVVideoProcess-temp.mov"];
     self.frameWriter = [[KTVVPFrameWriter alloc] init];
     self.frameWriter.outputFileURL = [NSURL fileURLWithPath:filePath];
     self.frameWriter.videoOutputSize = KTVVPSizeMake(720, 1280);
@@ -247,12 +249,11 @@
 
 - (void)enableFilter:(__kindof KTVVPFilter *)filter
 {
-    NSArray <KTVVPFilter *> * filters = @[self.RGBFilter,
-                                          self.exposureFilter,
-                                          self.brightnessFilter,
-                                          self.blackAndWhiteFilter];
-    for (KTVVPFilter * obj in filters)
-    {
+    NSArray <KTVVPFilter *> *filters = @[self.RGBFilter,
+                                         self.exposureFilter,
+                                         self.brightnessFilter,
+                                         self.blackAndWhiteFilter];
+    for (KTVVPFilter *obj in filters) {
         BOOL enable = obj == filter;
         obj.enable = enable;
     }
