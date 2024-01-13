@@ -190,7 +190,7 @@
 				36DCF8B42B528C00008A246C /* Classes */,
 			);
 			name = KTVVideoProcess;
-			path = ../../KTVVideoProcess;
+			path = ../KTVVideoProcess;
 			sourceTree = "<group>";
 		};
 		36DCF8AB2B528C00008A246C /* Extension */ = {
