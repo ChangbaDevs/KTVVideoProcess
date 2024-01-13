@@ -124,7 +124,9 @@
 {
     __weak typeof(self) weakSelf = self;
     [self.frameView snapshot:^(UIImage * image) {
-        weakSelf.snapshotImageView.image = image;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            weakSelf.snapshotImageView.image = image;
+        });
     }];
 }
 
