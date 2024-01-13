@@ -26,8 +26,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _layout = [[KTVVPFrameLayout alloc] init];
         _textureOptions = [KTVVPFrame defaultTextureOptions];
         [self clear];
@@ -53,10 +52,7 @@
     _layout.rotationMode = frame.layout.rotationMode;
     _layout.flipMode = frame.layout.flipMode;
     _extendedObject = frame.extendedObject;
-    if (@available(iOS 11_1, *))
-    {
-        _depthData = frame.depthData;
-    }
+    _depthData = frame.depthData;
 }
 
 - (void)fillWithFrameWithoutTransform:(KTVVPFrame *)frame
@@ -67,10 +63,7 @@
     _layout.rotationMode = KTVVPRotationMode0;
     _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = frame.extendedObject;
-    if (@available(iOS 11.1, *))
-    {
-        _depthData = frame.depthData;
-    }
+    _depthData = frame.depthData;
 }
 
 - (void)clear
@@ -80,10 +73,7 @@
     _layout.rotationMode = KTVVPRotationMode0;
     _layout.flipMode = KTVVPFlipModeNone;
     _extendedObject = nil;
-    if (@available(iOS 11.1, *))
-    {
-        _depthData = nil;
-    }
+    _depthData = nil;
 }
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
@@ -114,10 +104,8 @@
 - (void)unlock
 {
     _lockingCount--;
-    if (_lockingCount <= 0)
-    {
-        if ([_lockingDelegate respondsToSelector:@selector(frameDidUnuse:)])
-        {
+    if (_lockingCount <= 0) {
+        if ([_lockingDelegate respondsToSelector:@selector(frameDidUnuse:)]) {
             [_lockingDelegate frameDidUnuse:self];
         }
     }

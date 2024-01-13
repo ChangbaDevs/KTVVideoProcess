@@ -24,8 +24,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         KTVVPLog(@"%s", __func__);
     }
     return self;
@@ -38,8 +37,7 @@
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
 {
-    if (self.didUpload)
-    {
+    if (self.didUpload) {
         return;
     }
     self.uploader = uploader;
@@ -78,8 +76,7 @@
                                                          type,
                                                          0,
                                                          &_openGLESTexture);
-    if (error)
-    {
+    if (error) {
         KTVVPLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", error);
     }
     self.texture = CVOpenGLESTextureGetName(_openGLESTexture);
@@ -94,14 +91,12 @@
 
 - (void)setPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
-    if (pixelBuffer)
-    {
+    if (pixelBuffer) {
         CFRetain(pixelBuffer);
     }
     [self clear];
     _pixelBuffer = pixelBuffer;
-    if (_pixelBuffer)
-    {
+    if (_pixelBuffer) {
         int width = (int)CVPixelBufferGetWidth(_pixelBuffer);
         int height = (int)CVPixelBufferGetHeight(_pixelBuffer);
         self.layout.size = KTVVPSizeMake(width, height);
@@ -117,13 +112,11 @@
 {
     [super clear];
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
-    if (_pixelBuffer)
-    {
+    if (_pixelBuffer) {
         CFRelease(_pixelBuffer);
         _pixelBuffer = NULL;
     }
-    if (_openGLESTexture)
-    {
+    if (_openGLESTexture) {
         CFRelease(_openGLESTexture);
         _openGLESTexture = NULL;
     }

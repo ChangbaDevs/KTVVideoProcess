@@ -14,8 +14,7 @@
                         framePool:(KTVVPFramePool *)framePool
                     frameUploader:(KTVVPFrameUploader *)frameUploader
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _glContext = glContext;
         _framePool = framePool;
         _frameUploader = frameUploader;

@@ -12,8 +12,8 @@
 
 @interface KTVVPFramePool () <NSLocking, KTVVPFrameLockingDelegate>
 
-@property (nonatomic, strong) NSLock * coreLock;
-@property (nonatomic, strong) NSMutableDictionary <NSString *, NSMutableSet <__kindof KTVVPFrame *> *> * framesContainer;
+@property (nonatomic, strong) NSLock *coreLock;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, NSMutableSet <__kindof KTVVPFrame *> *> *framesContainer;
 
 @end
 
@@ -21,8 +21,8 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
+        _coreLock = [[NSLock alloc] init];
         _framesContainer = [NSMutableDictionary dictionary];
     }
     return self;
@@ -36,19 +36,15 @@
 - (__kindof KTVVPFrame *)frameWithKey:(NSString *)key factory:(__kindof KTVVPFrame *(^)(void))factory
 {
     [self lock];
-    NSMutableSet <__kindof KTVVPFrame *> * frames = [_framesContainer objectForKey:key];
-    if (!frames)
-    {
+    NSMutableSet <__kindof KTVVPFrame *> *frames = [_framesContainer objectForKey:key];
+    if (!frames) {
         frames = [NSMutableSet set];
         [_framesContainer setObject:frames forKey:key];
     }
-    __kindof KTVVPFrame * frame = frames.anyObject;
-    if (frame)
-    {
+    __kindof KTVVPFrame *frame = frames.anyObject;
+    if (frame) {
         [frames removeObject:frame];
-    }
-    else if (factory)
-    {
+    } else if (factory) {
         frame = factory();
     }
     frame.lockingDelegate = self;
@@ -64,17 +60,13 @@
 - (void)frameDidUnuse:(__kindof KTVVPFrame *)frame
 {
     [self lock];
-    NSMutableSet <__kindof KTVVPFrame *> * frames = [_framesContainer objectForKey:frame.key];
+    NSMutableSet <__kindof KTVVPFrame *> *frames = [_framesContainer objectForKey:frame.key];
     [frames addObject:frame];
     [self unlock];
 }
 
 - (void)lock
 {
-    if (!self.coreLock)
-    {
-        self.coreLock = [[NSLock alloc] init];
-    }
     [self.coreLock lock];
 }
 

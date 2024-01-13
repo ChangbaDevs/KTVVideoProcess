@@ -25,9 +25,9 @@
 /**
  *  Environment
  */
-@property (nonatomic, strong, readonly) EAGLContext * glContext;
-@property (nonatomic, strong, readonly) KTVVPFramePool * framePool;
-@property (nonatomic, strong, readonly) KTVVPFrameUploader * frameUploader;
+@property (nonatomic, strong, readonly) EAGLContext *glContext;
+@property (nonatomic, strong, readonly) KTVVPFramePool *framePool;
+@property (nonatomic, strong, readonly) KTVVPFrameUploader *frameUploader;
 
 /**
  *  Default value is YES.
@@ -37,7 +37,7 @@
 /**
  *  Filter relationship
  */
-@property (nonatomic, weak) __kindof KTVVPFilter * parentFilter;
+@property (nonatomic, weak) __kindof KTVVPFilter *parentFilter;
 
 /**
  *  Output

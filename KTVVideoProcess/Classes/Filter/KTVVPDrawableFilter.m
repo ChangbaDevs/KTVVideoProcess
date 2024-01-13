@@ -7,13 +7,13 @@
 
 #import "KTVVPDrawableFilter.h"
 #import "KTVVPGLStandardProgram.h"
-#import "KTVVPGLPlaneModel.h"
 #import "KTVVPGLDrawableFrame.h"
+#import "KTVVPGLPlaneModel.h"
 
 @interface KTVVPDrawableFilter ()
 
-@property (nonatomic, strong) KTVVPGLStandardProgram * glProgram;
-@property (nonatomic, strong) KTVVPGLPlaneModel * glModel;
+@property (nonatomic, strong) KTVVPGLPlaneModel *glModel;
+@property (nonatomic, strong) KTVVPGLStandardProgram *glProgram;
 
 @end
 
@@ -23,25 +23,22 @@
 
 - (BOOL)inputFrame:(KTVVPFrame *)frame fromSource:(id)source
 {
-    if (!self.enable)
-    {
+    if (!self.enable) {
         return [super inputFrame:frame fromSource:source];
     }
-    
+
     KTVVPSetCurrentGLContextIfNeeded(self.glContext);
-    if (!_glModel)
-    {
+    if (!_glModel) {
         _glModel = [[KTVVPGLPlaneModel alloc] initWithGLContext:self.glContext];
     }
-    if (!_glProgram)
-    {
+    if (!_glProgram) {
         _glProgram = [[KTVVPGLStandardProgram alloc] initWithGLContext:self.glContext];
     }
     [frame lock];
     KTVVPSize size = frame.layout.size;
-    NSString * key = [KTVVPGLDrawableFrame keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
-    KTVVPGLDrawableFrame * result = [self.framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
-        KTVVPGLDrawableFrame * obj = [[KTVVPGLDrawableFrame alloc] init];
+    NSString *key = [KTVVPGLDrawableFrame keyWithAppendString:[NSString stringWithFormat:@"%d-%d", size.width, size.height]];
+    KTVVPGLDrawableFrame *result = [self.framePool frameWithKey:key factory:^__kindof KTVVPFrame *{
+        KTVVPGLDrawableFrame *obj = [[KTVVPGLDrawableFrame alloc] init];
         return obj;
     }];
     [result fillWithFrame:frame];

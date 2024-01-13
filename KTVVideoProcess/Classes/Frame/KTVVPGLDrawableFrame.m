@@ -26,8 +26,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         KTVVPLog(@"%s", __func__);
     }
     return self;
@@ -37,19 +36,16 @@
 {
     KTVVPLog(@"%s", __func__);
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
-    if (_glFramebuffer)
-    {
+    if (_glFramebuffer) {
         glDeleteFramebuffers(1, &_glFramebuffer);
         _glFramebuffer = 0;
     }
-    if (_pixelBuffer)
-    {
+    if (_pixelBuffer) {
         CFRelease(_pixelBuffer);
         _pixelBuffer = NULL;
     }
     
-    if (_openGLESTexture)
-    {
+    if (_openGLESTexture) {
         CFRelease(_openGLESTexture);
         _openGLESTexture = NULL;
     }
@@ -58,12 +54,10 @@
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
 {
-    if (self.didUpload)
-    {
+    if (self.didUpload) {
         return;
     }
-    if (self.layout.size.width <= 0 || self.layout.size.height <= 0)
-    {
+    if (self.layout.size.width <= 0 || self.layout.size.height <= 0) {
         NSAssert(NO, @"KTVVPGLDrawableFrame: size can't be zero.");
         return;
     }
@@ -71,15 +65,14 @@
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
     glGenFramebuffers(1, &_glFramebuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, _glFramebuffer);
-    NSDictionary * attributes = @{(id)kCVPixelBufferIOSurfacePropertiesKey : @{}};
+    NSDictionary *attributes = @{(id)kCVPixelBufferIOSurfacePropertiesKey : @{}};
     CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
                                           self.layout.size.width,
                                           self.layout.size.height,
                                           kCVPixelFormatType_32BGRA,
                                           (__bridge CFDictionaryRef)attributes,
                                           &_pixelBuffer);
-    if (result)
-    {
+    if (result) {
         NSAssert(NO, @"Error at CVPixelBufferCreate %d", result);
     }
     result = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
@@ -94,8 +87,7 @@
                                                           self.textureOptions.type,
                                                           0,
                                                           &_openGLESTexture);
-    if (result)
-    {
+    if (result) {
         NSAssert(NO, @"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", result);
     }
     self.texture = CVOpenGLESTextureGetName(_openGLESTexture);

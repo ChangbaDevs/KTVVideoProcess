@@ -7,15 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "KTVVPDefines.h"
-#import "KTVVPFrameLayout.h"
 #import "KTVVPFrameUploader.h"
+#import "KTVVPFrameLayout.h"
+#import "KTVVPDefines.h"
 
 /**
  *  Frame types.
  */
-typedef NS_ENUM(NSUInteger, KTVVPFrameType)
-{
+typedef NS_ENUM(NSUInteger, KTVVPFrameType) {
     KTVVPFrameTypeUnknown,
     KTVVPFrameTypeGLTexture,
     KTVVPFrameTypeGLDrawable,
@@ -32,7 +31,7 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
  */
 @property (nonatomic, assign) CMTime timeStamp;
 @property (nonatomic, assign) CMTime hostTimeStamp;
-@property (nonatomic, strong) KTVVPFrameLayout * layout;
+@property (nonatomic, strong) KTVVPFrameLayout *layout;
 
 /**
  *  Filling Data.
@@ -51,20 +50,20 @@ typedef NS_ENUM(NSUInteger, KTVVPFrameType)
  *  Upload texture.
  */
 @property (nonatomic, assign) BOOL didUpload;
-@property (nonatomic, strong) KTVVPFrameUploader * uploader;
+@property (nonatomic, strong) KTVVPFrameUploader *uploader;
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader;
 
 /**
  *  Containing data.
  */
 - (CVPixelBufferRef)corePixelBuffer;
-@property (nonatomic, strong) AVDepthData * depthData NS_AVAILABLE_IOS(11_1);
+@property (nonatomic, strong) AVDepthData *depthData;
 @property (nonatomic, strong) id extendedObject;
 
 /**
  *  Reuse Key.
  */
-@property (nonatomic, copy) NSString * key;
+@property (nonatomic, copy) NSString *key;
 + (NSString *)key;
 + (NSString *)keyWithAppendString:(NSString *)string;
 

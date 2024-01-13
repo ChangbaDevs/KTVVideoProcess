@@ -16,7 +16,7 @@
 
 - (instancetype)initWithGLContext:(EAGLContext *)glContext;
 
-@property (nonatomic, strong, readonly) EAGLContext * glContext;
+@property (nonatomic, strong, readonly) EAGLContext *glContext;
 @property (nonatomic, assign, readonly) CVOpenGLESTextureCacheRef glTextureCache;
 
 @end

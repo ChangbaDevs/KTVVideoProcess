@@ -13,14 +13,14 @@
 /**
  *  Upload the texture data in this callback.
  */
-@property (nonatomic, copy, readonly) void (^uploadTextureCallback)(KTVVPGLTextureFrame * frame);
+@property (nonatomic, copy, readonly) void (^uploadTextureCallback)(KTVVPGLTextureFrame *frame);
 
 /**
  *  Release the texture data in this callback.
  */
-@property (nonatomic, copy, readonly) void (^releaseTextureCallback)(KTVVPGLTextureFrame * frame);
+@property (nonatomic, copy, readonly) void (^releaseTextureCallback)(KTVVPGLTextureFrame *frame);
 
-- (void)setUploadTextureCallback:(void (^)(KTVVPGLTextureFrame * frame))uploadTextureCallback
-          releaseTextureCallback:(void (^)(KTVVPGLTextureFrame * frame))releaseTextureCallback;
+- (void)setUploadTextureCallback:(void (^)(KTVVPGLTextureFrame *frame))uploadTextureCallback
+          releaseTextureCallback:(void (^)(KTVVPGLTextureFrame *frame))releaseTextureCallback;
 
 @end

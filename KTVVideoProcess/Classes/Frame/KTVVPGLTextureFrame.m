@@ -17,8 +17,7 @@
 
 - (void)dealloc
 {
-    if (self.texture)
-    {
+    if (self.texture) {
         KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
         GLuint texture = self.texture;
         glDeleteTextures(1, &texture);
@@ -29,13 +28,11 @@
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
 {
-    if (self.didUpload)
-    {
+    if (self.didUpload) {
         return;
     }
     NSAssert(_uploadTextureCallback && _releaseTextureCallback, @"Can't be nil.");
-    if (!self.texture)
-    {
+    if (!self.texture) {
         self.uploader = uploader;
         KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
         glActiveTexture(GL_TEXTURE1);
@@ -70,11 +67,10 @@
     [super clear];
     self.didUpload = NO;
     _uploadTextureCallback = nil;
-    if (_releaseTextureCallback)
-    {
+    if (_releaseTextureCallback) {
         _releaseTextureCallback(self);
+        _releaseTextureCallback = nil;
     }
-    _releaseTextureCallback = nil;
 }
 
 @end

@@ -12,7 +12,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    KTVVPFrameLayout * obj = [[KTVVPFrameLayout alloc] init];
+    KTVVPFrameLayout *obj = [[KTVVPFrameLayout alloc] init];
     obj.size = self.size;
     obj.rotationMode = self.rotationMode;
     obj.flipMode = self.flipMode;
@@ -21,8 +21,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         _size = KTVVPSizeZero();
         _rotationMode = KTVVPRotationMode0;
         _flipMode = KTVVPFlipModeNone;
@@ -32,8 +31,7 @@
 
 - (KTVVPSize)finalSize
 {
-    if (self.rotationQuarter)
-    {
+    if (self.rotationQuarter) {
         return KTVVPSizeMake(_size.height, _size.width);
     }
     return _size;
@@ -41,12 +39,10 @@
 
 - (KTVVPRotationMode)completionRotationMode
 {
-    if (_rotationMode == KTVVPRotationMode90)
-    {
+    if (_rotationMode == KTVVPRotationMode90) {
         return KTVVPRotationMode270;
     }
-    if (_rotationMode == KTVVPRotationMode270)
-    {
+    if (_rotationMode == KTVVPRotationMode270) {
         return KTVVPRotationMode90;
     }
     return _rotationMode;
@@ -54,8 +50,7 @@
 
 - (KTVVPFlipMode)textureFlipMode
 {
-    switch (_flipMode)
-    {
+    switch (_flipMode) {
         case KTVVPFlipModeNone:
             return KTVVPFlipModeVertical;
         case KTVVPFlipModeHorizonal:
@@ -70,8 +65,7 @@
 
 - (BOOL)rotationQuarter
 {
-    if (_rotationMode == KTVVPRotationMode90 || _rotationMode == KTVVPRotationMode270)
-    {
+    if (_rotationMode == KTVVPRotationMode90 || _rotationMode == KTVVPRotationMode270) {
         return YES;
     }
     return NO;

@@ -25,8 +25,7 @@
 
 - (instancetype)init
 {
-    if (self = [super init])
-    {
+    if (self = [super init]) {
         KTVVPLog(@"%s", __func__);
     }
     return self;
@@ -39,8 +38,7 @@
 
 - (void)uploadIfNeeded:(KTVVPFrameUploader *)uploader
 {
-    if (self.didUpload)
-    {
+    if (self.didUpload) {
         return;
     }
     self.uploader = uploader;
@@ -79,8 +77,7 @@
                                                          type,
                                                          0,
                                                          &_openGLESTexture);
-    if (error)
-    {
+    if (error) {
         KTVVPLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", error);
     }
     self.texture = CVOpenGLESTextureGetName(_openGLESTexture);
@@ -95,19 +92,16 @@
 
 - (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
-    if (sampleBuffer)
-    {
+    if (sampleBuffer) {
         CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-        if (pixelBuffer)
-        {
+        if (pixelBuffer) {
             CFRetain(pixelBuffer);
         }
         CFRetain(sampleBuffer);
     }
     [self clear];
     _sampleBuffer = sampleBuffer;
-    if (_sampleBuffer)
-    {
+    if (_sampleBuffer) {
         CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
         int width = (int)CVPixelBufferGetWidth(pixelBuffer);
         int height = (int)CVPixelBufferGetHeight(pixelBuffer);
@@ -124,18 +118,15 @@
 {
     [super clear];
     KTVVPSetCurrentGLContextIfNeeded(self.uploader.glContext);
-    if (_sampleBuffer)
-    {
+    if (_sampleBuffer) {
         CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(_sampleBuffer);
-        if (pixelBuffer)
-        {
+        if (pixelBuffer) {
             CFRelease(pixelBuffer);
         }
         CFRelease(_sampleBuffer);
         _sampleBuffer = NULL;
     }
-    if (_openGLESTexture)
-    {
+    if (_openGLESTexture) {
         CFRelease(_openGLESTexture);
         _openGLESTexture = NULL;
     }
