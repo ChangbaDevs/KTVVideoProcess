@@ -198,8 +198,7 @@
         _videoInput = nil;
     }
     _videoDevice = nil;
-    ;
-    NSArray * devices = [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:@[AVCaptureDeviceTypeBuiltInWideAngleCamera] mediaType:AVMediaTypeVideo position:_position].devices;
+    NSArray * devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
     for (AVCaptureDevice * device in devices)
     {
         if (device.position == _position)

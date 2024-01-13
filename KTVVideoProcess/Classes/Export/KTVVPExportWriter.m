@@ -169,7 +169,7 @@
             if (@available(iOS 11.0, *)) {
                 [outputSettings setObject:AVVideoCodecTypeH264 forKey:AVVideoCodecKey];
             } else {
-                [outputSettings setObject:AVVideoCodecTypeH264 forKey:AVVideoCodecKey];
+                [outputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
             }
             [outputSettings setObject:@(_size.width) forKey:AVVideoWidthKey];
             [outputSettings setObject:@(_size.height) forKey:AVVideoHeightKey];
