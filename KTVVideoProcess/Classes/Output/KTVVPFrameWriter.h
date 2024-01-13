@@ -17,7 +17,7 @@
  *
  *  @property outputFileType  Default value is AVFileTypeMPEG4.
  */
-@property (nonatomic, copy) NSURL * outputFileURL;
+@property (nonatomic, copy) NSURL *outputFileURL;
 @property (nonatomic, copy) AVFileType outputFileType;
 
 /**
@@ -46,15 +46,15 @@
 @property (nonatomic, assign) NSInteger videoOutputMaxKeyFrameInterval;
 @property (nonatomic, assign) CMTime videoOutputMaxKeyFrameIntervalDuration;
 @property (nonatomic, assign) BOOL videoOutputAllowFrameReordering;
-@property (nonatomic, copy) NSString * videoOutputScalingMode;
-@property (nonatomic, copy) NSDictionary * videoOutputSettings;
-@property (nonatomic, copy) NSDictionary * videoSourcePixelBufferAttributes;
+@property (nonatomic, copy) NSString *videoOutputScalingMode;
+@property (nonatomic, copy) NSDictionary *videoOutputSettings;
+@property (nonatomic, copy) NSDictionary *videoSourcePixelBufferAttributes;
 
 /**
  *  Audio config.
  */
 @property (nonatomic, assign) BOOL audioEnable;
-@property (nonatomic, strong) NSDictionary * audioOutputSettings;
+@property (nonatomic, strong) NSDictionary *audioOutputSettings;
 
 /**
  *  Callback.
@@ -62,8 +62,8 @@
 @property (atomic, copy) void (^startCallback)(BOOL success);
 @property (atomic, copy) void (^finishedCallback)(BOOL success);
 @property (atomic, copy) void (^cancelCallback)(BOOL success);
-@property (atomic, copy) void (^appendedFrameCallback)(KTVVPFrame * frame);
-@property (atomic, copy) void (^appendedSampleCallback)(KTVVPSample * sample);
+@property (atomic, copy) void (^appendedFrameCallback)(KTVVPFrame *frame);
+@property (atomic, copy) void (^appendedSampleCallback)(KTVVPSample *sample);
 
 /**
  *  Duration of video track.
@@ -78,7 +78,7 @@
 - (void)finish;
 - (void)cancel;
 
-@property (nonatomic, copy, readonly) NSError * error;
+@property (nonatomic, copy, readonly) NSError *error;
 
 /**
  *  Block current thread until finished all operations.

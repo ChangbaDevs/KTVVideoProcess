@@ -18,7 +18,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame context:(KTVVPContext *)context;
 
-@property (nonatomic, strong, readonly) KTVVPContext * context;
+@property (nonatomic, strong, readonly) KTVVPContext *context;
 
 /**
  *  Default value is KTVVPScalingModeResizeAspect.
@@ -33,7 +33,7 @@
 /**
  *  Asynchronization.
  */
-- (void)snapshot:(void (^)(UIImage * image))callback;
+- (void)snapshot:(void (^)(UIImage *image))callback;
 
 /**
  *  Clear the rendered content.
