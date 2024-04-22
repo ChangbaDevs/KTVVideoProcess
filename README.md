@@ -7,7 +7,7 @@ KTVVideoProcess is a High-Performance video effects processing framework. It's b
 
 ## Flow Chart
 
-![KTVVideoProcess-Flow-Chart](https://libobjc-libs.oss-cn-beijing.aliyuncs.com/Resource/KTVVideoProcess-flow-chart.jpg)
+![KTVVideoProcess-Flow-Chart](https://github.com/ChangbaDevs/KTVVideoProcess/blob/master/documents/flow-chart.jpg?raw=true)
 
 
 ## Installation
